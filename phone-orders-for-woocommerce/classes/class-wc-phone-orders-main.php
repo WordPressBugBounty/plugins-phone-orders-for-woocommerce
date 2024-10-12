@@ -116,7 +116,7 @@ class WC_Phone_Orders_Main {
 		'edd_wpo_nonce'          => wp_create_nonce( 'edd_wpo_nonce' ),
 		'search_customers_nonce' => wp_create_nonce( 'search-customers' ),
 		'ajax_url'               => admin_url( 'admin-ajax.php' ),
-		'base_cart_url'          => untrailingslashit( wc_get_cart_url() ),
+		'base_cart_url'          => untrailingslashit( apply_filters( 'woocommerce_get_cart_url', wc_get_page_permalink( 'cart' ) ) ),
 		'base_admin_url'         => admin_url(),
 		'wc_price_settings'	 => apply_filters('wc_price_args', array(
 			'currency'           => get_woocommerce_currency(),

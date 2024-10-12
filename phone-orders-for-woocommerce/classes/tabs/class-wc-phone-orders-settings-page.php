@@ -69,7 +69,7 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page 
 			'isProVersion'                => WC_Phone_Orders_Loader::is_pro_version(),
 			'needMoreSettings'            => array(
 				'content' => sprintf(
-					'<b>%s</b> <a href="https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/" target=_blank> %s </a>', __( 'Need more settings?', 'phone-orders-for-woocommerce' ), __( 'Buy Pro version', 'phone-orders-for-woocommerce' )
+					'<b>%s</b> <a href="https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD" target=_blank> %s </a>', __( 'Need more settings?', 'phone-orders-for-woocommerce' ), __( 'Buy Pro version', 'phone-orders-for-woocommerce' )
 				),
 			),
 			'baseSettings'                => array(

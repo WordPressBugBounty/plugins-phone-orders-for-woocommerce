@@ -11,6 +11,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 	protected $meta_key_private_note;
 	protected $meta_key_order_creator;
 	protected $meta_key_order_item_discount;
+	protected $meta_key_order_item_cost_updated_manually = "_wpo_item_cost_updated_manually";
 
 	/**
 	 * @var WC_Phone_Orders_Custom_Products_Controller
@@ -298,7 +299,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             );
 		}
 
-		$tab_data = array(
+		$tab_data = apply_filters( "wpo_tab_data", array(
 			'findOrCreateCustomerSettings' => array(
 				'title'                           => __( 'Find or create a customer', 'phone-orders-for-woocommerce' ),
 				'titleOnlyFind'                   => __( 'Find a customer', 'phone-orders-for-woocommerce' ),
@@ -363,6 +364,9 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 				'logRowID'					 => uniqid(),
 				'noResultLabel'					 => __('Oops! No elements found. Consider changing the search query.', 'phone-orders-for-woocommerce'),
 				'productItemLabels'               => array(
+					'itemCostInputPrefix'            => __( '', 'phone-orders-for-woocommerce' ),
+					'itemCostReadonlyPrefix'         => __( '', 'phone-orders-for-woocommerce' ),
+					'itemCostIncTaxPrefix'           => __( '', 'phone-orders-for-woocommerce' ),
 					'deleteProductItemButtonTooltipText' => __( 'Delete item', 'phone-orders-for-woocommerce' ),
 					'skuLabel'                           => __( 'SKU', 'phone-orders-for-woocommerce' ),
 					'productStockMessage'                => __( 'Only %s items can be purchased', 'phone-orders-for-woocommerce' ),
@@ -461,7 +465,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 				'initialPaymentGateways'   => $this->updater->make_order_payment_methods_list(),
 				'noOptionsTitle'           => __( 'List is empty.', 'phone-orders-for-woocommerce' ),
 			),
-		);
+		) );
 
 		?>
 
@@ -594,7 +598,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
 	protected function ajax_load_items( $request ) {
 
-		do_action('wpo_before_load_items', $request);
+		$request = apply_filters('wpo_before_load_items', $request);
 
 		if ( ! isset( $request['items'] ) || ! is_array( $request['items'] ) ) {
 			return $this->wpo_send_json_success( array(
@@ -1048,7 +1052,6 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                         return $this->wpo_send_json_error( $result->getMessage() );
                 }
                 $recalculated_cart = $result;
-
                 $result = array(
                     'order_id'		 => $order_id,
                     'order_number'	 => $order->get_order_number(),
@@ -1060,7 +1063,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'recalculated_cart'  => $recalculated_cart,
                 );
 
-				$this->clear_cart_for_switch_user( $cart['customer']['id'] );
+				$this->clear_cart_for_switch_user( $loaded_order['cart']['customer']['id'] );
 
                 return $this->wpo_send_json_success( $result );
 	}
@@ -1116,6 +1119,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 		//remap incoming note
 		$checkout_data['order_comments'] = ! empty( $cart['customer_note'] ) ? $cart['customer_note'] : "";
 		$checkout_data['payment_method'] = ! empty( $cart['payment_method'] ) ? $cart['payment_method'] : $option_handler->get_option( 'order_payment_method' );
+		$checkout_data = apply_filters( 'wpo_checkout_posted_data', $checkout_data);
 
 		// external plugins can filter orders by creator
 		// this is the only way to add meta data with WC_Checkout
@@ -1300,6 +1304,10 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 } else {
                     $item->delete_meta_data($this->meta_key_order_item_discount);
                 }
+                if (isset($values['cost_updated_manually']) ) {
+                    $item->update_meta_data($this->meta_key_order_item_cost_updated_manually, $values['cost_updated_manually']);
+                }
+
 
 	}
 
@@ -2292,6 +2300,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                         'cost',
                         '_reduced_stock',
                         $this->meta_key_order_item_discount,
+                        $this->meta_key_order_item_cost_updated_manually,
                 )
         );
 
@@ -2367,7 +2376,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 			$cost_updated_manually = false;
 
 			if ( $option_handler->get_option( 'set_current_price_in_copied_order' ) && $mode === 'copy' || $option_handler->get_option( 'set_current_price_when_edit_order' ) && $mode === 'edit' ) {
-				$item_cost     = $_product->get_price();
+				$item_cost     = $_product->get_sale_price() ? $_product->get_sale_price() : $_product->get_price();
 				$line_subtotal = (float)$item_cost * $order_item_qty;
 				$cost_updated_manually = false;
 			} else {
@@ -2415,6 +2424,10 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                                 if ( $meta->key === $this->meta_key_order_item_discount ) {
                                     $d = $meta->get_data();
                                     $wpo_item_discount = $d['value'];
+                                }
+                                if ( $meta->key === $this->meta_key_order_item_cost_updated_manually ) {
+                                    $d = $meta->get_data();
+                                    $loaded_product['cost_updated_manually']  = $d['value'];
                                 }
                             }
                         }

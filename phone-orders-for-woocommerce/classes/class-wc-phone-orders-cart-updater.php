@@ -310,7 +310,7 @@ class WC_Phone_Orders_Cart_Updater {
 			$cart_item_meta = apply_filters( 'wpo_update_cart_cart_item_meta', $cart_item_meta, $item, $cart_data['items'] );
 
 			if ( $this->custom_prod_control->is_custom_product( $product ) ) {
-				$cart_item_key = $this->custom_prod_control->add_to_cart( WC()->cart, $product, $quantity );
+				$cart_item_key = $this->custom_prod_control->add_to_cart( WC()->cart, $product, $quantity, $cart_item_meta );
 			} else {
 				try {
 					$cart_item_key = WC()->cart->add_to_cart( $item['product_id'], $quantity, $item['variation_id'], $item['variation_data'], $cart_item_meta );
@@ -422,7 +422,7 @@ class WC_Phone_Orders_Cart_Updater {
 					$id = isset( $fee_data['id'] ) ? $fee_data['id'] : sanitize_title( $fee_data['name'] );
 					if ( isset( $fee_data['add_manually'] ) && $fee_data['add_manually'] || in_array($id, $cart_data_fee_ids) ) {
                                             $fixed_amount = $tax_class && wc_prices_include_tax() ? (isset($fee_data['original_amount']) ? $fee_data['original_amount'] : $fee_data['amount']) - WC_Tax::get_tax_total(WC_Tax::calc_tax( (isset($fee_data['original_amount']) ? $fee_data['original_amount'] : $fee_data['amount']), WC_Tax::get_rates( WC_Tax::format_tax_rate_class($tax_class), WC()->cart->get_customer() ), true )) : (isset($fee_data['original_amount']) ? $fee_data['original_amount'] : $fee_data['amount']);
-                                            $perc_amount = (float) $fee_data['original_amount'] /100 * ($tax_class && wc_prices_include_tax() ? WC()->cart->subtotal : WC()->cart->subtotal_ex_tax);
+                                            $perc_amount = (float) $fee_data['original_amount'] /100 * (wc_prices_include_tax() ? WC()->cart->subtotal : WC()->cart->subtotal_ex_tax);
                                             WC()->cart->fees_api()->add_fee( array(
 						    'id' => $id,
                             'type' => $fee_data['type'],
@@ -602,7 +602,7 @@ class WC_Phone_Orders_Cart_Updater {
                         );
 		}
 
-		//var_dump(WC()->cart->get_totals());die;
+
 
 		$items               = array();
 		$subtotal            = 0;

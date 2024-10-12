@@ -1,7 +1,7 @@
 <template>
     <div class="pro-features">
         <b>{{ needExtraFeaturesTitle }}</b>
-        <a href="https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/" target=_blank>
+        <a href="https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD" target=_blank>
             {{ buyProVersionTitle }}
         </a>
     </div>

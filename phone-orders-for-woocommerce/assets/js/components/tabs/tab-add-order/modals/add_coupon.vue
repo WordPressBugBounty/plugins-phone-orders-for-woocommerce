@@ -164,7 +164,7 @@
                         return;
                     }
 
-                    coupon = coupon.substring(0, coupon.lastIndexOf(" - "));
+                    coupon = coupon.lastIndexOf(" - ") !== -1 ? coupon.substring(0, coupon.lastIndexOf(" - ")) : coupon;
 
                     this.$store.commit('add_order/addCouponItem', {title: coupon});
                     this.$store.commit('add_order/addAction', {action: 'add_coupon', coupon: coupon});

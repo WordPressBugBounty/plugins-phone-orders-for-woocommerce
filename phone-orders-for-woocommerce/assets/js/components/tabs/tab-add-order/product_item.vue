@@ -209,11 +209,11 @@
 		    </template>
 		    <template v-else-if="isReadOnly">
 			<div class="readonly_price">
-			    {{ formatPrice(item.readonly_price ? item.readonly_price : cost, precision) }}
+			   {{ itemCostReadonlyPrefix }} <span v-html="wcPrice(item.readonly_price ? item.readonly_price : cost, {decimals: this.precision})"></span>
 			</div>
 		    </template>
 		    <template v-else>
-			<input type="text" autocomplete="off" placeholder="0" v-model.lazy="costModel" size="4" v-bind:disabled="!cartEnabled" name="wpo-item-cost-value">
+			{{ itemCostInputPrefix }} <input type="text" autocomplete="off" placeholder="0" v-model.lazy="costModel" size="4" v-bind:disabled="!cartEnabled" name="wpo-item-cost-value">
 		    </template>
 		    <div class="cost_with_tax" style="padding: 4px" v-if="showCostWithTax">
 			{{ formatPrice(costWithTax, precision) }}
@@ -290,15 +290,15 @@
 		    </template>
 		    <template v-else-if="isReadOnly || isGiftItem">
 			<div class="readonly_price">
-			    {{ formatPrice(item.readonly_price ? item.readonly_price : cost, precision) }}
+			   {{ itemCostReadonlyPrefix }} <span v-html="wcPrice(item.readonly_price ? item.readonly_price : cost, {decimals: this.precision})"></span>
 			</div>
 		    </template>
 		    <template v-else>
-			<input type="text" autocomplete="off" placeholder="0" v-model.lazy="costModel" size="4" v-bind:disabled="!cartEnabled" name="wpo-item-cost-value">
+			{{ itemCostInputPrefix }} <input type="text" autocomplete="off" placeholder="0" v-model.lazy="costModel" size="4" v-bind:disabled="!cartEnabled" name="wpo-item-cost-value">
 		    </template>
       <div class="cost_with_tax" style="padding: 4px 0" v-if="showCostWithTax">
         <del v-if="costWithTaxOrig">{{ formatPrice(costWithTaxOrig, precision) }}</del>
-        <span>{{ formatPrice(costWithTax, precision) }}</span>
+        {{ itemCostIncTaxPrefix }}  <span v-html="wcPrice(costWithTax, {decimals: this.precision})"></span>
       </div>
 		</div>
 	    </td>
@@ -492,6 +492,21 @@
             variationIDLabel: {
                 default: function() {
                     return 'Variation ID';
+                }
+            },
+            itemCostInputPrefix: {
+                default: function() {
+                    return '';
+                }
+            },
+            itemCostReadonlyPrefix: {
+                default: function() {
+                    return '';
+                }
+            },
+            itemCostIncTaxPrefix: {
+                default: function() {
+                    return '';
                 }
             },
             productMissingAttributeLabels: {

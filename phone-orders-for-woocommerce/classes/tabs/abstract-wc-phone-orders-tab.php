@@ -58,7 +58,7 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page {
 		add_filter( 'woocommerce_hidden_order_itemmeta', function ( $keys ) {
 			$keys[] = WC_Phone_Orders_Cart_Shipping_Processor::ORDER_SHIPPING_ITEM_HASH_KEY;
 			$keys[] = WC_Phone_Orders_Cart_Shipping_Processor::ORDER_SHIPPING_METHOD_ID_KEY;
-
+			$keys[] = "_wpo_item_cost_updated_manually";
 			return $keys;
 		}, 10, 1 );
 

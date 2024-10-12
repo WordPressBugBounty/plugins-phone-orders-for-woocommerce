@@ -27,7 +27,7 @@ class WC_Phone_Orders_Help_Page extends WC_Phone_Orders_Admin_Abstract_Page {
 			'questions' => array(
 				$this->tab_help_question_response(
 					__( 'How to set default country/state for new customers?','phone-orders-for-woocommerce' ),
-					sprintf(__( 'You should buy <a href=%s target=_blank>Pro version</a>.','phone-orders-for-woocommerce' ), 'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/')
+					sprintf(__( 'You should buy <a href=%s target=_blank>Pro version</a>.','phone-orders-for-woocommerce' ), 'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD')
 				),
 				$this->tab_help_question_response(
 					__( 'I can\'t add new customer, I see popup with message “Please enter an account password”','phone-orders-for-woocommerce' ),
@@ -39,7 +39,7 @@ class WC_Phone_Orders_Help_Page extends WC_Phone_Orders_Admin_Abstract_Page {
 				),
 				$this->tab_help_question_response(
 					__( 'How to pay order?','phone-orders-for-woocommerce' ),
-					sprintf(__( '<a href=%s target=_blank>Pro version</a> allows you to pay as customer, via checkout page. You can pay directly from admin area too – use <a href=%s target=_blank>this free plugin</a>. They support Stripe and Authorize.Net.','phone-orders-for-woocommerce' ), 'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/', 'https://wordpress.org/plugins/woo-mp/')
+					sprintf(__( '<a href=%s target=_blank>Pro version</a> allows you to pay as customer, via checkout page. You can pay directly from admin area too – use <a href=%s target=_blank>this free plugin</a>. They support Stripe and Authorize.Net.','phone-orders-for-woocommerce' ), 'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD', 'https://wordpress.org/plugins/woo-mp/')
 				),
 				$this->tab_help_question_response(
 					__( 'Button "Create Order" does nothing','phone-orders-for-woocommerce' ),

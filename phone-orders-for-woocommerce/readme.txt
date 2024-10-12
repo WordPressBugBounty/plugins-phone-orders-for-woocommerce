@@ -4,8 +4,8 @@ Donate link: https://paypal.me/ipprokaev/0usd
 Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
-Tested up to: 6.5
-Stable tag: 3.9.0
+Tested up to: 6.6
+Stable tag: 3.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ Easy way to take a manual/phone order in WooCommerce
 
 Speeds up adding manual/phone orders in WooCommerce backend.
 
-Having created an order, you can view the order, send an invoice and complete payment of the order ( [Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) only ).
+Having created an order, you can view the order, send an invoice and complete payment of the order ( [Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD) only ).
 
 = Features =
 * UI was adapted for keyboard input
@@ -63,7 +63,7 @@ It's not recommended, as WooCommerce remembers customer details and cart content
 Please, use [free plugin](https://wordpress.org/plugins/loggedin/) to prevent this situation.
 
 = How to set default country/state for new customers =
-[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) has more settings  and we keep adding them.
+[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD) has more settings  and we keep adding them.
 
 = I can't add new customer, I see the message "Please enter an account password"  =
 Please, visit >WooCommerce>Settings, select tab "Accounts & Privacy" and mark checkbox "When creating an account, automatically generate an account password".
@@ -78,7 +78,7 @@ Please, visit >WooCommerce>Settings>Shipping  and add shipping method for necess
 You should add non-virtual product to the cart at first. If you want to hide this method at frontend - [use this code](https://gist.github.com/alexv66/82d623841d33dc3f6abb1fd98873d710)
 
 = How to pay order?  =
-[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) allows you to pay as customer, via checkout page.
+[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD) allows you to pay as customer, via checkout page.
 You can pay directly from admin area too - use [this free plugin](https://wordpress.org/plugins/woo-mp/). They support Stripe and Authorize.Net.
 
 = How to apply bulk/roles/others discounts?  =
@@ -108,6 +108,12 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.9.1 2024-10-11 =
+* Fixed bug - option "Switch customer" worked incorrectly
+* Fixed bug - can not edit cost of custom product
+* Fixed bug - impossible to type coupon name in popup
+* Fixed bug - our internal meta was visible in order items (>WooCommerce>Orders)
 
 = 3.9.0 2024-05-22 =
 * Added option "Autocomplete results only for selected countries (Google Map API)" to  >Settings>Common
