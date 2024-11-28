@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import {store, mixins as store_mixins} from './store'
 import components from './components'
 import axios from 'axios'
@@ -7,15 +7,15 @@ import qs from 'qs'
 import emitter from 'tiny-emitter/instance'
 
 var busEvent = {
-  $on: (...args) => emitter.on(...args),
-  $once: (...args) => emitter.once(...args),
-  $off: (...args) => emitter.off(...args),
-  $emit: (...args) => emitter.emit(...args)
+    $on: (...args) => emitter.on(...args),
+    $once: (...args) => emitter.once(...args),
+    $off: (...args) => emitter.off(...args),
+    $emit: (...args) => emitter.emit(...args)
 }
 
 // Main Vue instance that bootstraps the frontend.
-const app = createApp( {
-    data () {
+const app = createApp({
+    data() {
         return {
             bus: busEvent,
             defaultCountriesList: [],
@@ -25,16 +25,16 @@ const app = createApp( {
     },
     created: function () {
 
-       /* this.$root.$on('changed::tab', (instance, val, tab) => {
+        /* this.$root.$on('changed::tab', (instance, val, tab) => {
 
-            if ( typeof tab['$children'][0] !== 'undefined') {
-                if ( typeof tab['$children'][0].update !== 'undefined') {
-                    tab['$children'][0].update();
-                }
-            }
+             if ( typeof tab['$children'][0] !== 'undefined') {
+                 if ( typeof tab['$children'][0].update !== 'undefined') {
+                     tab['$children'][0].update();
+                 }
+             }
 
-            window.location = tab.href;
-        });*/
+             window.location = tab.href;
+         });*/
 
         var setActiveTab = () => {
             var hash = this.getWindowLocationHash();
@@ -62,14 +62,14 @@ const app = createApp( {
         this.$root.bus.$on('settings-loaded', func);
         this.$root.bus.$on('settings-saved', func);
 
-	this.$store.init(this);
+        this.$store.init(this);
 
         var initAutocomplete = () => {
 
             var self = this;
 
-            this.registerGoogleMapJs(this.getSettingsOption('google_map_api_key'),  async () => {
-                const { Places } = await google.maps.importLibrary('places');
+            this.registerGoogleMapJs(this.getSettingsOption('google_map_api_key'), async () => {
+                const {Places} = await google.maps.importLibrary('places');
                 var service = new google.maps.places.AutocompleteService();
 
                 service.getQueryPredictions({input: 'pizza near Syd'}, function (predictions, status) {
@@ -95,16 +95,16 @@ const app = createApp( {
 
         this.setAllSettings(JSON.parse(window.wpo_settings));
     },
-    mounted () {
+    mounted() {
         this.loadAllSettings(JSON.parse(this.$el.parentNode.dataset['allSettings']));
         this.bus.$emit('app-loaded');
     },
     watch: {
         cart: {
             handler: function (newVal, oldVal) {
-                if (this.$store.state.add_order.force_cart_set ) {
-	                this.$store.commit('add_order/setForceCartSet', 0);
-	                this.$store.commit('add_order/setCartParamsChangedByBackend', 0);
+                if (this.$store.state.add_order.force_cart_set) {
+                    this.$store.commit('add_order/setForceCartSet', 0);
+                    this.$store.commit('add_order/setCartParamsChangedByBackend', 0);
                     return;
                 }
                 console.log('changed')
@@ -112,16 +112,16 @@ const app = createApp( {
                 let localOldVal = JSON.parse(JSON.stringify(oldVal));
                 let localNewVal = JSON.parse(JSON.stringify(newVal));
 
-                let listen = ['items', 'coupons', 'customer', 'discount', 'shipping','shippings', 'fee', 'payment_method', 'shipping_custom_price', 'gift_card', 'order_currency', 'dont_apply_pricing_rules'];
+                let listen = ['items', 'coupons', 'customer', 'discount', 'shipping', 'shippings', 'fee', 'payment_method', 'shipping_custom_price', 'gift_card', 'order_currency', 'dont_apply_pricing_rules'];
 
-                if ( this.getSettingsOption( 'changing_custom_fields_forces_cart_update' ) ) {
+                if (this.getSettingsOption('changing_custom_fields_forces_cart_update')) {
                     listen.push('custom_fields');
                 }
 
 //                let excludeItemObjectKeys = ['custom_meta_fields', 'loaded_product', 'rand', 'key', 'original_price', 'item_cost' ];
-                let excludeItemObjectKeys = ['custom_name', 'original_price', 'removed_custom_meta_fields_keys' ];
+                let excludeItemObjectKeys = ['custom_name', 'original_price', 'removed_custom_meta_fields_keys'];
 
-                if ( this.getSettingsOption( 'dont_refresh_cart_item_item_meta' ) ) {
+                if (this.getSettingsOption('dont_refresh_cart_item_item_meta')) {
                     excludeItemObjectKeys.push('custom_meta_fields');
                 }
 
@@ -175,16 +175,18 @@ const app = createApp( {
         },
     },
     methods: {
-        loadCountryAndStatesList () {
-            this.axios.get(this.url, {params: {
-                action: 'phone-orders-for-woocommerce',
-                method: 'get_countries_and_states_list',
-                tab: 'add-order',
-                wpo_cache_references_key: this.getSettingsOption('cache_references_session_key'),
-                nonce: this.nonce,
-            }}).then( ( response ) => {
+        loadCountryAndStatesList() {
+            this.axios.get(this.url, {
+                params: {
+                    action: 'phone-orders-for-woocommerce',
+                    method: 'get_countries_and_states_list',
+                    tab: 'add-order',
+                    wpo_cache_references_key: this.getSettingsOption('cache_references_session_key'),
+                    nonce: this.nonce,
+                }
+            }).then((response) => {
                 this.defaultCountriesList = response.data.data.countries_list;
-                this.defaultStatesList    = response.data.data.states_list;
+                this.defaultStatesList = response.data.data.states_list;
             });
         },
         loadAllSettings(settings) {
@@ -193,7 +195,7 @@ const app = createApp( {
         },
     },
     components,
-} );
+});
 
 app.use(store);
 
@@ -225,8 +227,8 @@ app.use(BootstrapVue3)
 import VueClipboard from 'vue3-clipboard'
 
 app.use(VueClipboard, {
-  autoSetContainer: true,
-  appendToBody: true,
+    autoSetContainer: true,
+    appendToBody: true,
 });
 
 import storeSearchMultiselect from './directives/store-search-multiselect';
@@ -240,38 +242,38 @@ app.directive("check-date-datetimepicker", checkDateDatetimepicker);
 import numeral from "numeral"
 
 // Create a global mixin to expose strings, global config, and single backend resource.
-app.mixin( {
+app.mixin({
     computed: {
-        nonce: function() {
+        nonce: function () {
             return PhoneOrdersData.nonce;
         },
-        edd_wpo_nonce: function() {
+        edd_wpo_nonce: function () {
             return PhoneOrdersData.edd_wpo_nonce;
         },
-        search_customers_nonce: function() {
+        search_customers_nonce: function () {
             return PhoneOrdersData.search_customers_nonce;
         },
-        url: function() {
+        url: function () {
             return PhoneOrdersData.ajax_url;
         },
-        base_cart_url: function() {
+        base_cart_url: function () {
             return PhoneOrdersData.base_cart_url;
         },
-        base_admin_url: function() {
+        base_admin_url: function () {
             return PhoneOrdersData.base_admin_url;
         },
-        axios: function() {
+        axios: function () {
             return axios;
         },
-        qs: function() {
+        qs: function () {
             return qs;
         },
-	modalDontCloseOnBackdropClick: function() {
+        modalDontCloseOnBackdropClick: function () {
             return !!this.getSettingsOption('dont_close_popup_click_outside');
         },
     },
     methods: {
-        getObjectByKeyValue (arrayOfObjects, key, value, defaultValue) {
+        getObjectByKeyValue(arrayOfObjects, key, value, defaultValue) {
 
             var found = typeof defaultValue !== 'undefined' ? defaultValue : null;
 
@@ -283,17 +285,17 @@ app.mixin( {
 
             return found;
         },
-        getKeyValueOfObject (object, key) {
+        getKeyValueOfObject(object, key) {
             return object && typeof object === 'object' ? object[key] : object;
         },
-        openModal (modalID) {
-        console.log(this, this.$bvModal)
+        openModal(modalID) {
+            console.log(this, this.$bvModal)
             this.$root.$emit('bv::show::modal', modalID);
         },
         saveSettingsByEvent: function () {
             this.$root.bus.$emit('save-settings');
         },
-        getWindowLocationHash: function() {
+        getWindowLocationHash: function () {
             return window.location.hash;
         },
         clickTab(href) {
@@ -310,9 +312,9 @@ app.mixin( {
                 script.remove();
             });
 
-	        if (!key) {
-		        return;
-	        }
+            if (!key) {
+                return;
+            }
 
             if (typeof google === 'object') {
                 google.maps = false;
@@ -329,69 +331,69 @@ app.mixin( {
                 });
             `
 
-            scriptTag.async              = true;
-            scriptTag.defer              = true;
+            scriptTag.async = true;
+            scriptTag.defer = true;
 
             document.body.appendChild(scriptTag);
 
             successCallback();
         },
-	    removeGetParameter( parameterName ) {
-		    var result = null,
-			    clean_uri = null,
-			    tmp = [];
+        removeGetParameter(parameterName) {
+            var result = null,
+                clean_uri = null,
+                tmp = [];
 
-		    location.search
-		            .substr( 1 )
-		            .split( "&" )
-		            .forEach( function ( item ) {
-			            tmp = item.split( "=" );
-			            if ( tmp[0] === parameterName ) {
-				            result = decodeURIComponent( tmp[1] );
-				            clean_uri = window.location.toString().replace( "&" + tmp[0] + "=" + tmp[1], "");
-				            clean_uri = clean_uri.replace( tmp[0] + "=" + tmp[1], "");
-				            clean_uri = clean_uri.replace(/\?$/ig, "");
-			            }
-		            } );
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) {
+                        result = decodeURIComponent(tmp[1]);
+                        clean_uri = window.location.toString().replace("&" + tmp[0] + "=" + tmp[1], "");
+                        clean_uri = clean_uri.replace(tmp[0] + "=" + tmp[1], "");
+                        clean_uri = clean_uri.replace(/\?$/ig, "");
+                    }
+                });
 
-		    if ( result && clean_uri ) {
-			    window.history.replaceState({}, document.title, clean_uri)
+            if (result && clean_uri) {
+                window.history.replaceState({}, document.title, clean_uri)
             }
-		    return result;
-	    },
-	    getParameter( parameterName ) {
-		    var result = null,
-			    tmp = [];
+            return result;
+        },
+        getParameter(parameterName) {
+            var result = null,
+                tmp = [];
 
-		    location.search
-		            .substr( 1 )
-		            .split( "&" )
-		            .forEach( function ( item ) {
-			            tmp = item.split( "=" );
-			            if ( tmp[0] === parameterName ) {
-				            result = decodeURIComponent( tmp[1] );
-					    return result;
-			            }
-		            } );
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) {
+                        result = decodeURIComponent(tmp[1]);
+                        return result;
+                    }
+                });
 
-		    return result;
-	    },
+            return result;
+        },
         deepIsEqual(first, second, excludeKeys) {
             first = Object.assign({}, first);
             second = Object.assign({}, second);
 
-	    if (!excludeKeys) {
-		excludeKeys = [];
-	    }
+            if (!excludeKeys) {
+                excludeKeys = [];
+            }
 
-	    excludeKeys.forEach((fieldKey) => {
-		if (typeof first[fieldKey] !== 'undefined') {
-		    delete first[fieldKey];
-		}
-		if (typeof second[fieldKey] !== 'undefined') {
-		    delete second[fieldKey];
-		}
-	    });
+            excludeKeys.forEach((fieldKey) => {
+                if (typeof first[fieldKey] !== 'undefined') {
+                    delete first[fieldKey];
+                }
+                if (typeof second[fieldKey] !== 'undefined') {
+                    delete second[fieldKey];
+                }
+            });
 
             // If first and second are the same type and have the same value
             // Useful if strings or other primitive types are compared
@@ -440,156 +442,158 @@ app.mixin( {
         },
         formatWcPrice(value, settings) {
 
-        if (typeof value === 'undefined') {
-            return value;
-        }
+            if (typeof value === 'undefined') {
+                return value;
+            }
 
-        var price = numeral(value < 0 ? value * -1 : value)
+            var price = numeral(value < 0 ? value * -1 : value)
                 .format("0,0." + "0".repeat(settings.decimals));
 
-        var tmp = price.split('.');
+            var tmp = price.split('.');
 
-        price = tmp[0].replace(/,/g, settings.thousand_separator);
+            price = tmp[0].replace(/,/g, settings.thousand_separator);
 
-        if (tmp.length > 1) {
-            price = price + settings.decimal_separator + tmp[1];
-        }
+            if (tmp.length > 1) {
+                price = price + settings.decimal_separator + tmp[1];
+            }
 
-        var formatted_price = ( value < 0 ? '-' : '' ) +
-                    settings.price_format
-                    .replace( '%1$s', '<span class="woocommerce-Price-currencySymbol">' + settings.currency_symbol + '</span>')
-                    .replace( '%2$s', price);
+            var formatted_price = (value < 0 ? '-' : '') +
+                settings.price_format
+                    .replace('%1$s', '<span class="woocommerce-Price-currencySymbol">' + settings.currency_symbol + '</span>')
+                    .replace('%2$s', price);
 
-        return '<span class="woocommerce-Price-amount amount">'+ formatted_price +'</span>';
+            return '<span class="woocommerce-Price-amount amount">' + formatted_price + '</span>';
+        },
+        wcPrice(value, settings) {
+            return this.formatWcPrice(value, Object.assign({}, this.$store.state.add_order.cart.wc_price_settings, (settings || {}), {currency_symbol: this.$store.state.add_order.cart.order_currency && this.getSettingsOption('show_order_currency_selector') ? this.$store.state.add_order.cart.order_currency.symbol : this.$store.state.add_order.cart.wc_price_settings.currency_symbol}));
+        },
+        ucwordsAddress(str) {
+            var upperCase = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
+            return str.toLowerCase().split(' ').map(function (s) {
+                if (upperCase.indexOf(s.toUpperCase()) > -1 || s.length < 2) {
+                    return s.toUpperCase();
+                }
+                return s.charAt(0).toUpperCase() + s.slice(1);
+            }).join(' ');
+        },
+        validateAddressByUSPS(address, successCallback, errorCallback) {
+
+            var usps_user_id = this.getSettingsOption('address_validation_service_api_key');
+
+            if (address.country !== 'US' || !usps_user_id) {
+                successCallback(address);
+                return;
+            }
+
+            var encodeHTML = function (string) {
+                return string.replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&apos;');
+            };
+
+            var str = '';
+
+            str += '<ZipCodeLookupRequest USERID="' + encodeHTML(usps_user_id) + '"><Address ID="1">';
+            str += '<Address1>' + encodeHTML(address.street1.replace("#", '')) + '</Address1>';
+            str += '<Address2>' + encodeHTML(address.street2.replace("#", '')) + '</Address2>';
+            str += '<City>' + encodeHTML(address.city) + '</City>';
+            str += '<State>' + encodeHTML(address.state) + '</State>';
+            str += '<Zip5>' + encodeHTML(address.zip) + '</Zip5>';
+            str += '<Zip4></Zip4></Address></ZipCodeLookupRequest>';
+
+            this.axios.get('https://secure.shippingapis.com/ShippingAPI.dll', {
+                params: {
+                    API: 'ZipCodeLookup',
+                    XML: str,
+                }
+            }).then((response) => {
+
+                var xmlDoc = null;
+
+                if (window.DOMParser) {
+                    var parser = new DOMParser();
+                    xmlDoc = parser.parseFromString(response.data, "text/xml");
+                } else if (window.ActiveXObject) { // Internet Explorer
+                    xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+                    xmlDoc.async = false;
+                    xmlDoc.loadXML(response.data);
+                } else {
+                    throw new Error("No XML parser found");
+                }
+
+                if (!xmlDoc) {
+                    throw new Error("XML parse error");
+                }
+
+                if (xmlDoc.getElementsByTagName("Error").length) {
+                    var error = PhoneOrdersData.usps_label + ': ' + xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+                    errorCallback(error);
+                    return;
+                }
+
+                var zip = xmlDoc.getElementsByTagName("Zip5")[0].childNodes[0].nodeValue;
+
+                if (xmlDoc.getElementsByTagName("Zip4").length && xmlDoc.getElementsByTagName("Zip4")[0].childNodes.length) {
+                    zip += '-' + xmlDoc.getElementsByTagName("Zip4")[0].childNodes[0].nodeValue;
+                }
+
+                var street1 = '';
+                var street2 = '';
+
+                if (xmlDoc.getElementsByTagName("Address1").length) {
+                    street1 = xmlDoc.getElementsByTagName("Address1")[0].childNodes[0].nodeValue;
+                }
+
+                if (xmlDoc.getElementsByTagName("Address2").length) {
+                    street2 = xmlDoc.getElementsByTagName("Address2")[0].childNodes[0].nodeValue;
+                }
+
+
+                var validated_address = {
+                    // SWAP them!
+                    street1: this.ucwordsAddress(street2),
+                    street2: this.ucwordsAddress(street1),
+                    city: this.ucwordsAddress(xmlDoc.getElementsByTagName("City")[0].childNodes[0].nodeValue),
+                    state: xmlDoc.getElementsByTagName("State")[0].childNodes[0].nodeValue,
+                    zip: zip,
+                };
+
+                successCallback(validated_address);
+
+            }, (error) => {
+            });
+        },
+        clearCartParam(cart) {
+
+            var cartData = Object.assign({}, cart);
+
+            if (cartData.items) {
+                cartData.items.forEach((item) => {
+                    delete item.product_price_html;
+                })
+            }
+
+            return cartData;
+        },
+        formatPrice(value, precision) {
+
+            if (typeof value === 'undefined') {
+                return value;
+            }
+
+            var _precision = typeof precision !== 'undefined' ? +precision : 2;
+            return numeral(value).format("0." + "0".repeat(_precision));
+        },
     },
-	wcPrice(value, settings) {
-	    return this.formatWcPrice(value, Object.assign({},  this.$store.state.add_order.cart.wc_price_settings, (settings || {}), {currency_symbol: this.$store.state.add_order.cart.order_currency && this.getSettingsOption('show_order_currency_selector') ? this.$store.state.add_order.cart.order_currency.symbol : this.$store.state.add_order.cart.wc_price_settings.currency_symbol}));
-	},
-	ucwordsAddress(str) {
-	    var upperCase = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
-	    return str.toLowerCase().split(' ').map(function ( s ) {
-		if (upperCase.indexOf(s.toUpperCase()) > -1 || s.length < 2) {
-		    return s.toUpperCase();
-		}
-		return s.charAt(0).toUpperCase() + s.slice(1);
-	    } ).join(' ');
-	},
-	validateAddressByUSPS(address, successCallback, errorCallback) {
+});
 
-	    var usps_user_id = this.getSettingsOption('address_validation_service_api_key');
-
-	    if (address.country !== 'US' || !usps_user_id) {
-		successCallback(address);
-		return;
-	    }
-
-	    var encodeHTML = function (string) {
-		return string.replace(/&/g, '&amp;')
-			   .replace(/</g, '&lt;')
-			   .replace(/>/g, '&gt;')
-			   .replace(/"/g, '&quot;')
-			   .replace(/'/g, '&apos;');
-	    };
-
-	    var str = '';
-
-	    str += '<ZipCodeLookupRequest USERID="' + encodeHTML(usps_user_id) + '"><Address ID="1">';
-	    str += '<Address1>' + encodeHTML(address.street1.replace("#", '')) + '</Address1>';
-	    str += '<Address2>' + encodeHTML(address.street2.replace("#", '')) + '</Address2>';
-	    str += '<City>' + encodeHTML(address.city) + '</City>';
-	    str += '<State>' + encodeHTML(address.state) + '</State>';
-	    str += '<Zip5>' + encodeHTML(address.zip) + '</Zip5>';
-	    str += '<Zip4></Zip4></Address></ZipCodeLookupRequest>';
-
-	    this.axios.get('https://secure.shippingapis.com/ShippingAPI.dll', {params: {
-		API: 'ZipCodeLookup',
-		XML: str,
-            }}).then( ( response ) => {
-
-		var xmlDoc = null;
-
-		if (window.DOMParser) {
-		    var parser = new DOMParser();
-		    xmlDoc = parser.parseFromString(response.data, "text/xml");
-		}
-		else if (window.ActiveXObject) { // Internet Explorer
-		    xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-		    xmlDoc.async = false;
-		    xmlDoc.loadXML(response.data);
-		} else {
-		    throw new Error("No XML parser found");
-		}
-
-		if (!xmlDoc) {
-		    throw new Error("XML parse error");
-		}
-
-		if (xmlDoc.getElementsByTagName("Error").length) {
-		    var error = PhoneOrdersData.usps_label + ': ' + xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
-		    errorCallback(error);
-		    return;
-		}
-
-		var zip = xmlDoc.getElementsByTagName("Zip5")[0].childNodes[0].nodeValue;
-
-		if (xmlDoc.getElementsByTagName("Zip4").length && xmlDoc.getElementsByTagName("Zip4")[0].childNodes.length) {
-		    zip += '-' + xmlDoc.getElementsByTagName("Zip4")[0].childNodes[0].nodeValue;
-		}
-
-		var street1 = '';
-		var street2 = '';
-
-		if (xmlDoc.getElementsByTagName("Address1").length) {
-		    street1 = xmlDoc.getElementsByTagName("Address1")[0].childNodes[0].nodeValue;
-		}
-
-        if (xmlDoc.getElementsByTagName("Address2").length) {
-            street2 = xmlDoc.getElementsByTagName("Address2")[0].childNodes[0].nodeValue;
-        }
-
-
-		var validated_address = {
-			// SWAP them!
-		    street1: this.ucwordsAddress(street2),
-		    street2: this.ucwordsAddress(street1),
-		    city: this.ucwordsAddress(xmlDoc.getElementsByTagName("City")[0].childNodes[0].nodeValue),
-		    state: xmlDoc.getElementsByTagName("State")[0].childNodes[0].nodeValue,
-		    zip: zip,
-		};
-
-		successCallback(validated_address);
-
-            }, (error) => {});
-	},
-	clearCartParam(cart) {
-
-	    var cartData = Object.assign({}, cart);
-
-	    if (cartData.items) {
-		cartData.items.forEach((item) => {
-		    delete item.product_price_html;
-		})
-	    }
-
-	    return cartData;
-	},
-    formatPrice(value, precision) {
-
-        if (typeof value === 'undefined') {
-            return value;
-        }
-
-        var _precision = typeof precision !== 'undefined' ? +precision : 2;
-        return numeral(value).format("0." + "0".repeat(_precision));
-    },
-    },
-} );
-
-axios.interceptors.response.use( function ( response ) {
-	if ( response.data.unexpected_output ) {
-		console.log( response.data.unexpected_output )
-	}
-	return response;
-} );
+axios.interceptors.response.use(function (response) {
+    if (response.data.unexpected_output) {
+        console.log(response.data.unexpected_output)
+    }
+    return response;
+});
 
 app.mount('#phone-orders-app');

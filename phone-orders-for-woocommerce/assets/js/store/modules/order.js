@@ -1,9 +1,9 @@
 var mixin = {
     computed: {
-        cartEnabled () {
+        cartEnabled() {
             return this.$store.state.add_order.cart_enabled;
         },
-        cartIsChanged () {
+        cartIsChanged() {
             var cart = this.$store.state.add_order.cart;
             return cart.items.length && !cart.order_id && !cart.edit_order_id && !cart.loaded_order_id && !cart.drafted_order_id
                 ||
@@ -11,7 +11,7 @@ var mixin = {
         },
     },
     methods: {
-        getStrHash (str) {
+        getStrHash(str) {
 
             var hash = 0, i, chr;
 
@@ -20,27 +20,26 @@ var mixin = {
             }
 
             for (i = 0; i < str.length; i++) {
-                chr   = str.charCodeAt(i);
-                hash  = ((hash << 5) - hash) + chr;
+                chr = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + chr;
                 hash |= 0; // Convert to 32bit integer
             }
 
             return hash;
         },
-        getObjectHash (object) {
+        getObjectHash(object) {
             return this.getStrHash(JSON.stringify(object));
         },
-        addProductItemToStore (item) {
+        addProductItemToStore(item) {
             this.addProductItemsToStore([item]);
         },
-        addProductItemsToStore (items) {
+        addProductItemsToStore(items) {
             this.getSettingsOption('add_product_to_top_of_the_cart') ?
-                    this.$store.commit('add_order/addCartItemsToTop', items)
+                this.$store.commit('add_order/addCartItemsToTop', items)
                 :
-                    this.$store.commit('add_order/addCartItemsToBottom', items);
+                this.$store.commit('add_order/addCartItemsToBottom', items);
         },
-        getDefaultCustomFieldsValues (customFields, customValues) {
-
+        getDefaultCustomFieldsValues(customFields, customValues) {
             var fields = {};
 
             customFields.forEach(function (field) {
@@ -50,33 +49,40 @@ var mixin = {
                 switch (field.type) {
                     case 'hidden':
                     case 'text':
-                        if ( field.value.length ) {
+                        if (field.value.length) {
                             val = field.value.join('')
                         }
                         break;
                     case 'time':
-                        if ( field.value.length ) {
+                        if (field.value.length) {
                             val = field.value.join('')
                         }
                         break;
                     case 'checkbox':
                         val = [];
-                        if ( field.value.length && field.selected_values.length ) {
+                        if (field.value.length && field.selected_values.length) {
                             val = field.selected_values
                         }
                         break;
                     case 'radio':
-                        if ( field.value.length && field.selected_values.length) {
+                        if (field.value.length && field.selected_values.length) {
                             val = field.selected_values[0]
                         }
                         break;
                     case 'select':
-                        if ( field.value.length && field.selected_values.length) {
+                        if (field.value.length && field.selected_values.length) {
                             val = field.selected_values[0]
                         }
                         break;
+                    case 'products':
+                        if (customValues && customValues.hasOwnProperty(field.name)) {
+                            val = customValues[field.name]
+                        } else {
+                            val = []
+                        }
+                        break;
                     case 'date':
-                        if ( field.value.length ) {
+                        if (field.value.length) {
                             val = field.value.join('')
                         }
                         break;
@@ -91,8 +97,7 @@ var mixin = {
 
             return fields;
         },
-        getCustomFieldsList (customFields) {
-
+        getCustomFieldsList(customFields) {
             var fieldList = [];
 
             if (!customFields) {
@@ -100,7 +105,9 @@ var mixin = {
             }
 
             customFields.split(/((\r?\n)|(\r\n?))/)
-                .filter(function (v) { return v && v.trim(); })
+                .filter(function (v) {
+                    return v && v.trim();
+                })
                 .forEach(function (v) {
 
                     var line = v.split('|');
@@ -145,7 +152,6 @@ var mixin = {
                             });
                         }
 
-
                         fieldList.push({
                             label: line[0],
                             name: typeof line[1] !== 'undefined' ? line[1] : line[0],
@@ -153,14 +159,14 @@ var mixin = {
                             required: line[0].startsWith('*'),
                             value: value,
                             selected_values: selected_values,
-			    start_with: start_with,
+                            start_with: start_with,
                         });
                     }
                 });
 
             return fieldList;
         },
-        getCustomFieldsListSettingsRows (customFieldsListSettingsRows) {
+        getCustomFieldsListSettingsRows(customFieldsListSettingsRows) {
 
             var settingsRows = [];
 
@@ -169,10 +175,14 @@ var mixin = {
             }
 
             return customFieldsListSettingsRows.split(/((\r?\n)|(\r\n?))/)
-                .filter(function (v) { return v && v.trim(); })
-                .map(function (v) { return parseInt(v); });
+                .filter(function (v) {
+                    return v && v.trim();
+                })
+                .map(function (v) {
+                    return parseInt(v);
+                });
         },
-        getDefaultListItemCustomMetaFieldsList (customFields) {
+        getDefaultListItemCustomMetaFieldsList(customFields) {
 
             var fieldList = [];
 
@@ -181,7 +191,9 @@ var mixin = {
             }
 
             customFields.split(/((\r?\n)|(\r\n?))/)
-                .filter(function (v) { return v && v.trim(); })
+                .filter(function (v) {
+                    return v && v.trim();
+                })
                 .forEach(function (v) {
 
                     var line = v.split('|');
@@ -193,7 +205,7 @@ var mixin = {
 
             return fieldList;
         },
-        getItemCustomMetaFieldsList (itemCustomMetaFields) {
+        getItemCustomMetaFieldsList(itemCustomMetaFields) {
 
             var fieldList = [];
 
@@ -202,14 +214,16 @@ var mixin = {
             }
 
             itemCustomMetaFields.split(/((\r?\n)|(\r\n?))/)
-                .filter(function (v) { return v && v.trim(); })
+                .filter(function (v) {
+                    return v && v.trim();
+                })
                 .forEach(function (v) {
                     fieldList.push(v.trim());
                 });
 
             return fieldList;
         },
-        setDefaultCustomFieldsValues () {
+        setDefaultCustomFieldsValues() {
             this.$store.commit(
                 'add_order/setCartCustomFields',
                 Object.assign({}, this.getDefaultCustomFieldsValues(
@@ -217,7 +231,7 @@ var mixin = {
                 ))
             );
         },
-        setDefaultCustomFieldsValuesEx () {
+        setDefaultCustomFieldsValuesEx() {
             this.$store.commit(
                 'add_order/setCartCustomFields',
                 Object.assign({}, this.getDefaultCustomFieldsValues(
@@ -226,7 +240,7 @@ var mixin = {
                 ))
             );
         },
-        updateStoredCartHash () {
+        updateStoredCartHash() {
             this.$store.commit(
                 'add_order/setStoredCartHash',
                 this.getObjectHash(this.$store.state.add_order.cart)
@@ -238,7 +252,7 @@ var mixin = {
                 newCustomer
             );
 
-            if (typeof this.$store.state.add_order.cart.custom_fields !== 'undefined' && typeof newCustomer.custom_fields !== 'undefined' && this.getSettingsOption('replace_order_with_customer_custom_fields') ) {
+            if (typeof this.$store.state.add_order.cart.custom_fields !== 'undefined' && typeof newCustomer.custom_fields !== 'undefined' && this.getSettingsOption('replace_order_with_customer_custom_fields')) {
                 this.$store.commit(
                     'add_order/setCartCustomFields',
                     Object.assign({}, this.$store.state.add_order.cart.custom_fields, newCustomer.custom_fields)
@@ -271,8 +285,8 @@ var empty_cart = {
     coupons: [],
     discount: null,
     shipping: {
-	total_html: "",
-	packages: [],
+        total_html: "",
+        packages: [],
     },
     fee: [],
     fee_ids: [],
@@ -318,7 +332,7 @@ const state = {
     is_loading_without_background: false,
     stored_cart_hash: '',
     cart_params_changed_by_backend: 0,
-	force_cart_set: 0,
+    force_cart_set: 0,
     unconditional_redirect: false,
     order_date_timestamp: 0,
     order_status: '',
@@ -330,50 +344,50 @@ const state = {
 };
 
 const mutations = {
-	enableUnconditionalRedirect (state, enable ) {
-		state.unconditional_redirect = enable;
-	},
-    updateCustomer (state, newCustomer) {
-        var copiedCart      = Object.assign({}, state.cart);
+    enableUnconditionalRedirect(state, enable) {
+        state.unconditional_redirect = enable;
+    },
+    updateCustomer(state, newCustomer) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.customer = newCustomer;
         // copiedCart.custom_fields = Object.assign({}, copiedCart.custom_fields, newCustomer.custom_fields);
-        state.cart          = copiedCart;
+        state.cart = copiedCart;
     },
-	setCustomerTaxExempt (state, newTaxExempt) {
-		var copiedCart      = Object.assign({}, state.cart);
-		var customer =  Object.assign({}, copiedCart.customer || {});
-		customer.is_vat_exempt = newTaxExempt;
-		copiedCart.customer = customer;
+    setCustomerTaxExempt(state, newTaxExempt) {
+        var copiedCart = Object.assign({}, state.cart);
+        var customer = Object.assign({}, copiedCart.customer || {});
+        customer.is_vat_exempt = newTaxExempt;
+        copiedCart.customer = customer;
 
-		state.cart          = copiedCart;
-	},
-	updateOrderDateTimestamp (state, newTimestamp) {
-		state['order_date_timestamp'] = newTimestamp;
+        state.cart = copiedCart;
     },
-    updateOrderStatus (state, newStatus) {
+    updateOrderDateTimestamp(state, newTimestamp) {
+        state['order_date_timestamp'] = newTimestamp;
+    },
+    updateOrderStatus(state, newStatus) {
         state['order_status'] = newStatus;
     },
-    addCartItemsToBottom (state, items) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.items    = [...copiedCart.items, ...items];
-        state.cart          = copiedCart;
+    addCartItemsToBottom(state, items) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.items = [...copiedCart.items, ...items];
+        state.cart = copiedCart;
     },
-    addCartItemsToTop (state, items) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.items    = [...items, ...copiedCart.items];
-        state.cart          = copiedCart;
+    addCartItemsToTop(state, items) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.items = [...items, ...copiedCart.items];
+        state.cart = copiedCart;
     },
-    addFeeItem (state, item) {
+    addFeeItem(state, item) {
 
-        var found       = false;
-        var copiedCart  = Object.assign({}, state.cart);
-        var feeList     = [...copiedCart.fee];
+        var found = false;
+        var copiedCart = Object.assign({}, state.cart);
+        var feeList = [...copiedCart.fee];
 
         feeList.forEach(function (fee, index) {
-           if (item.name === fee.name) {
-               feeList[index] = item;
-               found = true;
-           }
+            if (item.name === fee.name) {
+                feeList[index] = item;
+                found = true;
+            }
         });
 
         if (!found) {
@@ -381,36 +395,36 @@ const mutations = {
         }
 
         copiedCart.fee = feeList;
-        state.cart     = copiedCart;
+        state.cart = copiedCart;
     },
-    removeFeeItem (state, itemIndex) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.fee      = copiedCart.fee.filter(function (item, index) {
+    removeFeeItem(state, itemIndex) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.fee = copiedCart.fee.filter(function (item, index) {
             return index !== itemIndex;
         });
         state.cart = copiedCart;
     },
-    addCouponItem (state, item) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.coupons  = [...copiedCart.coupons, item];
-        state.cart          = copiedCart;
+    addCouponItem(state, item) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.coupons = [...copiedCart.coupons, item];
+        state.cart = copiedCart;
     },
-    removeCouponItem (state, itemIndex) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.coupons  = copiedCart.coupons.filter(function (item, index) {
+    removeCouponItem(state, itemIndex) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.coupons = copiedCart.coupons.filter(function (item, index) {
             return index !== itemIndex;
         });
         state.cart = copiedCart;
     },
-    setDiscount (state, discount) {
-        var copiedCart      = Object.assign({}, state.cart);
+    setDiscount(state, discount) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.discount = discount;
-        state.cart          = copiedCart;
+        state.cart = copiedCart;
     },
-    setShipping (state, shipping) {
-        var copiedCart      = Object.assign({}, state.cart);
+    setShipping(state, shipping) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.shipping = shipping;
-        state.cart          = copiedCart;
+        state.cart = copiedCart;
     },
     setPackages(state, packages) {
         var copiedCart = Object.assign({}, state.cart);
@@ -419,57 +433,57 @@ const mutations = {
         copiedCart.shipping = copiedShipping;
         state.cart = copiedCart;
     },
-    setCartCoupons (state, coupons) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.coupons  = coupons;
-        state.cart          = copiedCart;
+    setCartCoupons(state, coupons) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.coupons = coupons;
+        state.cart = copiedCart;
     },
-    setCartFees (state, fees) {
-        var copiedCart   = Object.assign({}, state.cart);
-        copiedCart.fee   = fees;
-        state.cart       = copiedCart;
+    setCartFees(state, fees) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.fee = fees;
+        state.cart = copiedCart;
     },
-    setCartFeeIDs (state, feeIDs) {
-        var copiedCart   = Object.assign({}, state.cart);
+    setCartFeeIDs(state, feeIDs) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.fee_ids = feeIDs;
-        state.cart       = copiedCart;
+        state.cart = copiedCart;
     },
-    setAdditionalParamsProductSearch (state, params) {
+    setAdditionalParamsProductSearch(state, params) {
         state.additional_params_product_search = Object.assign({}, params);
     },
-    updateCartItem (state, data) {
+    updateCartItem(state, data) {
 
-        var copiedCart   = Object.assign({}, state.cart);
-        var items        = [...copiedCart.items];
+        var copiedCart = Object.assign({}, state.cart);
+        var items = [...copiedCart.items];
 
         items.forEach(function (item, index) {
-            if (item.key === data.key ) {
+            if (item.key === data.key) {
                 items[index] = data.item;
             }
         });
 
         copiedCart.items = items;
-        state.cart       = copiedCart;
+        state.cart = copiedCart;
     },
-    removeCartItem (state, key) {
-        var copiedCart      = Object.assign({}, state.cart);
-        copiedCart.items    = copiedCart.items.filter(function (item, index) {
+    removeCartItem(state, key) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.items = copiedCart.items.filter(function (item, index) {
             return item.key !== key;
         });
 
         state.cart = copiedCart;
     },
-    setCustomerNote (state, note) {
-        var copiedCart           = Object.assign({}, state.cart);
+    setCustomerNote(state, note) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.customer_note = note;
-        state.cart               = copiedCart;
+        state.cart = copiedCart;
     },
-    setPrivateNote (state, note) {
-        var copiedCart           = Object.assign({}, state.cart);
-        copiedCart.private_note  = note;
-        state.cart               = copiedCart;
+    setPrivateNote(state, note) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.private_note = note;
+        state.cart = copiedCart;
     },
-    clearCart (state) {
+    clearCart(state) {
         state.cart = Object.assign({}, state.cart, {
             items: [],
             coupons: [],
@@ -494,12 +508,12 @@ const mutations = {
             drafted_order_id: null,
             order_is_completed: false,
             custom_fields_values: [],
-	    allow_refund_order: false,
+            allow_refund_order: false,
             actions: [],
             dont_apply_pricing_rules: false,
         });
     },
-    clearCartAll (state) {
+    clearCartAll(state) {
         state = Object.assign(state, {
             cart: {
                 items: [],
@@ -528,7 +542,7 @@ const mutations = {
                 custom_fields_values: [],
                 payment_method: '',
                 order_currency: '',
-		allow_refund_order: false,
+                allow_refund_order: false,
                 actions: [],
                 dont_apply_pricing_rules: false,
             },
@@ -544,50 +558,50 @@ const mutations = {
             is_loading_without_background: false,
             stored_cart_hash: '',
             cart_params_changed_by_backend: 0,
-	        force_cart_set: 0,
-	        order_date_timestamp: 0,
+            force_cart_set: 0,
+            order_date_timestamp: 0,
             order_status: '',
             payment_gateways: [],
         });
     },
-    setStateToDefault (state, new_state) {
+    setStateToDefault(state, new_state) {
 
-	var cart = {
-	    items: [],
-	    coupons: [],
-	    discount: null,
-        shipping: {
-            total_html: "",
-            packages: [],
-        },
-	    fee: [],
-	    fee_ids: [],
-	    customer_note: '',
-	    private_note: '',
-	    customer: '',
-	    custom_fields: {},
-	    order_id: null,
-	    order_number: null,
-	    loaded_order_id: null,
-	    loaded_order_number: null,
-	    view_order_id: null,
-	    view_order_number: null,
-	    edit_order_id: null,
-	    edit_order_number: null,
-	    drafted_order_id: null,
-	    order_is_completed: false,
-	    custom_fields_values: [],
-	    payment_method: '',
-        order_currency: '',
-	    allow_refund_order: false,
+        var cart = {
+            items: [],
+            coupons: [],
+            discount: null,
+            shipping: {
+                total_html: "",
+                packages: [],
+            },
+            fee: [],
+            fee_ids: [],
+            customer_note: '',
+            private_note: '',
+            customer: '',
+            custom_fields: {},
+            order_id: null,
+            order_number: null,
+            loaded_order_id: null,
+            loaded_order_number: null,
+            view_order_id: null,
+            view_order_number: null,
+            edit_order_id: null,
+            edit_order_number: null,
+            drafted_order_id: null,
+            order_is_completed: false,
+            custom_fields_values: [],
+            payment_method: '',
+            order_currency: '',
+            allow_refund_order: false,
             dont_apply_pricing_rules: false,
-	};
+        };
 
-	if(!new_state.cart) {
-	    new_state.cart = {};
-	}
+        if (!new_state.cart) {
+            new_state.cart = {};
+        }
 
-	new_state.cart = Object.assign({}, cart, new_state.cart);
+        new_state.cart = Object.assign({}, cart, new_state.cart);
 
         state = Object.assign(state, {
             cart: cart,
@@ -603,231 +617,228 @@ const mutations = {
             is_loading_without_background: false,
             stored_cart_hash: '',
             cart_params_changed_by_backend: 0,
-	        force_cart_set: 0,
+            force_cart_set: 0,
             order_date_timestamp: 0,
             order_status: '',
             payment_gateways: [],
         }, new_state);
     },
-    setCartEnabled (state, enabled) {
+    setCartEnabled(state, enabled) {
         state.cart_enabled = enabled;
     },
-    setCart (state, cart) {
+    setCart(state, cart) {
         state.cart = Object.assign({}, state.cart, cart);
     },
-    setState (state, state_object) {
+    setState(state, state_object) {
         state = Object.assign(state, state_object);
     },
-    setLoadedOrder (state, loaded_order) {
+    setLoadedOrder(state, loaded_order) {
         state.loaded_order = loaded_order;
     },
-    setLogRowID (state, log_row_id) {
+    setLogRowID(state, log_row_id) {
         state.log_row_id = log_row_id;
     },
-    setLogRowID (state, log_row_id) {
-        state.log_row_id = log_row_id;
+    purgeCartOrder(state) {
+        var copiedCart = Object.assign({}, state.cart);
+        delete copiedCart.order_is_completed;
+        delete copiedCart.order_id;
+        delete copiedCart.order_number;
+        delete copiedCart.order_payment_url;
+        delete copiedCart.loaded_order_id;
+        delete copiedCart.loaded_order_number;
+        delete copiedCart.view_order_id;
+        delete copiedCart.view_order_number;
+        delete copiedCart.loaded_order;
+        delete copiedCart.edit_order_id;
+        delete copiedCart.edit_order_number;
+        delete copiedCart.drafted_order_id;
+        delete copiedCart.allow_refund_order;
+        state.cart = copiedCart;
     },
-	purgeCartOrder( state ) {
-		var copiedCart = Object.assign( {}, state.cart );
-		delete copiedCart.order_is_completed;
-		delete copiedCart.order_id;
-		delete copiedCart.order_number;
-		delete copiedCart.order_payment_url;
-		delete copiedCart.loaded_order_id;
-		delete copiedCart.loaded_order_number;
-		delete copiedCart.view_order_id;
-		delete copiedCart.view_order_number;
-		delete copiedCart.loaded_order;
-		delete copiedCart.edit_order_id;
-		delete copiedCart.edit_order_number;
-		delete copiedCart.drafted_order_id;
-		delete copiedCart.allow_refund_order;
-		state.cart = copiedCart;
-	},
-    setCartOrderIsCompleted (state, is_completed) {
-        var copiedCart                = Object.assign({}, state.cart);
+    setCartOrderIsCompleted(state, is_completed) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.order_is_completed = is_completed;
-        state.cart                    = copiedCart;
+        state.cart = copiedCart;
     },
-    setCartOrderID (state, order_id) {
-        var copiedCart      = Object.assign({}, state.cart);
+    setCartOrderID(state, order_id) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.order_id = order_id;
-        state.cart          = copiedCart;
+        state.cart = copiedCart;
     },
-    setCartOrderNumber (state, order_number) {
-        var copiedCart		= Object.assign({}, state.cart);
+    setCartOrderNumber(state, order_number) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.order_number = order_number;
-        state.cart		= copiedCart;
+        state.cart = copiedCart;
     },
-    setCartEditOrderID (state, order_id) {
-        var copiedCart              = Object.assign({}, state.cart);
-        copiedCart.edit_order_id    = order_id;
-        state.cart                  = copiedCart;
+    setCartEditOrderID(state, order_id) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.edit_order_id = order_id;
+        state.cart = copiedCart;
     },
-    setCartEditOrderNumber (state, order_number) {
-        var copiedCart			= Object.assign({}, state.cart);
-        copiedCart.edit_order_number    = order_number;
-        state.cart			= copiedCart;
+    setCartEditOrderNumber(state, order_number) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.edit_order_number = order_number;
+        state.cart = copiedCart;
     },
-    setCartDraftedOrderID (state, order_id) {
-        var copiedCart              = Object.assign({}, state.cart);
+    setCartDraftedOrderID(state, order_id) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.drafted_order_id = order_id;
-        state.cart                  = copiedCart;
+        state.cart = copiedCart;
     },
-    setCartOrderPaymentUrl (state, url) {
-        var copiedCart                  = Object.assign({}, state.cart);
-        copiedCart.order_payment_url    = url;
-        state.cart                      = copiedCart;
+    setCartOrderPaymentUrl(state, url) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.order_payment_url = url;
+        state.cart = copiedCart;
     },
-    setDefaultCartCustomFields (state, fields) {
-        var copiedCart           = Object.assign({}, state.cart);
+    setDefaultCartCustomFields(state, fields) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.custom_fields = Object.assign({}, fields, state.cart.custom_fields);
-        state.cart               = copiedCart;
+        state.cart = copiedCart;
     },
-    setCartCustomFields (state, fields) {
-        var copiedCart           = Object.assign({}, state.cart);
+    setCartCustomFields(state, fields) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.custom_fields = Object.assign({}, fields);
-        state.cart               = copiedCart;
+        state.cart = copiedCart;
     },
-	setDefaultCustomerCustomFields (state, fields) {
-		var copiedCart      = Object.assign({}, state.cart);
-		var customer =  Object.assign({}, copiedCart.customer || {});
-		customer.custom_fields =  Object.assign({}, fields, state.cart.customer.custom_fields);
-		copiedCart.customer = customer;
+    setDefaultCustomerCustomFields(state, fields) {
+        var copiedCart = Object.assign({}, state.cart);
+        var customer = Object.assign({}, copiedCart.customer || {});
+        customer.custom_fields = Object.assign({}, fields, state.cart.customer.custom_fields);
+        copiedCart.customer = customer;
 
-		state.cart          = copiedCart;
-	},
-	setCustomerCustomFields (state, fields) {
-		var copiedCart      = Object.assign({}, state.cart);
-		var customer =  Object.assign({}, copiedCart.customer || {});
-		customer.custom_fields =  Object.assign({}, fields);
-		copiedCart.customer = customer;
+        state.cart = copiedCart;
+    },
+    setCustomerCustomFields(state, fields) {
+        var copiedCart = Object.assign({}, state.cart);
+        var customer = Object.assign({}, copiedCart.customer || {});
+        customer.custom_fields = Object.assign({}, fields);
+        copiedCart.customer = customer;
 
-		state.cart          = copiedCart;
-	},
-    setCartItems (state, items) {
-        var copiedCart   = Object.assign({}, state.cart);
+        state.cart = copiedCart;
+    },
+    setCartItems(state, items) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.items = [...items];
-        state.cart       = copiedCart;
+        state.cart = copiedCart;
     },
-    setButtonsMessage (state, message) {
+    setButtonsMessage(state, message) {
         state['buttons_message'] = message;
     },
-    setIsLoading (state, is_loading) {
+    setIsLoading(state, is_loading) {
         state['is_loading'] = is_loading;
     },
-    setIsLoadingWithoutBackground (state, is_loading) {
+    setIsLoadingWithoutBackground(state, is_loading) {
         state['is_loading_without_background'] = is_loading;
     },
-    setDeletedItems (state, items) {
+    setDeletedItems(state, items) {
         state['deleted_items'] = items;
     },
-    setCalculatedDeletedItems (state, items) {
+    setCalculatedDeletedItems(state, items) {
         state['calculated_deleted_items'] = items;
     },
-    setOutOfStockItems (state, items) {
+    setOutOfStockItems(state, items) {
         state['out_of_stock_items'] = items;
     },
-    setStoredCartHash (state, hash) {
+    setStoredCartHash(state, hash) {
         state.stored_cart_hash = hash;
     },
-    setCartParamsChangedByBackend (state, value) {
+    setCartParamsChangedByBackend(state, value) {
         state.cart_params_changed_by_backend = value;
     },
-    setForceCartSet (state, value) {
+    setForceCartSet(state, value) {
         state.force_cart_set = value;
     },
-    updatePaymentMethod (state, method) {
-        var copiedCart            = Object.assign({}, state.cart);
+    updatePaymentMethod(state, method) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.payment_method = method;
-        state.cart                = copiedCart;
+        state.cart = copiedCart;
     },
-    updateOrderCurrency (state, currency) {
-        var copiedCart            = Object.assign({}, state.cart);
+    updateOrderCurrency(state, currency) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.order_currency = currency;
-        state.cart                = copiedCart;
+        state.cart = copiedCart;
     },
-    updateAvailablePaymentGateways (state, methods_list) {
+    updateAvailablePaymentGateways(state, methods_list) {
         state['payment_gateways'] = methods_list;
     },
-    setCartAllowRefundOrder (state, allow_refund_order) {
-        var copiedCart		      = Object.assign({}, state.cart);
+    setCartAllowRefundOrder(state, allow_refund_order) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.allow_refund_order = allow_refund_order;
-        state.cart		      = copiedCart;
+        state.cart = copiedCart;
     },
-    setPriceSettings (state, newPriceSettings) {
-        var copiedCart		      = Object.assign({}, state.cart);
+    setPriceSettings(state, newPriceSettings) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.wc_price_settings = Object.assign({}, newPriceSettings);
-        state.cart		      = copiedCart;
+        state.cart = copiedCart;
     },
-    setTaxSettings (state, newTaxSettings) {
-        var copiedCart		      = Object.assign({}, state.cart);
-        copiedCart.wc_tax_settings    = Object.assign({}, newTaxSettings);
-        state.cart		      = copiedCart;
+    setTaxSettings(state, newTaxSettings) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.wc_tax_settings = Object.assign({}, newTaxSettings);
+        state.cart = copiedCart;
     },
-    setMeasurementsSettings (state, newMeasurementsSettings) {
-        var copiedCart			    = Object.assign({}, state.cart);
+    setMeasurementsSettings(state, newMeasurementsSettings) {
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.wc_measurements_settings = Object.assign({}, newMeasurementsSettings);
-        state.cart			    = copiedCart;
+        state.cart = copiedCart;
     },
-    setGiftCard (state, giftCard) {
-        var copiedCart		= Object.assign({}, state.cart);
-        copiedCart.gift_card	= Object.assign({}, giftCard);
-        state.cart		= copiedCart;
+    setGiftCard(state, giftCard) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.gift_card = Object.assign({}, giftCard);
+        state.cart = copiedCart;
     },
-    addGiftCard (state, giftCard) {
-        var copiedCart		= Object.assign({}, state.cart);
-        var giftCardData	= Object.assign({}, copiedCart.gift_card);
-	giftCardData.cards	= [...giftCardData.cards, giftCard];
-	copiedCart.gift_card	= giftCardData;
-        state.cart		= copiedCart;
+    addGiftCard(state, giftCard) {
+        var copiedCart = Object.assign({}, state.cart);
+        var giftCardData = Object.assign({}, copiedCart.gift_card);
+        giftCardData.cards = [...giftCardData.cards, giftCard];
+        copiedCart.gift_card = giftCardData;
+        state.cart = copiedCart;
     },
-    removeGiftCard (state, itemIndex) {
-        var copiedCart	    = Object.assign({}, state.cart);
-	var giftCardData    = Object.assign({}, copiedCart.gift_card);
-        giftCardData.cards  = giftCardData.cards.filter(function (item, index) {
+    removeGiftCard(state, itemIndex) {
+        var copiedCart = Object.assign({}, state.cart);
+        var giftCardData = Object.assign({}, copiedCart.gift_card);
+        giftCardData.cards = giftCardData.cards.filter(function (item, index) {
             return index !== itemIndex;
         });
-	copiedCart.gift_card = giftCardData;
-        state.cart	     = copiedCart;
+        copiedCart.gift_card = giftCardData;
+        state.cart = copiedCart;
     },
-    setAdpSettings (state, adpSettings) {
-        var copiedCart	= Object.assign({}, state.cart);
-        copiedCart.adp	= Object.assign({}, adpSettings);
-        state.cart	= copiedCart;
+    setAdpSettings(state, adpSettings) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.adp = Object.assign({}, adpSettings);
+        state.cart = copiedCart;
     },
-    addAction (state, action) {
+    addAction(state, action) {
         state.cart.actions.push(action)
     },
-    clearActions (state) {
+    clearActions(state) {
         state.cart.actions = []
     },
-    setAdpAddToCartGifts (state, gifts) {
-        var copiedCart	= Object.assign({}, state.cart);
-        var adp		= Object.assign({}, copiedCart.adp);
+    setAdpAddToCartGifts(state, gifts) {
+        var copiedCart = Object.assign({}, state.cart);
+        var adp = Object.assign({}, copiedCart.adp);
 
-	adp.add_gifts_to_cart = gifts;
+        adp.add_gifts_to_cart = gifts;
 
-        copiedCart.adp	= adp;
-        state.cart	= copiedCart;
+        copiedCart.adp = adp;
+        state.cart = copiedCart;
     },
-    setAdpRemoveFromCartGifts (state, gifts) {
-        var copiedCart	= Object.assign({}, state.cart);
-        var adp		= Object.assign({}, copiedCart.adp);
+    setAdpRemoveFromCartGifts(state, gifts) {
+        var copiedCart = Object.assign({}, state.cart);
+        var adp = Object.assign({}, copiedCart.adp);
 
-	adp.remove_gifts_from_cart = gifts;
+        adp.remove_gifts_from_cart = gifts;
 
-        copiedCart.adp	= adp;
-        state.cart	= copiedCart;
+        copiedCart.adp = adp;
+        state.cart = copiedCart;
     },
-    setAdpRestoreCartGifts (state, gifts) {
-        var copiedCart	= Object.assign({}, state.cart);
-        var adp		= Object.assign({}, copiedCart.adp);
+    setAdpRestoreCartGifts(state, gifts) {
+        var copiedCart = Object.assign({}, state.cart);
+        var adp = Object.assign({}, copiedCart.adp);
 
-	adp.restore_gifts_cart = gifts;
+        adp.restore_gifts_cart = gifts;
 
-        copiedCart.adp	= adp;
-        state.cart	= copiedCart;
+        copiedCart.adp = adp;
+        state.cart = copiedCart;
     },
     addCheckCartValidation(state, validation) {
         state.check_cart_validation.push(validation)
@@ -839,9 +850,9 @@ const mutations = {
         state.check_edit_customer_validation.push(validation)
     },
     setDontApplyPricingRulesToCart(state, dontApplyPricingRules) {
-        var copiedCart	= Object.assign({}, state.cart);
+        var copiedCart = Object.assign({}, state.cart);
         copiedCart.dont_apply_pricing_rules = dontApplyPricingRules;
-        state.cart	= copiedCart;
+        state.cart = copiedCart;
     },
     setIsGoogleAutocomplete(state, result) {
         state.is_google_autocomplete = result;

@@ -6,11 +6,11 @@ var mixin = {
         setAllSettings(settings) {
             this.$store.commit('settings/setState', settings);
         },
-        getSettingsOption (optionName, defaultValue) {
+        getSettingsOption(optionName, defaultValue) {
             var val = this.$store.getters['settings/get'](optionName);
             return typeof val !== 'undefined' ? val : defaultValue;
         },
-        setSettingsOption (optionName, optionValue) {
+        setSettingsOption(optionName, optionValue) {
             this.$store.commit('settings/set', {name: optionName, value: optionValue});
         },
         getSettingsTabs() {
@@ -41,7 +41,7 @@ const state = {
     componentsSettings: {},
 };
 
-const getters =  {
+const getters = {
     get: function (state) {
         return function (option_name) {
             return state.settings[option_name];
@@ -66,7 +66,7 @@ const mutations = {
         state.settings[option.name] = option.value;
     },
     setState: function (state, newState) {
-        for(var option in newState) {
+        for (var option in newState) {
             state.settings[option] = newState[option];
         }
     },

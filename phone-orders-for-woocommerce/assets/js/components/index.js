@@ -45,7 +45,8 @@ var components = {
 };
 
 try {
-    components = Object.assign(components, require( './../../../pro_version/assets/js/components' ).default);
-} catch (e) {}
+    components = Object.assign(components, require('./../../../pro_version/assets/js/components').default);
+} catch (e) {
+}
 
 export default components;

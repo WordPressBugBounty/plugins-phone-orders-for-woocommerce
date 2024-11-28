@@ -4,8 +4,8 @@ Donate link: https://paypal.me/ipprokaev/0usd
 Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
-Tested up to: 6.6
-Stable tag: 3.9.1
+Tested up to: 6.7
+Stable tag: 3.9.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,7 +88,7 @@ Use our free [discount plugin](https://wordpress.org/plugins/advanced-dynamic-pr
 Please, mark checkbox "Switch customer during cart calculations" at tab Settings.
 
 = Button "Create Order" does nothing  =
-Probably, there is a conflict with another plugin. [Please, check javascript errors at first](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis) 
+Probably, there is a conflict with another plugin. [Please, check javascript errors at first](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis)
 
 = New phone order does not change the stock =
 WooCommerce reduces stock only for orders having following statuses -  Completed, Processing, On hold
@@ -98,18 +98,23 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 == Screenshots ==
 
-1. Filled order 
+1. Filled order
 2. Order was created
 3. Edit customer details
 4. Apply coupon, autocomplete
 5. Adjust discount type and amount
-6. Select shipping method 
+6. Select shipping method
 7. Common settings
 8. Interface settings
 
 == Changelog ==
 
-= 3.9.1 2024-10-11 =
+= 3.9.2 2024-11-28 =
+* Field "Discount" shows amount added by [our pricing plugin](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/)
+* Fixed bug - some phrases can not be translated
+* Fixed bug - minor vue(js) warnings
+
+= 3.9.1 2024-10-14 =
 * Fixed bug - option "Switch customer" worked incorrectly
 * Fixed bug - can not edit cost of custom product
 * Fixed bug - impossible to type coupon name in popup
@@ -148,7 +153,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 = 3.8.3 2023-05-15 =
 * Minor UI tweaks
 * Fixed bug - button "Get report" didn't work at tab Tools
-* Fixed bug - HPOS verification error in WooCommerce 7.0 or earlier 
+* Fixed bug - HPOS verification error in WooCommerce 7.0 or earlier
 * Fixed bug - incorrectly filled address_2 during google autocomplete
 
 = 3.8.2 2023-03-29 =
@@ -201,11 +206,11 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 * Modified UI - column Discount is ignored if user set own value in column Cost
 * Fixed bug - empty labels in dropdown "Payment method", for some payment plugins
 * Fixed bug - user had to click twice in column "Discount" , to switch discount type
-* Fixed bug - wrong total amount if option "Disable shipping calculation" was ON in [Advanced Dynamic Pricing for WooCommerce](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/) 
+* Fixed bug - wrong total amount if option "Disable shipping calculation" was ON in [Advanced Dynamic Pricing for WooCommerce](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/)
 
 = 3.6.11 2022-03-28 =
 * Fixed bug - shipping method was empty by default
-* Fixed bug - popup "Advanced Search" ignored prices set by [Advanced Dynamic Pricing for WooCommerce](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/) 
+* Fixed bug - popup "Advanced Search" ignored prices set by [Advanced Dynamic Pricing for WooCommerce](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/)
 * Fixed bug - WooCommerce free shipping coupon didn't change shipping method
 
 = 3.6.10 2022-02-16 =
@@ -224,7 +229,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 * Speed up adding item meta fields
 * Increased QTY input if option "Allow to input fractional qty" is active
 * Show "x.00" if option "Allow to input fractional qty" is active
-* Fixed bug - item meta key "Product" didn't allow to create new order 
+* Fixed bug - item meta key "Product" didn't allow to create new order
 
 = 3.6.6 2021-11-16 =
 * Fixed critical bug - compatiblity issue when our pricing plugin is not active
@@ -308,10 +313,10 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 = 3.4.0 2020-02-06 =
 * Added button "Advanced search", to select many products in search results
-* Speeded up cart processing 
+* Speeded up cart processing
 * New settings tab "Tax"
-* New option "Hide 2nd(tax) line for item" 
-* New option "Allow to create orders without shipping" 
+* New option "Hide 2nd(tax) line for item"
+* New option "Allow to create orders without shipping"
 * New option "Collapse WordPress menu" (page must be reloaded)
 * New option "Scrollable cart contents"
 * New option "Order fields position" (default - "below customer details")
@@ -355,7 +360,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 = 3.3.2 2019-06-26 =
 * New option "Don't close popup on click outside"
-* New hooks for popup "Edit Address" 
+* New hooks for popup "Edit Address"
 * Fixed bug - incorrectly work with users just created by admin
 * Fixed bug - formatted amounts incorrectly if comma used as decimal separator
 * Fixed bug - "Switch customer during cart calculations"  didn't work for guests
@@ -369,7 +374,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 = 3.3.0 2019-03-27 =
 * Solved problem with slow search if shop has a lot of products/customers
 * New option "Show payment method"
-* New option "Show detailed taxes" 
+* New option "Show detailed taxes"
 * New option "Allow to edit shipping cost", for any shipping method
 * New option "Don't send order emails"
 * Save address coordinates if Google address autocomplete was enabled
@@ -407,7 +412,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 * Compatible with WooCommerce 3.5
 * Support any number of items in the cart (tested for 100+ items)
 * Fixed bug - shipping calculated  automatically even if user turned off "Autocalculation" at tab "Settings"
-* Fixed bug - user was able to submit empty attribute for variation 
+* Fixed bug - user was able to submit empty attribute for variation
 
 = 3.2.0 2018-10-11 =
 * The plugin requires at least WooCommerce 3.3.0 !
@@ -416,10 +421,10 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 * Added nested tabs to "Settings"
 * Show warning message if coupons are disabled
 * Fixed bug - settings were applied to admin only
-* Fixed bug - slow customer autocomplete 
+* Fixed bug - slow customer autocomplete
 * Fixed bug - empty default shipping method (it didn't work for some shipping plugins)
 * Work correctly with "sold individually" products
-* German translation was added 
+* German translation was added
 
 = 3.1.0 2018-08-20 =
 * Increased  page loading speed
@@ -437,7 +442,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 * Added Spanish language
 
 = 2.6.7 2018-06-06 =
-* Fixed some incompatibility issues with WooCommerce 3.4 
+* Fixed some incompatibility issues with WooCommerce 3.4
 * Removed unnecessary ajax method which updates shipping rates after modifying cart items
 
 = 2.6.6 2018-05-11 =
@@ -446,7 +451,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 * Added tab "Log"
 * Only admin has access to tab "Settings"
 * Default payment method was added to tab "Settings"
-* Bug fixed, we clear the cart for current user after order creation 
+* Bug fixed, we clear the cart for current user after order creation
 
 = 2.6.5 2018-04-23 =
 * Added column to show full amounts

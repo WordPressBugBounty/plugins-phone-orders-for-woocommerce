@@ -17,6 +17,11 @@
     width: 100%;
     background: #fff;
 }
+#woocommerce-order-items .woocommerce_order_items_wrapper .wc-order-item-variable-attribute {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
 
 #woocommerce-order-items .woocommerce_order_items_wrapper table.woocommerce_order_items thead th {
     text-align: left;
