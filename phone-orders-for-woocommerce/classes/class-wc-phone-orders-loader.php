@@ -80,8 +80,6 @@ class WC_Phone_Orders_Loader
 
         add_action('init', array($this, 'init_plugin'));
 
-        add_action('wp_loaded', array($this, 'disable_quick_search_option_if_needed'));
-
         add_action('admin_init', function () {
             if ( ! get_option($this->activation_notice_option, false)) {
                 add_action('admin_notices', array($this, 'display_plugin_activated_message'));
@@ -504,14 +502,5 @@ class WC_Phone_Orders_Loader
         }
 
         return $packages;
-    }
-
-    public function disable_quick_search_option_if_needed()
-    {
-        $product_count = wp_count_posts('product')->publish;
-        if (isset($product_count) && $product_count >= apply_filters("wpo_limit_for_quick_search", 1000)) {
-            $settings_option_handler = WC_Phone_Orders_Settings::getInstance();
-            $settings_option_handler->set_option('quick_search', false);
-        }
     }
 }

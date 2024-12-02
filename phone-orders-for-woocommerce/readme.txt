@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 6.7
-Stable tag: 3.9.2
+Stable tag: 3.9.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,7 +109,10 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 == Changelog ==
 
-= 3.9.2 2024-11-28 =
+= 3.9.3 2024-12-02 =
+* Fixed critical bug - fatal error if shop has 1000+ products
+
+= 3.9.2 2024-11-27 =
 * Field "Discount" shows amount added by [our pricing plugin](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/)
 * Fixed bug - some phrases can not be translated
 * Fixed bug - minor vue(js) warnings
