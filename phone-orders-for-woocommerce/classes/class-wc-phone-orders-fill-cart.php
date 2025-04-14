@@ -52,7 +52,8 @@ class WC_Phone_Orders_Fill_Cart
 
         if ( ! $product) {
             wc_add_notice(
-                sprintf(__('Unknown product &quot;%d&quot;.', 'phone-orders-for-woocommerce'), $product_id),
+            // translators: A message about an unknown product
+            sprintf(__('Unknown product &quot;%d&quot;.', 'phone-orders-for-woocommerce'), $product_id),
                 'error'
             );
 
@@ -61,7 +62,8 @@ class WC_Phone_Orders_Fill_Cart
         if ( ! $quantity) {
             wc_add_notice(
                 sprintf(
-                    __('Can not add %d &quot;%s&quot; because it is not available.', 'phone-orders-for-woocommerce'),
+                    // translators: A message stating that the product cannot be added because it is unavailable.
+                    __('Can not add %1$d &quot;%2$s&quot; because it is not available.', 'phone-orders-for-woocommerce'),
                     $quantity,
                     $product->get_title()
                 ),

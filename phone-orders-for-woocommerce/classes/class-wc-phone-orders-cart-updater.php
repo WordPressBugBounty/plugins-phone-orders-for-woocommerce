@@ -308,7 +308,7 @@ class WC_Phone_Orders_Cart_Updater
 
             $cart_item_meta                                    = defined(
                 'WC_ADP_VERSION'
-            ) ? array() : array('rand' => rand());
+            ) ? array() : array('rand' => wp_rand());
             $cart_item_meta['wpo_key']                         = isset($item['key']) ? $item['key'] : '';
             $cart_item_meta['cost_updated_manually']           = isset($item['cost_updated_manually']) ? $item['cost_updated_manually'] : false;
             $cart_item_meta['allow_po_discount']               = isset($item['allow_po_discount']) ? $item['allow_po_discount'] : true;
@@ -690,7 +690,7 @@ class WC_Phone_Orders_Cart_Updater
             if ($coupon_code != wc_format_coupon_code($manual_cart_discount_code)) {
                 $coupon            = new WC_Coupon($coupon_code);
                 $code              = $coupon->get_code() ? $coupon->get_code() : $coupon_code;
-                $title             = strip_tags(
+                $title             = wp_strip_all_tags(
                     apply_filters(
                         'woocommerce_cart_totals_coupon_label',
                         $code,
@@ -746,10 +746,11 @@ class WC_Phone_Orders_Cart_Updater
                 'gift_hash'    => $hash,
                 'qty'          => $qty,
                 'text'         => sprintf(
-                    __('You can add %d products for free to the cart.', 'advanced-dynamic-pricing-for-woocommerce'),
+                    // translators: Ability to add a certain number of free products to the cart
+                    __('You can add %d products for free to the cart.', 'phone-orders-for-woocommerce'),
                     $qty
                 ),
-                'button_label' => __("Choose your gift", 'advanced-dynamic-pricing-for-woocommerce')
+                'button_label' => __("Choose your gift", 'phone-orders-for-woocommerce')
             );
         }
 
@@ -1232,8 +1233,8 @@ class WC_Phone_Orders_Cart_Updater
                 if (count($line) > 1) {
                     $item_custom_meta_fields[] = array(
                         'id'         => '',
-                        'meta_key'   => $line[0],
-                        'meta_value' => $line[1],
+                        'meta_key'   => $line[0], //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+                        'meta_value' => $line[1], //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
                     );
                 }
             }

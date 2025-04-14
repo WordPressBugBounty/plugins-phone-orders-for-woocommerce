@@ -88,7 +88,7 @@
             {{ googleMapAPIKeyLabel }}
 
             <div class="link-note">
-              <a href="https://docs.algolplus.com/algol_phone_order/common-pro/"
+              <a href="https://docs.algolplus.com/algol_phone_order/free-version/settings/common/"
                  target="_blank">{{ googleMapAPIKeyLinkLabel }}</a>
             </div>
           </td>

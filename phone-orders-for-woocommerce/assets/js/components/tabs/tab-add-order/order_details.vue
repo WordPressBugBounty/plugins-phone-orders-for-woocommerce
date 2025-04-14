@@ -606,7 +606,7 @@
 
               <slot name="pro-version-buttons-4"></slot>
 
-              <div data-action="pay-order" v-show="!isProVersion">
+              <div data-action="pay-order" class="pro-features" v-show="!isProVersion">
                 <br>
                 <b>{{ payOrderNeedProVersionMessage }}</b>
                 <a href="https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/"
@@ -939,6 +939,10 @@ body .modal {
   width: 350px;
   height: 100%;
   margin: 5px;
+}
+
+.phone-orders-woocommerce__tab .btn-primary {
+  width: auto !important;
 }
 
 .wpo-search-options-block {

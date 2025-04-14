@@ -409,7 +409,7 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
     private function generate_session_key()
     {
-        return md5(time() . mt_rand(1, 100000));
+        return md5(time() . wp_rand(1, 100000));
     }
 
     protected function ajax_save_settings($request)

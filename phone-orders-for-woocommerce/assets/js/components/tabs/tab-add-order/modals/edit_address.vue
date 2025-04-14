@@ -23,6 +23,7 @@
 
         <b-row v-for="(group, groupKey) in groupFields" :key="groupKey">
 
+
           <b-col cols="12">
 
             <google-autocomplete
@@ -33,6 +34,7 @@
               @change="updateAddress"
               v-if="groupKey === 'address' && !!!initCustomAutocompleteFunction"
               v-show="!!googleAutocompleteAPIKey && !!group.rows.length"
+              style="margin-top: 1rem"
             ></google-autocomplete>
 
             <custom-autocomplete
@@ -42,8 +44,8 @@
               @change="updateAddress"
               v-if="groupKey === 'address' && !!initCustomAutocompleteFunction"
               v-show="!!group.fields.length"
+              style="margin-top: 1rem"
             ></custom-autocomplete>
-
             <b-row v-for="(row, index) in group.rows" :key="index">
 
               <b-col v-for="(loopField, numIndex) in row" :md="countCols" cols="12" :key="loopField.key">
@@ -279,12 +281,12 @@ export default {
     },
     personalFieldsOrder: {
       default: function () {
-        return ['email', 'role', 'first_name', 'last_name', 'country', 'company', 'address_1', 'address_2'];
+        return ['email', 'role', 'first_name', 'last_name'];
       }
     },
     addressFieldsOrder: {
       default: function () {
-        return ['city', 'state', 'postcode', 'phone', 'locale'];
+        return ['country', 'company', 'address_1', 'address_2', 'city', 'state', 'postcode', 'phone', 'locale'];
       }
     },
     countFieldsInRow: {
@@ -467,7 +469,6 @@ export default {
           addressAdditionalKeys.push($key);
         }
       }
-
       return addressAdditionalKeys;
     },
     personalFields() {

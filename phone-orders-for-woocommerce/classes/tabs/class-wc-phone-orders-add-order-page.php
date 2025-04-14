@@ -207,11 +207,11 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 'noOptionsTitle'                     => __('List is empty.', 'phone-orders-for-woocommerce'),
                 'personalFieldsOrder'                => apply_filters(
                     'wpo_edit_address_modal_personal_fields_order',
-                    array('email', 'role', 'first_name', 'last_name', 'country', 'company', 'address_1', 'address_2' )
+                    array('email', 'role', 'first_name', 'last_name' )
                 ),
                 'addressFieldsOrder'                 => apply_filters(
                     'wpo_edit_address_modal_address_fields_order',
-                    array('city', 'state', 'postcode', 'phone', 'locale' )
+                    array('country', 'company', 'address_1', 'address_2', 'city', 'state', 'postcode', 'phone', 'locale' )
                 ),
                 'countFieldsInRow'                   => apply_filters('wpo_edit_address_modal_count_fields_in_row', 2),
                 'customGoogleAutocompleteJsCallback' => apply_filters(
@@ -454,6 +454,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'orderDetailsSettings'          => array(
                 'title'                                       => apply_filters(
                     'wpo_order_details_container_header',
+                    // translators: Order details title
                     '<h2><span>' . __('Order %s details', 'phone-orders-for-woocommerce') . '</span></h2>'
                 ),
                 'addProductButtonTitle'                       => __(
@@ -520,13 +521,13 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'phone-orders-for-woocommerce'
                 ),
                 'productItemLabels'                           => array(
-                    'itemCostInputPrefix'                => __('', 'phone-orders-for-woocommerce'),
-                    'itemCostReadonlyPrefix'             => __('', 'phone-orders-for-woocommerce'),
-                    'itemCostIncTaxPrefix'               => __('', 'phone-orders-for-woocommerce'),
+                    'itemCostInputPrefix'                => '',
+                    'itemCostReadonlyPrefix'             => '',
+                    'itemCostIncTaxPrefix'               => '',
                     'deleteProductItemButtonTooltipText' => __('Delete item', 'phone-orders-for-woocommerce'),
                     'skuLabel'                           => __('SKU', 'phone-orders-for-woocommerce'),
-                    'productStockMessage'                => __(
-                        'Only %s items can be purchased',
+                    // translators: A message stating that only a certain number of items can be purchased
+                    'productStockMessage'                => __('Only %s items can be purchased',
                         'phone-orders-for-woocommerce'
                     ),
                     'variationIDLabel'                   => __('Variation ID', 'phone-orders-for-woocommerce'),
@@ -1366,6 +1367,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         $order       = wc_get_order($order_id);
         $payment_url = $order->get_checkout_payment_url();
 
+        // translators: Order created message
         $message      = sprintf(__('Order #%s created', 'phone-orders-for-woocommerce'), $order->get_order_number());
         $loaded_order = $this->load_order($order_id, 'edit');
         $result       = $this->update_cart($loaded_order['cart']);
@@ -1601,6 +1603,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         if (apply_filters("wpo_add_note_created_with", true)) {
             $admin_user = wp_get_current_user();
             $note_text  = sprintf(
+                // translators: Who created it order
                 __('Created in Phone Orders by: %s.', 'phone-orders-for-woocommerce'),
                 $admin_user->display_name
             );
@@ -1751,7 +1754,8 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'order_id' => $order_id,
             'email'    => $email,
             'message'  => sprintf(
-                __('Invoice for order #%s has been sent to %s', 'phone-orders-for-woocommerce'),
+                // translators: A message that the invoice for order has been sent to email
+                __('Invoice for order #%1$s has been sent to %2$s', 'phone-orders-for-woocommerce'),
                 $order_id,
                 $email
             ),
@@ -1798,6 +1802,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
     protected function ajax_get_coupons_list($data)
     {
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
         $exclude        = isset($_GET['exclude']) ? $_GET['exclude'] : array();
         $exclude_titles = array_filter(array_map(function ($current) {
             $current = json_decode(stripslashes($current), true);
@@ -2053,6 +2058,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
         // added slashes screw with quote grouping when done early, so done later
         $q['search'] = stripslashes($q['search']);
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (empty($_GET['s']) && $query->is_main_query()) {
             $q['search'] = urldecode($q['search']);
         }
@@ -2123,6 +2129,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
              * Here is the block of the difference from original
              */
             if ($is_on_title_search) {
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $concat = $wpdb->prepare("{$wpdb->posts}.post_title $like_op %s", $like);
 
                 if ($search_by_sku) {
@@ -2143,7 +2150,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 if ($this->option_handler->get_option('search_by_sku')) {
                     $concat .= ", IFNULL((SELECT meta_value FROM {$wpdb->postmeta} WHERE {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id AND {$wpdb->postmeta}.meta_key = '_sku'), '')";
                 }
-
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
                 $search .= $wpdb->prepare("{$searchand}(CONCAT($concat) $like_op %s )", $like);
             }
             /**
@@ -2195,6 +2202,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 "wpo_search_product_types",
                 array('simple', 'variable', 'variation', 'subscription', 'grouped')
             ),
+            //phpcs:ignore WordPressVIPMinimum.Performance.WPQueryParams
             'exclude' => $exclude,
             'return'  => 'ids',
             'orderby' => 'title',
@@ -2695,8 +2703,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             /**
              * @var WC_Product $product
              */
-            $product_parent = isset($products[$product->get_parent_id()]) ? $products[$product->get_parent_id(
-            )] : wc_get_product($product->get_parent_id());
+            $product_parent = wc_get_product($product->get_parent_id());
             if ($product_parent && $product_parent->is_type("simple")) {
                 continue;
             }
@@ -2831,8 +2838,8 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     }
                     $item_custom_meta_fields[] = array(
                         'id'         => $d['id'],
-                        'meta_key'   => $d['key'],
-                        'meta_value' => $d['value'],
+                        'meta_key'   => $d['key'],  //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+                        'meta_value' => $d['value'],//phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
                     );
                 }
             }
@@ -2867,6 +2874,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 $cost_updated_manually = false;
             } else {
                 if ($order->get_prices_include_tax()) {
+                    /** @phpstan-ignore-next-line */
                     if ($order->get_meta($this->meta_key_tax_exempt) == "yes") {
                         /**
                          * For tax exempt order "$item_data['subtotal_tax']" will be empty

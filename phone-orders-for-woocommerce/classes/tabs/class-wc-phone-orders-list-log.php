@@ -70,6 +70,11 @@ class WC_Phone_Orders_List_Log extends WP_List_Table
     {
         global $wpdb;
 
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $nonce = isset($_REQUEST['nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['nonce'])) : "";
+        if ( ! wp_verify_nonce($nonce, 'phone-orders-for-woocommerce')) {
+            wp_die(0);
+        }
         $columns  = $this->get_columns();
         $hidden   = array('');
         $sortable = $this->get_sortable_columns();
@@ -83,7 +88,7 @@ class WC_Phone_Orders_List_Log extends WP_List_Table
         $limit = '';
 
         if ( ! empty($_REQUEST['s'])) {
-            $s     = '%' . esc_sql($_REQUEST['s']) . '%';
+            $s     = '%' . esc_sql(sanitize_text_field(wp_unslash($_REQUEST['s']))) . '%';
             $where .= 'WHERE ';
             foreach ($columns as $column_name => $localized_name) {
                 $where .= sprintf("%s LIKE '%s' OR ", $column_name, $s);
@@ -91,8 +96,8 @@ class WC_Phone_Orders_List_Log extends WP_List_Table
             $where = substr($where, 0, -4);
         }
 
-        $sql = "SELECT * FROM {$this->log_table_name} $where";
-        $r   = $wpdb->get_results($sql, ARRAY_A);
+        //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
+        $r   = $wpdb->get_results("SELECT * FROM {$this->log_table_name} $where", ARRAY_A);
 
         $amount_rows = 0;
         $data        = array();
@@ -114,8 +119,8 @@ class WC_Phone_Orders_List_Log extends WP_List_Table
             $_REQUEST['order']   = 'desc';
         }
 
-        $this->order_column = $order = $_REQUEST['orderby'];
-        $this->direction    = isset($_REQUEST['order']) ? $_REQUEST['order'] : '';
+        $this->order_column = $order = sanitize_text_field(wp_unslash($_REQUEST['orderby']));
+        $this->direction    = isset($_REQUEST['order']) ? sanitize_text_field(wp_unslash($_REQUEST['order'])) : '';
 
 
         if ($this->direction == 'asc') {
@@ -136,7 +141,7 @@ class WC_Phone_Orders_List_Log extends WP_List_Table
         usort($data, $ustrcmp);
 
         if (isset($_REQUEST['paged'])) {
-            $start_offset = ($_REQUEST['paged'] - 1) * $per_page;
+            $start_offset = (absint(wp_unslash($_REQUEST['paged'])) - 1) * $per_page;
         } else {
             $start_offset = 0;
         }

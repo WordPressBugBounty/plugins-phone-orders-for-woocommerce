@@ -48,7 +48,8 @@ class WC_Phone_Orders_Tabs_Helper
 
     public static function get_current_tab_name()
     {
-        return isset($_REQUEST['tab']) ? $_REQUEST['tab'] : self::get_default_tab_name();
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        return isset($_REQUEST['tab']) ? sanitize_text_field(wp_unslash($_REQUEST['tab'])) : self::get_default_tab_name();
     }
 
     public static function get_default_tab_name()
@@ -88,14 +89,17 @@ class WC_Phone_Orders_Tabs_Helper
         $shipping = self::create_row_shipping_method_column($result);
         $total    = self::create_row_totals_column($result);
 
-        $table_name = WC_Phone_Orders_Loader::$log_table_name;
+        $table_name = esc_sql(WC_Phone_Orders_Loader::$log_table_name);
 
-        $count = $wpdb->query($wpdb->prepare("SELECT ID FROM $table_name WHERE ID='%s'", array($id)));
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
+        $count = $wpdb->query($wpdb->prepare("SELECT ID FROM $table_name WHERE ID=%s", array($id)));
         if ($count) {
             if ($order_id) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery
                 $r = $wpdb->query(
                     $wpdb->prepare(
-                        "UPDATE $table_name SET time_updated='%s', user_id='%s', user_name='%s', order_id='%s', order_number='%s', customer='%s', customer_id='%s', items='%s', discount='%s', fees='%s', shipping='%s', total='%s' WHERE ID='%s'"
+                        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        "UPDATE $table_name SET time_updated=%s, user_id=%s, user_name=%s, order_id=%s, order_number=%s, customer=%s, customer_id=%s, items=%s, discount=%s, fees=%s, shipping=%s, total=%s WHERE ID=%s"
                         , array(
                         $time,
                         $user_id,
@@ -114,9 +118,11 @@ class WC_Phone_Orders_Tabs_Helper
                     )
                 );
             } else {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery
                 $r = $wpdb->query(
                     $wpdb->prepare(
-                        "UPDATE $table_name SET time_updated='%s', user_id='%s', user_name='%s', customer='%s', customer_id='%s', items='%s', discount='%s', fees='%s', shipping='%s', total='%s' WHERE ID='%s'"
+                        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        "UPDATE $table_name SET time_updated=%s, user_id=%s, user_name=%s, customer=%s, customer_id=%s, items=%s, discount=%s, fees=%s, shipping=%s, total=%s WHERE ID=%s"
                         , array(
                         $time,
                         $user_id,
@@ -134,9 +140,11 @@ class WC_Phone_Orders_Tabs_Helper
                 );
             }
         } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery
             $r = $wpdb->query(
                 $wpdb->prepare(
-                    "INSERT IGNORE INTO $table_name (ID, time_updated, user_id, user_name, order_id, order_number, customer,customer_id, items, discount, fees, shipping, total ) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s' )"
+                    // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                    "INSERT IGNORE INTO $table_name (ID, time_updated, user_id, user_name, order_id, order_number, customer,customer_id, items, discount, fees, shipping, total ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s )"
                     , array(
                     $id,
                     $time,
@@ -157,9 +165,11 @@ class WC_Phone_Orders_Tabs_Helper
 
             $show_days = $option_handler->get_option('log_show_records_days');
             if ($show_days) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery
                 $r = $wpdb->query(
                     $wpdb->prepare(
-                        "DELETE FROM $table_name WHERE DATEDIFF( '%s', time_updated ) >= %d"
+                        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+                        "DELETE FROM $table_name WHERE DATEDIFF( %s, time_updated ) >= %d"
                         , array(current_time('mysql'), (int)$show_days)
                     )
                 );
@@ -350,6 +360,7 @@ class WC_Phone_Orders_Tabs_Helper
      */
     private static function format_shipping_total($cost, $tax)
     {
+        //phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
         $result = __('Free!', 'woocommerce');
 
         if (0 < $cost) {

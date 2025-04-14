@@ -1390,3 +1390,7 @@ td.total-value {
 #woocommerce-order-items .find-results-full-screen-mode__search__block .wpo-barcode-mode-alert {
     margin: 0;
 }
+
+#phone-orders-app .pro-features > * + a {
+    margin-left: 10px;
+}

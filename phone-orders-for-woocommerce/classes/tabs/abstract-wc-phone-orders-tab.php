@@ -130,6 +130,7 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
                 $encoded_result = json_encode($result);
 
                 if (json_last_error() === JSON_ERROR_NONE) {
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     echo $encoded_result;
                 } else {
                     $error = 'json_encode_error';
@@ -137,7 +138,7 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
                         $error .= ': ' . json_last_error_msg();
                     }
 
-                    echo $error;
+                    echo esc_html($error);
                 }
             }
         } else {
@@ -177,6 +178,54 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
             $this->get_customer_by_type_and_id($request['id'], $request['type'])
         );
     }
+
+    protected function ajax_get_all_customers($request)
+    {
+        $users = get_users();
+        $user_data = [];
+
+        foreach ($users as $user) {
+            $user_id = $user->ID;
+            $user_name = trim($user->first_name . ' ' . $user->last_name);
+            $user_email = $user->user_email;
+
+            $roles = $user->roles;
+            $user_type = !empty($roles) ? $roles[0] : 'customer';
+
+            $billing_address = [
+                'billing_address_1' => get_user_meta($user_id, 'billing_address_1', true),
+                'billing_address_2' => get_user_meta($user_id, 'billing_address_2', true),
+                'billing_city' => get_user_meta($user_id, 'billing_city', true),
+                'billing_postcode' => get_user_meta($user_id, 'billing_postcode', true),
+                'billing_country' => get_user_meta($user_id, 'billing_country', true),
+                'billing_state' => get_user_meta($user_id, 'billing_state', true),
+            ];
+
+            $shipping_address = [
+                'shipping_address_1' => get_user_meta($user_id, 'shipping_address_1', true),
+                'shipping_address_2' => get_user_meta($user_id, 'shipping_address_2', true),
+                'shipping_city' => get_user_meta($user_id, 'shipping_city', true),
+                'shipping_postcode' => get_user_meta($user_id, 'shipping_postcode', true),
+                'shipping_country' => get_user_meta($user_id, 'shipping_country', true),
+                'shipping_state' => get_user_meta($user_id, 'shipping_state', true),
+            ];
+
+            $billing_address_full = implode(' ', array_filter($billing_address));
+            $shipping_address_full = implode(' ', array_filter($shipping_address));
+
+            $user_data[] = [
+                'id' => $user_id,
+                'name' => $user_name,
+                'email' => $user_email,
+                'type' => $user_type,
+                'billing_address' => $billing_address_full,
+                'shipping_address' => $shipping_address_full,
+            ];
+        }
+
+        return $this->wpo_send_json_success($user_data);
+    }
+
 
     protected function ajax_set_customer($request)
     {
@@ -590,7 +639,7 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
 
         $language_list = array_merge(
             array(
-                array('value' => 'site-default', 'title' => _x('Site Default', 'default site language')),
+                array('value' => 'site-default', 'title' => _x('Site Default', 'default site language', 'phone-orders-for-woocommerce')),
                 array('value' => '', 'title' => 'English (United States)')
             ),
             $language_list

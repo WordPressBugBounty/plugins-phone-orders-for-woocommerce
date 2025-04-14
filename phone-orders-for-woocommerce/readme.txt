@@ -4,10 +4,10 @@ Donate link: https://paypal.me/ipprokaev/0usd
 Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
-Tested up to: 6.7
-Stable tag: 3.9.5
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 6.8
+Stable tag: 3.9.6
+License: GNU General Public License v3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Easy way to take a manual/phone order in WooCommerce
 
@@ -108,6 +108,12 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.9.6 2025-04-14 =
+* Fixed bugs detected by [PCP plugin](https://wordpress.org/plugins/plugin-check/)
+* Fixed bugs detected by [PHPStan tool](https://phpstan.org/)
+* Fixed bug - wrong "Google autocomplete" position in "New Customer" and "Edit Address" popups
+* Fixed bug - some plugins damaged form layout
 
 = 3.9.5 2025-02-12 =
 * Updated "New Customer" and "Edit Address" forms

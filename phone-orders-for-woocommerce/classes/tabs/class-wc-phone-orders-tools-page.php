@@ -76,18 +76,18 @@ class WC_Phone_Orders_Tools_Page extends WC_Phone_Orders_Admin_Abstract_Page
         foreach ($plugins as $k => $v) {
             // Take care of formatting the data how we want it.
             $formatted         = array();
-            $formatted['name'] = strip_tags($v['Name']);
+            $formatted['name'] = wp_strip_all_tags($v['Name']);
             if (isset($v['Version'])) {
-                $formatted['version'] = strip_tags($v['Version']);
+                $formatted['version'] = wp_strip_all_tags($v['Version']);
             }
             if (isset($v['Author'])) {
-                $formatted['author'] = strip_tags($v['Author']);
+                $formatted['author'] = wp_strip_all_tags($v['Author']);
             }
             if (isset($v['Network'])) {
-                $formatted['network'] = strip_tags($v['Network']);
+                $formatted['network'] = wp_strip_all_tags($v['Network']);
             }
             if (isset($v['PluginURI'])) {
-                $formatted['plugin_uri'] = strip_tags($v['PluginURI']);
+                $formatted['plugin_uri'] = wp_strip_all_tags($v['PluginURI']);
             }
             if (in_array($k, $active_plugins_keys)) {
                 // Remove active plugins from list so we can show active and inactive separately.
@@ -203,17 +203,25 @@ class WC_Phone_Orders_Tools_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
     protected function ajax_download_report($request)
     {
-        if ( ! is_super_admin(get_current_user_id())) {
+        if (!is_super_admin(get_current_user_id())) {
             wp_die();
         }
 
-        $data = get_transient('wpo_report');
+        global $wp_filesystem;
 
-        $tmp_dir  = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
-        $filepath = @tempnam($tmp_dir, 'wpo');
-        $handler  = fopen($filepath, 'a');
-        fwrite($handler, json_encode($data, JSON_PRETTY_PRINT));
-        fclose($handler);
+        if (empty($wp_filesystem)) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+            WP_Filesystem();
+        }
+
+        $data = get_transient('wpo_report');
+        $tmp_dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : get_temp_dir();
+        $filepath = tempnam($tmp_dir, 'wpo');
+
+        $file_content = json_encode($data, JSON_PRETTY_PRINT);
+        if (!$wp_filesystem->put_contents($filepath, $file_content, FS_CHMOD_FILE)) {
+            wp_die(esc_html__('Error writing file', 'phone-orders-for-woocommerce'));
+        }
 
         while (ob_get_level()) {
             ob_end_clean();
@@ -221,22 +229,12 @@ class WC_Phone_Orders_Tools_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
         header('Content-type: application/json');
         header('Content-Disposition: attachment; filename="' . basename($filepath) . '.json' . '"');
+        header('Content-Length: ' . filesize($filepath));
 
-        $disabledFunctions = explode(',', ini_get('disable_functions'));
+        //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        echo $wp_filesystem->get_contents($filepath);
 
-        if ( ! in_array('readfile', $disabledFunctions)) {
-            readfile($filepath);
-        } else {
-            // fallback, emulate readfile
-            $file = fopen($filepath, 'rb');
-            if ($file !== false) {
-                while ( ! feof($file)) {
-                    echo fread($file, 4096);
-                }
-                fclose($file);
-            }
-        }
-        unlink($filepath);
+        $wp_filesystem->delete($filepath);
 
         wp_die();
     }

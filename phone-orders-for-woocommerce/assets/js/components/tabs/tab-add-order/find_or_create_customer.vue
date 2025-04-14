@@ -318,10 +318,13 @@ export default {
     return {
       isLoading: false,
       customerList: [],
+      quickCustomerList: [],
       lastRequestTimeoutID: null,
       checkedShipDifferentAddress: null,
       errorMessage: '',
       where: '',
+      quickSearchCustomers: this.getSettingsOption('quick_search_customers'),
+      searchInOrders: this.getSettingsOption('search_customer_in_orders'),
     };
   },
   computed: {
@@ -509,6 +512,10 @@ export default {
     this.$root.bus.$on('update-customer', (newId) => {
       this.getCustomerByCustomerType(newId);
     });
+
+    if(this.quickSearchCustomers) {
+      this.getAllCustomers();
+    }
   },
   watch: {
     showOrderHistoryCustomerSummarySettingsOption() {
@@ -565,6 +572,50 @@ export default {
     onChangeCustomer(customer) {
       this.setCustomer(customer.value, customer.type);
     },
+    getAllCustomers() {
+      this.axios.get(this.url, {
+        params: {
+          action: 'phone-orders-for-woocommerce',
+          method: 'get_all_customers',
+          tab: this.tabName,
+          is_frontend: this.isFrontend ? 1 : 0,
+          nonce: this.nonce,
+        }
+      }).then((response) => {
+
+        if (typeof callback === 'function') {
+          callback(response);
+        } else {
+          this.quickCustomerList = response.data.data;
+        }
+
+        this.isLoading = false;
+      }, () => {
+        this.isLoading = false;
+      });
+    },
+    filterQuickCustomerList(query) {
+      const searchWords = query.toLowerCase().trim().split(/\s+/);
+
+      this.customerList = this.quickCustomerList
+        .filter(customer => {
+          const searchableFields = [
+            customer.name.toLowerCase(),
+            customer.email.toLowerCase(),
+            customer.billing_address?.toLowerCase() || '',
+            customer.shipping_address?.toLowerCase() || ''
+          ];
+
+          return searchWords.every(word =>
+            searchableFields.some(field => field.includes(word))
+          );
+        })
+        .map(customer => ({
+          title: `${customer.name} (#${customer.id} &ndash; ${customer.email})`,
+          value: customer.id,
+          type: customer.type
+        }));
+    },
     asyncFind(query) {
 
       if (this.disableCustomerSearch) {
@@ -582,33 +633,41 @@ export default {
 
       this.isLoading = true;
 
-      this.lastRequestTimeoutID = setTimeout(() => {
-        this.axios.get(this.url, {
-          params: {
-            action: 'woocommerce_json_search_customers',
-            wpo_find_customer: 1,
-            wpo_cache_customers_key: this.customersSessionKey,
-            security: this.search_customers_nonce,
-            term: query,
-            nonce: this.nonce,
-          }
-        }).then((response) => {
+      if (this.quickSearchCustomers) {
+        this.filterQuickCustomerList(query);
+      }
 
-          var customers = [];
-
-          for (let id in response.data) {
-            if (response.data.hasOwnProperty(id)) {
-              let item = response.data[id];
-              customers.push({title: item.title, value: item.id, type: item.type});
+      if((!this.customerList.length && this.searchInOrders) || (!this.searchInOrders && !this.quickSearchCustomers)){
+        this.lastRequestTimeoutID = setTimeout(() => {
+          this.axios.get(this.url, {
+            params: {
+              action: 'woocommerce_json_search_customers',
+              wpo_find_customer: 1,
+              wpo_cache_customers_key: this.customersSessionKey,
+              security: this.search_customers_nonce,
+              term: query,
+              nonce: this.nonce,
             }
-          }
+          }).then((response) => {
 
-          this.customerList = customers;
+            var customers = [];
 
-          this.isLoading = false;
+            for (let id in response.data) {
+              if (response.data.hasOwnProperty(id)) {
+                let item = response.data[id];
+                customers.push({title: item.title, value: item.id, type: item.type});
+              }
+            }
 
-        });
-      }, this.multiSelectSearchDelay);
+            this.customerList = customers;
+
+            this.isLoading = false;
+
+          });
+        }, this.multiSelectSearchDelay);
+      } else {
+        this.isLoading = false;
+      }
     },
     getCustomerByCustomerType(id, callback) {
       this.getCustomer(id, 'customer', callback);

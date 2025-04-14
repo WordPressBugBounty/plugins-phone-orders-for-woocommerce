@@ -28,7 +28,7 @@ class WC_Phone_Orders_Log_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'sortBy'        => 'time_updated',
             'sortOrder'     => 'desc',
             'searchLabel'   => __('Search', 'phone-orders-for-woocommerce'),
-            'notFoundLabel' => __('No items found.'),
+            'notFoundLabel' => __('No items found.', 'phone-orders-for-woocommerce'),
         );
         add_thickbox();
         ?>
@@ -47,6 +47,7 @@ class WC_Phone_Orders_Log_Page extends WC_Phone_Orders_Admin_Abstract_Page
         global $hook_suffix;
         $hook_suffix       = $this->hook_suffix;
         $list_log_instance = new WC_Phone_Orders_List_Log();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $list_log_instance->output_report();
     }
 

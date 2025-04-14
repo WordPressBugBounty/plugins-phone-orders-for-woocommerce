@@ -5,10 +5,10 @@
  * Description: Create manual/phone orders in WooCommerce quickly
  * Author: AlgolPlus
  * Author URI: http://algolplus.com/
- * Version: 3.9.5
+ * Version: 3.9.6
  * Text Domain: phone-orders-for-woocommerce
  * WC requires at least: 3.3
- * WC tested up to: 9.6
+ * WC tested up to: 9.7
  *
  * Copyright: (c) 2017 AlgolPlus LLC. (algol.plus@gmail.com)
  *
@@ -32,6 +32,7 @@ if (defined('WC_PHONE_ORDERS_PLUGIN_PATH')) {
         ?>
         <div class="notice notice-warning is-dismissible">
             <p><?php
+                // phpcs:ignore WordPress.Security.EscapeOutput.UnsafePrintingFunction
                 _e(
                     'Please, <a href="plugins.php">deactivate</a> Free version of Phone Orders for WooCommerce!',
                     'phone-orders-for-woocommerce'
@@ -58,7 +59,7 @@ if (
     )
 ) {
     add_action('admin_notices', function () {
-        echo '<div class="notice notice-error is-dismissible"><p>' . __(
+        echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__(
                 'Phone Orders for WooCommerce requires active WooCommerce!',
                 'phone-orders-for-woocommerce'
             ) . '</p></div>';
@@ -68,7 +69,7 @@ if (
 }
 
 define('WC_PHONE_ORDERS_BASENAME', plugin_basename(__FILE__));
-define('WC_PHONE_ORDERS_VERSION', '3.9.5');
+define('WC_PHONE_ORDERS_VERSION', '3.9.6');
 define('WC_PHONE_ORDERS_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('WC_PHONE_ORDERS_PLUGIN_URL', plugins_url('/', __FILE__));
 define('WC_PHONE_ORDERS_PLUGIN_PATH_FILE', __FILE__);

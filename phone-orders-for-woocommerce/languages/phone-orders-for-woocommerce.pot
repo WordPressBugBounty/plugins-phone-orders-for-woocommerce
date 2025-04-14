@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 06:46+0000\n"
+"POT-Creation-Date: 2025-04-11 16:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -14,15 +14,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/"
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:66
+#. Message about the purchase of the pro version
+#: classes/tabs/class-wc-phone-orders-help-page.php:68
 #, php-format
 msgid ""
-"<a href=%s target=_blank>Pro version</a> allows you to pay as customer, via "
-"checkout page. You can pay directly from admin area too – use <a href=%s "
-"target=_blank>this free plugin</a>. They support Stripe and Authorize.Net."
+"<a href=%1$s target=_blank>Pro version</a> allows you to pay as customer, "
+"via checkout page. You can pay directly from admin area too – use <a "
+"href=%2$s target=_blank>this free plugin</a>. They support Stripe and "
+"Authorize.Net."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1717
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1720
 msgid "A valid email address is required"
 msgstr ""
 
@@ -30,12 +32,12 @@ msgstr ""
 msgid "above customer details"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:606
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:607
 msgid "Add"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:595
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:597
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:596
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:598
 msgid "Add a note"
 msgstr ""
 
@@ -43,17 +45,17 @@ msgstr ""
 msgid "Add Coupon"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:481
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:482
 msgid "Add coupon"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:98
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:459
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:460
 msgid "Add custom product"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:159
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:482
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:483
 msgid "Add discount"
 msgstr ""
 
@@ -65,7 +67,7 @@ msgstr ""
 msgid "Add Gift Card"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:539
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:540
 msgid "Add meta"
 msgstr ""
 
@@ -77,17 +79,17 @@ msgstr ""
 msgid "Add products to the cart"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:485
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:486
 msgid "Add shipping"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:241
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:299
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:608
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:609
 msgid "Add to cart"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:471
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:472
 msgid "Add to Order"
 msgstr ""
 
@@ -95,15 +97,15 @@ msgstr ""
 msgid "Address Validation Service API Key (USPS Username)"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:825
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:826
 msgid "Address1"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:829
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:830
 msgid "Address2"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:610
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:611
 msgid "Advanced search"
 msgstr ""
 
@@ -147,7 +149,7 @@ msgstr ""
 msgid "Automatically update Shipping/Taxes/Totals"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:620
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:621
 msgid ""
 "Barcode mode enabled! Product search works only after pressing the Enter key"
 msgstr ""
@@ -156,8 +158,8 @@ msgstr ""
 msgid "below customer details"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:221
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:814
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:231
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:815
 msgid "Billing address"
 msgstr ""
 
@@ -165,21 +167,22 @@ msgstr ""
 msgid "Billing Details"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:625
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:626
 msgid "Billing Schedule"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:463
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:464
 msgid "Browse shop and add products to cart"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:75
+#. A message stating button "Create Order" does nothing
+#: classes/tabs/class-wc-phone-orders-help-page.php:78
 msgid "Button \"Create Order\" does nothing"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:81
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:417
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:507
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:508
 msgid "Buy Pro version"
 msgstr ""
 
@@ -191,19 +194,20 @@ msgstr ""
 msgid "Caching search results"
 msgstr ""
 
-#: classes/class-wc-phone-orders-fill-cart.php:64
+#. A message stating that the product cannot be added because it is unavailable.
+#: classes/class-wc-phone-orders-fill-cart.php:66
 #, php-format
-msgid "Can not add %d &quot;%s&quot; because it is not available."
+msgid "Can not add %1$d &quot;%2$s&quot; because it is not available."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1046
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1047
 msgid "Can not create new product"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:80
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:242
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:298
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:609
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:610
 msgid "Cancel"
 msgstr ""
 
@@ -220,7 +224,7 @@ msgid "Check"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:245
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:549
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:550
 msgid "Choose an option"
 msgstr ""
 
@@ -228,23 +232,27 @@ msgstr ""
 msgid "Choose gifts"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:640
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:641
 msgid "Choose interval"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:538
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:539
 msgid "Choose meta field"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:641
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:642
 msgid "Choose period"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:833
+#: classes/class-wc-phone-orders-cart-updater.php:753
+msgid "Choose your gift"
+msgstr ""
+
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:834
 msgid "City"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:545
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:546
 msgid "Collapse edit meta"
 msgstr ""
 
@@ -253,21 +261,22 @@ msgid "Collapse WordPress menu"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:86
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:797
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:798
 msgid "Common"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:821
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:822
 msgid "Company"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:85
+#. Headings of information that may be in the documentation
+#: classes/tabs/class-wc-phone-orders-help-page.php:90
 msgid "Compatibility/Code samples/Pro version"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:227
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:307
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:472
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:473
 msgid "Configure product"
 msgstr ""
 
@@ -279,20 +288,20 @@ msgstr ""
 msgid "Copy from billing address"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:615
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:616
 msgid "Copy to clipboard"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:561
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:562
 msgid "Copy url to populate cart"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:477
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:533
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:478
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:534
 msgid "Cost"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:817
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:818
 msgid "Country"
 msgstr ""
 
@@ -304,7 +313,7 @@ msgstr ""
 msgid "Coupons"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:292
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:302
 msgid "Coupons applied"
 msgstr ""
 
@@ -312,16 +321,16 @@ msgstr ""
 msgid "Create manual/phone orders in WooCommerce quickly"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:502
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:503
 msgid "Create new order"
 msgstr ""
 
 #: classes/class-wc-phone-orders-loader.php:69
-#: classes/class-wc-phone-orders-loader.php:458
+#: classes/class-wc-phone-orders-loader.php:464
 msgid "Create Order"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:497
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:498
 msgid "Create order"
 msgstr ""
 
@@ -329,16 +338,17 @@ msgstr ""
 msgid "Create product"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1604
+#. Who created it order
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1607
 #, php-format
 msgid "Created in Phone Orders by: %s."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:544
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:545
 msgid "Custom meta field key"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:540
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:541
 msgid "Custom meta field value"
 msgstr ""
 
@@ -346,15 +356,15 @@ msgstr ""
 msgid "Customer"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-list-log.php:204
+#: classes/tabs/class-wc-phone-orders-list-log.php:209
 msgid "Customer login"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:246
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:256
 msgid "Customer note"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:591
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:592
 msgid "Customer provided note"
 msgstr ""
 
@@ -366,7 +376,12 @@ msgstr ""
 msgid "Default shipping method"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:526
+#: classes/tabs/abstract-wc-phone-orders-tab.php:642
+msgctxt "default site language"
+msgid "Site Default"
+msgstr ""
+
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:527
 msgid "Delete item"
 msgstr ""
 
@@ -375,8 +390,8 @@ msgstr ""
 msgid "Disable cache"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:484
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:619
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:485
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:620
 #: classes/tabs/class-wc-phone-orders-list-log.php:60
 msgid "Discount"
 msgstr ""
@@ -386,11 +401,11 @@ msgid ""
 "Display autocomplete results only for selected countries (Google Map API)"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:462
+#: classes/class-wc-phone-orders-loader.php:468
 msgid "Docs"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:655
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:656
 msgid "Don't apply pricing rules"
 msgstr ""
 
@@ -410,12 +425,12 @@ msgstr ""
 msgid "Draft"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:569
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:570
 msgid "Duplicate order"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:764
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:808
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:765
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:809
 msgid "E-mail"
 msgstr ""
 
@@ -423,19 +438,23 @@ msgstr ""
 msgid "Edit address"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:536
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:537
 msgid "Edit meta"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-list-log.php:176
+#: classes/tabs/class-wc-phone-orders-list-log.php:181
 msgid "Edit Phone Order"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:227
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:237
 msgid "Email"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:483
+#: classes/tabs/class-wc-phone-orders-tools-page.php:223
+msgid "Error writing file"
+msgstr ""
+
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:484
 msgid "Fee"
 msgstr ""
 
@@ -463,21 +482,21 @@ msgstr ""
 msgid "Find products ..."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:469
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:470
 msgid "Find products..."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:768
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:800
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:769
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:801
 msgid "First name"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:376
+#: classes/class-wc-phone-orders-loader.php:382
 msgid "five star"
 msgstr ""
 
 #: classes/class-wc-phone-shipping-method.php:17
-#: classes/class-wc-phone-shipping-method.php:50
+#: classes/class-wc-phone-shipping-method.php:51
 msgid "Free Shipping [Phone Orders]"
 msgstr ""
 
@@ -489,7 +508,7 @@ msgstr ""
 msgid "Get report"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:644
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:645
 msgid "Gift Card"
 msgstr ""
 
@@ -505,7 +524,7 @@ msgstr ""
 msgid "Google Map API Key"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:611
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:612
 msgid "granted by coupon"
 msgstr ""
 
@@ -513,7 +532,7 @@ msgstr ""
 msgid "Guest"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:645
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:646
 msgid "Have a gift card?"
 msgstr ""
 
@@ -537,8 +556,8 @@ msgstr ""
 msgid "Hide tax line for item"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:630
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:673
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:631
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:674
 msgctxt "hour placeholder"
 msgid "h"
 msgstr ""
@@ -552,7 +571,7 @@ msgstr ""
 msgid "How to get api key"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:64
+#: classes/tabs/class-wc-phone-orders-help-page.php:65
 msgid "How to pay order?"
 msgstr ""
 
@@ -564,13 +583,13 @@ msgstr ""
 msgid "http://algolplus.com/"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:47
+#: classes/tabs/class-wc-phone-orders-help-page.php:48
 msgid ""
 "I can't add new customer, I see popup with message “Please enter an account "
 "password”"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:57
+#: classes/tabs/class-wc-phone-orders-help-page.php:58
 msgid "I don't see Free Shipping [Phone Orders] in popup"
 msgstr ""
 
@@ -582,7 +601,7 @@ msgid ""
 msgstr ""
 
 #. 1: WooCommerce 2:: five stars
-#: classes/class-wc-phone-orders-loader.php:368
+#: classes/class-wc-phone-orders-loader.php:374
 #, php-format
 msgid ""
 "If you like %1$s please leave us a %2$s rating. Thank you so much in advance!"
@@ -599,21 +618,22 @@ msgstr ""
 msgid "Interface"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1754
+#. A message that the invoice for order has been sent to email
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1758
 #, php-format
-msgid "Invoice for order #%s has been sent to %s"
+msgid "Invoice for order #%1$s has been sent to %2$s"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1733
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1737
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1736
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1740
 msgid "Invoice manually sent to customer from Phone Order."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:476
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:477
 msgid "Item"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:604
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:605
 #: classes/tabs/class-wc-phone-orders-list-log.php:26
 msgid "item"
 msgstr ""
@@ -627,13 +647,13 @@ msgstr ""
 msgid "Items"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:603
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:604
 #: classes/tabs/class-wc-phone-orders-list-log.php:27
 msgid "items"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:772
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:804
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:773
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:805
 msgid "Last name"
 msgstr ""
 
@@ -659,9 +679,9 @@ msgstr ""
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:105
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:142
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:207
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:682
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:699
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:707
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:683
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:700
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:708
 msgid "List is empty."
 msgstr ""
 
@@ -681,21 +701,21 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:560
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:561
 msgid "Manual Discount"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:299
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:309
 msgid "Manual discount"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:635
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:674
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:636
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:675
 msgctxt "minute placeholder"
 msgid "m"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1055
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1056
 msgid "Missing data"
 msgstr ""
 
@@ -716,7 +736,7 @@ msgstr ""
 msgid "New customer"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:628
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:629
 msgid "Next Payment"
 msgstr ""
 
@@ -724,8 +744,12 @@ msgstr ""
 msgid "No billing address was provided."
 msgstr ""
 
-#: classes/tabs/abstract-wc-phone-orders-tab.php:624
+#: classes/tabs/abstract-wc-phone-orders-tab.php:673
 msgid "No default shipping method"
+msgstr ""
+
+#: classes/tabs/class-wc-phone-orders-log-page.php:31
+msgid "No items found."
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:300
@@ -736,31 +760,32 @@ msgstr ""
 msgid "No shipping address was provided."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1428
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1430
 msgid "No shipping method has been selected."
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:177
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:488
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:489
 msgid "No shipping methods available"
 msgstr ""
 
-#: classes/class-wc-phone-orders-cart-updater.php:1659
-#: classes/class-wc-phone-orders-cart-updater.php:1696
-#: classes/tabs/abstract-wc-phone-orders-tab.php:445
-#: classes/tabs/abstract-wc-phone-orders-tab.php:466
+#: classes/class-wc-phone-orders-cart-updater.php:1660
+#: classes/class-wc-phone-orders-cart-updater.php:1697
+#: classes/tabs/abstract-wc-phone-orders-tab.php:494
+#: classes/tabs/abstract-wc-phone-orders-tab.php:515
 msgid "No value"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:330
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:340
 msgid "Not selected!"
 msgstr ""
 
-#: classes/tabs/abstract-wc-phone-orders-tab.php:496
+#: classes/tabs/abstract-wc-phone-orders-tab.php:545
 msgid "Not taxable"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:528
+#. A message stating that only a certain number of items can be purchased
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:530
 #, php-format
 msgid "Only %s items can be purchased"
 msgstr ""
@@ -768,25 +793,27 @@ msgstr ""
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:90
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:151
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:421
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:518
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:519
 msgid "Oops! No elements found. Consider changing the search query."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1369
+#. Order created message
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1371
 #, php-format
 msgid "Order #%s created"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:457
+#. Order details title
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:458
 #, php-format
 msgid "Order %s details"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:687
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:688
 msgid "Order currency"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:669
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:670
 msgid "Order date"
 msgstr ""
 
@@ -802,7 +829,7 @@ msgstr ""
 msgid "Order history for"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1706
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1709
 msgid "Order not found"
 msgstr ""
 
@@ -811,11 +838,11 @@ msgstr ""
 msgid "Order number"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:679
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:680
 msgid "Order status"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:494
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:495
 msgid "Order Total"
 msgstr ""
 
@@ -823,11 +850,11 @@ msgstr ""
 msgid "Orders"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:602
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:603
 msgid "Package"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:335
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:345
 msgid "Package "
 msgstr ""
 
@@ -835,7 +862,7 @@ msgstr ""
 msgid "Package contents"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:704
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:705
 msgid "Payment method"
 msgstr ""
 
@@ -843,52 +870,54 @@ msgstr ""
 msgid "Payment Type"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:233
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:845
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:243
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:846
 msgid "Phone"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:479
+#: classes/class-wc-phone-orders-loader.php:485
 msgid "Phone order"
 msgstr ""
 
-#: classes/class-wc-phone-orders-main.php:179
-#: classes/class-wc-phone-orders-main.php:180
+#: classes/class-wc-phone-orders-main.php:187
+#: classes/class-wc-phone-orders-main.php:188
 msgid "Phone Orders"
 msgstr ""
 
 #. Name of the plugin
-#: classes/class-wc-phone-orders-loader.php:374
+#: classes/class-wc-phone-orders-loader.php:380
 msgid "Phone Orders for WooCommerce"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:254
+#. A message that phone orders for WooCommerce are available on this page
+#: classes/class-wc-phone-orders-loader.php:255
 #, php-format
 msgid ""
 "Phone Orders For WooCommerce is available <a href=\"%s\">on this page</a>."
 msgstr ""
 
-#: phone-orders-for-woocommerce.php:61
+#: phone-orders-for-woocommerce.php:62
 msgid "Phone Orders for WooCommerce requires active WooCommerce!"
 msgstr ""
 
-#: classes/class-wc-phone-orders-main.php:199
+#: classes/class-wc-phone-orders-main.php:209
 msgid "PHP files are not allowed"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:137
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:202
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:570
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:571
 msgid "Please fill out all required fields!"
 msgstr ""
 
-#: phone-orders-for-woocommerce.php:35
+#. phpcs:ignore WordPress.Security.EscapeOutput.UnsafePrintingFunction
+#: phone-orders-for-woocommerce.php:36
 msgid ""
 "Please, <a href=\"plugins.php\">deactivate</a> Free version of Phone Orders "
 "for WooCommerce!"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:556
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:557
 msgid "Please, choose all attributes."
 msgstr ""
 
@@ -905,11 +934,12 @@ msgstr ""
 msgid "Please, fill empty required billing/shipping fields for customer"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1414
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1416
 msgid "Please, remove following items from the cart to continue"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:87
+#. A message documentation topics
+#: classes/tabs/class-wc-phone-orders-help-page.php:93
 #, php-format
 msgid ""
 "Please, review these topics in <a href=%s target=_blank>our documentation</a>"
@@ -920,20 +950,20 @@ msgstr ""
 msgid "Please, select/create customer"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:51
+#: classes/tabs/class-wc-phone-orders-help-page.php:52
 msgid ""
 "Please, visit >Woocommerce>Settings, select tab “Accounts & Privacy” and "
 "mark checkbox “When creating an account, automatically generate an account "
 "password”."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:58
+#: classes/tabs/class-wc-phone-orders-help-page.php:59
 msgid ""
 "Please, visit >WooCommerce>Settings>Shipping and add shipping method for "
 "necessary zones."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:841
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:842
 msgid "Postcode"
 msgstr ""
 
@@ -941,12 +971,13 @@ msgstr ""
 msgid "Price per item"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:252
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:596
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:262
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:597
 msgid "Private note"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:77
+#. A message conflict with another plugin
+#: classes/tabs/class-wc-phone-orders-help-page.php:81
 #, php-format
 msgid ""
 "Probably, there is a conflict with another plugin. <a href=%s target=_blank>"
@@ -958,7 +989,7 @@ msgid "Product is out of stock"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:297
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:660
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:661
 msgid "Products history"
 msgstr ""
 
@@ -966,8 +997,8 @@ msgstr ""
 msgid "Profile &rarr;"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:478
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:534
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:479
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:535
 msgid "Qty"
 msgstr ""
 
@@ -975,11 +1006,11 @@ msgstr ""
 msgid "Quantity"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:552
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:553
 msgid "Read more"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:492
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:493
 msgid "Recalculate"
 msgstr ""
 
@@ -988,7 +1019,7 @@ msgid "References"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:82
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:605
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:606
 msgid "Remove"
 msgstr ""
 
@@ -1005,7 +1036,7 @@ msgstr ""
 msgid "Reset cache"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:649
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:650
 msgid "Restore removed gifts"
 msgstr ""
 
@@ -1030,7 +1061,7 @@ msgid "Scrollable cart contents"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-log-page.php:30
-#: classes/tabs/class-wc-phone-orders-log-page.php:114
+#: classes/tabs/class-wc-phone-orders-log-page.php:115
 #: classes/tabs/class-wc-phone-orders-list-log.php:43
 msgid "Search"
 msgstr ""
@@ -1040,7 +1071,7 @@ msgctxt "search coupons"
 msgid "Type to search"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:661
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:662
 msgid "Select customer to see purchased products"
 msgstr ""
 
@@ -1066,15 +1097,15 @@ msgid ""
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:301
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:607
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:608
 msgid "Selected"
 msgstr ""
 
-#: classes/tabs/abstract-wc-phone-orders-tab.php:620
+#: classes/tabs/abstract-wc-phone-orders-tab.php:669
 msgid "Selected by WooCommerce"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:501
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:502
 msgid "Send invoice"
 msgstr ""
 
@@ -1103,12 +1134,12 @@ msgid "Ship to a different address?"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:284
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:486
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:487
 #: classes/tabs/class-wc-phone-orders-list-log.php:62
 msgid "Shipping"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-tabs-helper.php:239
+#: classes/tabs/class-wc-phone-orders-tabs-helper.php:249
 msgid "Shipping address"
 msgstr ""
 
@@ -1117,7 +1148,7 @@ msgid "Shipping Details"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:176
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:487
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:488
 msgid "Shipping method"
 msgstr ""
 
@@ -1161,20 +1192,20 @@ msgstr ""
 msgid "Show records for last X days in log"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:642
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:643
 msgid "Sign-up Fee"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:99
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:527
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:528
 msgid "SKU"
 msgstr ""
 
-#: classes/tabs/abstract-wc-phone-orders-tab.php:500
+#: classes/tabs/abstract-wc-phone-orders-tab.php:549
 msgid "Standard rate"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:837
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:838
 msgid "State/County"
 msgstr ""
 
@@ -1186,11 +1217,11 @@ msgstr ""
 msgid "Street number"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:480
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:481
 msgid "Subtotal"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:466
+#: classes/class-wc-phone-orders-loader.php:472
 msgid "Support"
 msgstr ""
 
@@ -1206,11 +1237,11 @@ msgstr ""
 msgid "Tax class"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:493
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:494
 msgid "Taxes"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:379
+#: classes/class-wc-phone-orders-loader.php:385
 msgid "Thanks :)"
 msgstr ""
 
@@ -1222,7 +1253,7 @@ msgstr ""
 msgid "There are no records to show"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1746
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1749
 msgid "There was an error sending the email"
 msgstr ""
 
@@ -1230,11 +1261,11 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: classes/class-wc-phone-shipping-method.php:47
+#: classes/class-wc-phone-shipping-method.php:48
 msgid "Title"
 msgstr ""
 
-#: classes/class-wc-phone-shipping-method.php:49
+#: classes/class-wc-phone-shipping-method.php:50
 msgid "Title to be displayed"
 msgstr ""
 
@@ -1243,7 +1274,7 @@ msgid "Tools"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:258
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:479
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:480
 msgid "Total"
 msgstr ""
 
@@ -1264,7 +1295,7 @@ msgid "Totals"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:435
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:578
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:579
 msgid "Type search phrase to see results"
 msgstr ""
 
@@ -1272,11 +1303,12 @@ msgstr ""
 msgid "Unexpected output"
 msgstr ""
 
-#: classes/class-wc-phone-orders-fill-cart.php:55
+#. A message about an unknown product
+#: classes/class-wc-phone-orders-fill-cart.php:56
 msgid "Unknown product &quot;%d&quot;."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:565
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:566
 msgid "Url has been copied to clipboard"
 msgstr ""
 
@@ -1284,20 +1316,20 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: classes/class-wc-phone-orders-main.php:145
+#: classes/class-wc-phone-orders-main.php:153
 #: classes/tabs/class-wc-phone-orders-settings-page.php:154
 msgid "USPS"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:532
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:533
 msgid "Variation ID"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:500
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:501
 msgid "View draft"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:499
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:500
 msgid "View order"
 msgstr ""
 
@@ -1305,7 +1337,7 @@ msgstr ""
 msgid "View other orders &rarr;"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:503
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:504
 msgid "Want to pay order as customer?"
 msgstr ""
 
@@ -1314,8 +1346,8 @@ msgid "warning : this feature is not compatible with discounts"
 msgstr ""
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:108
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:551
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:653
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:552
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:654
 msgid "Weight"
 msgstr ""
 
@@ -1337,7 +1369,13 @@ msgstr ""
 msgid "WooCommerce"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-help-page.php:42
+#. Ability to add a certain number of free products to the cart
+#: classes/class-wc-phone-orders-cart-updater.php:750
+msgid "You can add %d products for free to the cart."
+msgstr ""
+
+#. Message about the purchase of the pro version
+#: classes/tabs/class-wc-phone-orders-help-page.php:43
 #, php-format
 msgid "You should buy <a href=%s target=_blank>Pro version</a>."
 msgstr ""

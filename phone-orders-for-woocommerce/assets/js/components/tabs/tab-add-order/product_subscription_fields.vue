@@ -38,13 +38,14 @@
       <b-col cols="8" class="product-item-subscription-field-list__field-value">
         <datepicker
           ref="datepicker"
-          :format="yyyy-MM-dd"
+          format="yyyy-MM-dd"
           v-model="nextPaymentDateModel"
           :auto-apply="true"
           :text-input="true"
           :hide-input-icon="true"
           :clearable="false"
           :disabled="!cartEnabled"
+          @update:model-value="this.onUpdatePaymentDate"
         ></datepicker>
         <input type="number"
                @blur="onUpdateNextPaymentDateHour"
@@ -123,11 +124,9 @@
 import Multiselect from 'vue-multiselect';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import {BCol, BRow} from "bootstrap-vue-3";
 
 export default {
-  mounted() {
-    this.$refs.datepicker.$children[0].$on('closeCalendar', this.onUpdatePaymentDate)
-  },
   props: {
     fields: {
       default: function () {
@@ -321,6 +320,8 @@ export default {
     },
   },
   components: {
+    BCol,
+    BRow,
     Multiselect,
     Datepicker,
   },

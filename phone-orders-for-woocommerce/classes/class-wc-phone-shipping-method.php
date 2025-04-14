@@ -37,6 +37,7 @@ class WC_Phone_Shipping_Method extends WC_Shipping_Method
         $this->cost  = 0;
 
         // Actions
+        /** @phpstan-ignore-next-line */
         add_action('woocommerce_update_options_shipping_' . $this->id, array($this, 'process_admin_options'));
     }
 

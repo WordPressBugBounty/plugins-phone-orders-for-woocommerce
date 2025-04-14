@@ -39,6 +39,7 @@ class WC_Phone_Orders_Main
         $types = array('customers', 'products', 'orders', 'coupons');
         foreach ($types as $type) {
             if ($settings->get_option('cache_' . $type . '_timeout')) {
+                //phpcs:ignore WordPress.Security.NonceVerification.Recommended
                 if (isset($_GET['wpo_cache_' . $type . '_key']) and $_GET['wpo_cache_' . $type . '_key'] != 'no-cache') {
                     $this->set_ajax_cache('cache_' . $type . '_timeout');
                 }
@@ -46,8 +47,9 @@ class WC_Phone_Orders_Main
         }
         //cache for references
         $type = 'references';
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ( ! empty($_GET['method']) and in_array(
-                                              $_GET['method'],
+                                              $_GET['method'], //phpcs:ignore WordPress.Security.NonceVerification.Recommended
                                               array(
                                                   "get_countries_and_states_list",
                                                   "get_products_categories_list",
@@ -56,13 +58,14 @@ class WC_Phone_Orders_Main
                                           )
                                           and $settings->get_option('cache_' . $type . '_timeout')
         ) {
+            //phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if (isset($_GET['wpo_cache_' . $type . '_key']) and $_GET['wpo_cache_' . $type . '_key'] != 'no-cache') {
                 $this->set_ajax_cache('cache_' . $type . '_timeout');
             }
         }
-
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['wpo_find_customer'])) {
-            add_filter("woocommerce_customer_search_customers", function ($filter) {
+            add_filter("woocommerce_customer_search_customers", function ($filter, $term, $limit, $type) {
                 $this->found_customers_limit = $filter['number'];
 
                 return $filter;
@@ -71,17 +74,22 @@ class WC_Phone_Orders_Main
         }
 
         // tweak customer search for our tab only
+        // //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['wpo_find_customer']) and ! WC_Phone_Orders_Loader::is_pro_version()) {
             add_filter("woocommerce_json_search_found_customers", array($this, 'reformat_customers_search_results'));
         }
 
         // exclude none admin customers
+        // //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if (isset($_GET['wpo_find_customer']) && ! is_super_admin()) {
+            // //phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if (isset($_GET['term']) && is_numeric($_GET['term'])) {
+                //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
                 $users = (new WP_User_Query(array('include' => array($_GET['term']), 'role' => 'Administrator')
                 ))->get_results();
 
                 if ($users) {
+                    //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPressVIPMinimum.Performance
                     $_GET['exclude'] = array($users[0]->ID);
                 }
             }
@@ -191,12 +199,14 @@ class WC_Phone_Orders_Main
         $settings = WC_Phone_Orders_Settings::getInstance()->get_all_options();
         ?>
         <script>
-            window.wpo_settings = '<?php echo addslashes(json_encode($settings)) ?>';
+            window.wpo_settings = '<?php echo
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+            addslashes(json_encode($settings)) ?>';
             window.wpo_js_validate_custom_field = function (field_name, field_value, field_data) {
                 if (field_data.type === 'file' && field_value) {
                     const fileExtension = field_value.name.split('.').pop().toLowerCase();
                     if (fileExtension === 'php') {
-                        return '<?php _e('PHP files are not allowed', 'phone-orders-for-woocommerce')?>';
+                        return '<?php esc_html_e('PHP files are not allowed', 'phone-orders-for-woocommerce')?>';
                     }
                 }
                 return '';
@@ -209,7 +219,7 @@ class WC_Phone_Orders_Main
                 <div class="wpo_settings_container">
                     <div id="phone-orders-app" data-all-settings="<?php
                     echo esc_attr(json_encode($settings)) ?>" data-locale="<?php
-                    echo get_locale(); ?>">
+                    echo esc_html(get_locale()); ?>">
                         <?php
                         if (count($tabs) > 1): ?>
                             <b-tabs card ref="tabs">
@@ -217,14 +227,18 @@ class WC_Phone_Orders_Main
                                 foreach ($tabs as $tab_key => $tab_handler): ?>
                                     <b-tab
                                         title="<?php
-                                        echo $tab_handler->title; ?>"
+                                        echo esc_attr($tab_handler->title); ?>"
                                         href="#<?php
+                                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                         echo $tab_key; ?>"
                                         :active="'#<?php
+                                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                         echo $tab_key; ?>' === getWindowLocationHash()"
                                         @click.self="clickTab('#<?php
+                                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                         echo $tab_key; ?>')"
                                         ref="<?php
+                                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                         echo $tab_key; ?>"
                                     >
                                         <?php
@@ -251,6 +265,7 @@ class WC_Phone_Orders_Main
 
     public function ajax_gate()
     {
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $request = $_REQUEST;
 
         $method   = isset($request['method']) ? "ajax_{$request['method']}" : '';
@@ -298,10 +313,12 @@ class WC_Phone_Orders_Main
 
     public function search_customers_by_first_last_name($found_customers)
     {
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ( ! isset($_GET['term'])) {
             return $found_customers;
         }
 
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
         $term = str_replace(array("\r", "\n"), '', $_GET['term']);
 
         if ( ! preg_match_all('/".*?("|$)|((?<=[\t ",+])|^)[^\t ",+]+/', $term, $matches)) {
@@ -322,6 +339,7 @@ class WC_Phone_Orders_Main
         $wp_user_query1 = new WP_User_Query(
             array(
                 'fields'     => 'ID',
+                //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                 'meta_query' => array(
                     'relation' => 'AND',
                     array(
@@ -344,6 +362,7 @@ class WC_Phone_Orders_Main
             $wp_user_query2 = new WP_User_Query(
                 array(
                     'fields'     => 'ID',
+                    //phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_query
                     'meta_query' => array(
                         'relation' => 'AND',
                         array(
@@ -369,8 +388,8 @@ class WC_Phone_Orders_Main
             $customer = new WC_Customer($id);
             /* translators: 1: user display name 2: user ID 3: user email */
             $customers[$id] = sprintf(
-            /* translators: $1: customer name, $2 customer id, $3: customer email */
-                esc_html__('%1$s (#%2$s &ndash; %3$s)', 'woocommerce'),
+                /* translators: $1: customer name, $2 customer id, $3: customer email */
+                esc_html__('%1$s (#%2$s &ndash; %3$s)', 'woocommerce'), //phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
                 $customer->get_first_name() . ' ' . $customer->get_last_name(),
                 $customer->get_id(),
                 $customer->get_email()

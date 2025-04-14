@@ -251,12 +251,9 @@ class WC_Phone_Orders_Loader
         <div class="notice notice-success is-dismissible">
             <p><?php
                 echo sprintf(
-                    __(
-                        'Phone Orders For WooCommerce is available <a href="%s">on this page</a>.',
-                        'phone-orders-for-woocommerce'
-                    ),
-                    'admin.php?page=' . self::$slug
-                ); ?></p>
+                // translators: A message that phone orders for WooCommerce are available on this page
+                __('Phone Orders For WooCommerce is available <a href="%s">on this page</a>.', 'phone-orders-for-woocommerce'), 'admin.php?page=' . self::$slug); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            </p>
         </div>
         <?php
         update_option($this->activation_notice_option, true);
@@ -266,14 +263,20 @@ class WC_Phone_Orders_Loader
     {
         $key = 'wpo_fill_cart';
 
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $nonce = isset($_GET['nonce']) ? sanitize_text_field(wp_unslash($_GET['nonce'])) : "";
+        if ( ! wp_verify_nonce($nonce, 'phone-orders-for-woocommerce')) {
+            return;
+        }
         if ( ! isset($_GET[$key])) {
             return;
         }
 
         include_once 'class-wc-phone-orders-fill-cart.php';
 
+        //phpcs:ignore WordPress.Security.ValidatedSanitizedInput
         WC_Phone_Orders_Fill_Cart::fill_cart($_GET[$key]);
-
+        //phpcs:ignore WordPress.Security.ValidatedSanitizedInput
         wp_redirect(remove_query_arg(array($key), get_home_url(null, $_SERVER['REQUEST_URI'])));
         exit;
     }
@@ -296,6 +299,7 @@ class WC_Phone_Orders_Loader
 
     public function show_icon_in_orders_list()
     {
+        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $settings_option_handler = WC_Phone_Orders_Settings::getInstance();
 
         $show_icon_in_orders_list = $settings_option_handler->get_option('show_icon_in_orders_list');
@@ -319,7 +323,9 @@ class WC_Phone_Orders_Loader
                 $screen    = get_current_screen();
                 $screen_id = isset($screen, $screen->id) ? $screen->id : '';
             }
+            //phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if ( ! empty($_REQUEST['screen'])) { // WPCS: input var ok.
+                //phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput
                 $screen_id = wc_clean(wp_unslash($_REQUEST['screen'])); // WPCS: input var ok, sanitization ok.
             }
             if ('edit-shop_order' == $screen_id || 'woocommerce_page_wc-orders' == $screen_id) {
@@ -459,7 +465,7 @@ class WC_Phone_Orders_Loader
                 'Create Order',
                 'phone-orders-for-woocommerce'
             ) . '</a>',
-            '<a href="https://docs.algolplus.com/phone-order-for-woocommerce/" target="_blank">' . __(
+            '<a href="https://docs.algolplus.com/category/algol_phone_order/" target="_blank">' . __(
                 'Docs',
                 'phone-orders-for-woocommerce'
             ) . '</a>',
@@ -476,7 +482,7 @@ class WC_Phone_Orders_Loader
     {
         $order = wc_get_order($post_id);
         if ($column === 'order_number' && $order->get_meta(WC_Phone_Orders_Loader::$meta_key_order_creator, true)) {
-            echo '<span title="' . __(
+            echo '<span title="' . esc_attr__(
                     "Phone order",
                     "phone-orders-for-woocommerce"
                 ) . '" class="wc-orders-list__wpo-order-number-icon">&nbsp;</span>';
