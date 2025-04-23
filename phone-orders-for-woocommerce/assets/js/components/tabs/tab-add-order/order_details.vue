@@ -1469,6 +1469,11 @@ export default {
         return false;
       }
     },
+    saleBackorderProducts: {
+      default: function () {
+        return false;
+      }
+    },
     quickSearch: {
       default: function () {
         return false;
@@ -2216,6 +2221,10 @@ export default {
             wordsToMatch = wordsToMatch.map(word => word.toLowerCase());
             product.words_to_match = [...new Set(wordsToMatch)];
 
+            if (product.in_stock === 'outofstock' && !this.saleBackorderProducts) {
+              product.$isDisabled = true;
+            }
+
             return product;
           })
 
@@ -2390,6 +2399,7 @@ export default {
                 query: query,
                 qty_step: response.data[id].qty_step,
                 min_qty: response.data[id].min_qty,
+                $isDisabled: this.saleBackorderProducts ? false : (response.data[id].stock_status === 'outofstock'),
                 in_stock: response.data[id].in_stock,
                 item_cost: response.data[id].item_cost,
               });

@@ -508,6 +508,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 'buyProVersionMessage'                        => __('Buy Pro version', 'phone-orders-for-woocommerce'),
                 'tabName'                                     => 'add-order',
                 'isProVersion'                                => WC_Phone_Orders_Loader::is_pro_version(),
+                'saleBackorderProducts'   => $this->option_handler->get_option('sale_backorder_product'),
                 'quickSearch'                                 => $this->option_handler->get_option('quick_search'),
                 'sortByRelevancy'                             => $this->option_handler->get_option(
                     'sort_products_by_relevancy'
@@ -1956,6 +1957,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 'add_to_exclude' => ! $product->is_type("grouped") && ! $product->is_type("variable"),
                 'qty_step'       => $qty_step,
                 'min_qty'        => $min_qty,
+                'stock_status'   => $product->get_stock_status(),
                 'in_stock'       => $product->is_on_backorder(
                     $product->get_stock_quantity() + 1
                 ) ? null : $product->get_stock_quantity(),
@@ -2209,26 +2211,31 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'order'   => 'ASC',
             'limit'   => apply_filters("wpo_search_product_limit", -1, $limit),
         );
+        $single_product_search = apply_filters("wpo_search_single_product", false);
+        $post_content_search = apply_filters("wpo_search_post_content", true);
+
         // filter by category/tags ?
         $query_args = array_merge($query_args, $additional_query_args);
         if ($products_ids = apply_filters("wpo_custom_product_search", array(), $query_args, $term)) {
             ; // do nothing,  just use  custom results
+            //exact product by id?
+        } elseif ($single_product_search  AND !empty($term) AND preg_match('#^\d+$#', $term) and ($product = wc_get_product($term)) ) {
+            $products_ids = array( (int)$term );
+            //exact product by sku
+        } elseif ($single_product_search  AND !empty($term) AND $this->option_handler->get_option('search_by_sku') AND $product_id = wc_get_product_id_by_sku($term) ) {
+            $products_ids = array( $product_id );
         } elseif (isset($term) and $term) { // keyword?
-            $products_ids = $this->get_products($term, $query_args, true);
-
-            if (count($products_ids) < $limit) {
-                $query_args['limit'] = apply_filters("wpo_search_product_limit", -1, $limit - count($products_ids));
-                $products_ids        = array_merge($products_ids, $this->get_products($term, $query_args, false));
-            }
+            $products_ids = $this->get_products($term, $query_args, $post_content_search);
         } else { // just category/tag  ?
             $products_ids = wc_get_products($query_args);
         }
 
         //exact product by id ? add at top!
-        if (preg_match('#^\d+$#', $term) and ($product = wc_get_product($term))) {
+        if (!$single_product_search AND preg_match('#^\d+$#', $term) and ($product = wc_get_product($term))) {
             array_unshift($products_ids, (int)$term);
             $products_ids = array_unique($products_ids);
         }
+
 
         $selected_products = array();
         foreach ($products_ids as $index => $product_id) {
@@ -2302,7 +2309,10 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             return false;
         }
 
-        if ( ! $product->is_in_stock() and ! $option_handler->get_option('sale_backorder_product')) {
+        if (
+            ! $product->is_in_stock() and
+            (!$option_handler->get_option('sale_backorder_product') && !$option_handler->get_option('show_striked_backorder_products'))
+        ) {
             return false;
         }
 
@@ -2740,6 +2750,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 'add_to_exclude' => ! $product->is_type("grouped"),
                 'qty_step'       => $qty_step,
                 'min_qty'        => $min_qty,
+                'stock_status'   => $product->get_stock_status(),
                 'in_stock'       => $product->is_on_backorder(
                     $product->get_stock_quantity() + 1
                 ) ? null : $product->get_stock_quantity(),

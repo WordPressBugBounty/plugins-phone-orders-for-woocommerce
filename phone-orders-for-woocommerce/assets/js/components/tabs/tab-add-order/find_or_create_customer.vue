@@ -698,6 +698,7 @@ export default {
       });
     },
     setCustomer(id, type) {
+      this.$store.commit('add_order/setIsLoading', true);
 
       this.axios.post(this.url, this.qs.stringify({
         action: 'phone-orders-for-woocommerce',
@@ -721,8 +722,10 @@ export default {
         this.$root.bus.$emit('apply-recalculated-cart', response.data.data.cart);
 
         this.isLoading = false;
+        this.$store.commit('add_order/setIsLoading', false);
       }, () => {
         this.isLoading = false;
+        this.$store.commit('add_order/setIsLoading', false);
       });
     },
     openOrderHistoryCustomer() {

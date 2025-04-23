@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Phone Orders for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-03-30 12:26+0000\n"
-"PO-Revision-Date: 2025-04-11 16:30+0000\n"
+"PO-Revision-Date: 2025-04-23 08:23+0000\n"
 "Last-Translator: Test Admin1\n"
 "Language-Team: Slovak\n"
 "Language: sk_SK\n"
@@ -33,7 +33,7 @@ msgstr ""
 "pokladni. Takisto môžete platiť priamo v admin časti – použite <a href=%2$s "
 "target=_blank>plugin zdarma</a>. Podporuje Stripe a Authorize.Net."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1720
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1721
 msgid "A valid email address is required"
 msgstr "Vyžaduje sa správna emailová adresa"
 
@@ -41,12 +41,12 @@ msgstr "Vyžaduje sa správna emailová adresa"
 msgid "above customer details"
 msgstr "nad detailmi zákazníka"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:607
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:608
 msgid "Add"
 msgstr "Pridať"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:596
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:598
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:597
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:599
 msgid "Add a note"
 msgstr "Pridaj poznámku"
 
@@ -77,7 +77,7 @@ msgstr "Pridať poplatok"
 msgid "Add Gift Card"
 msgstr "Pridať darčekovú kartu"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:540
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:541
 msgid "Add meta"
 msgstr "Pridať meta"
 
@@ -95,7 +95,7 @@ msgstr "Pridaj dopravu"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:241
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:299
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:609
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:610
 msgid "Add to cart"
 msgstr "Pridaj do košíka"
 
@@ -107,15 +107,15 @@ msgstr "Pridaj k objednávke"
 msgid "Address Validation Service API Key (USPS Username)"
 msgstr "API služby pre validáciu adresy pre USA (USPS Username)"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:826
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:827
 msgid "Address1"
 msgstr "Ulica"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:830
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:831
 msgid "Address2"
 msgstr "Ulica 2"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:611
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:612
 msgid "Advanced search"
 msgstr "Pokročilé hľadanie"
 
@@ -159,7 +159,7 @@ msgstr "Uložiť"
 msgid "Automatically update Shipping/Taxes/Totals"
 msgstr "Automaticky upraviť dodanie/daň/sumy"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:621
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:622
 msgid ""
 "Barcode mode enabled! Product search works only after pressing the Enter key"
 msgstr ""
@@ -171,7 +171,7 @@ msgid "below customer details"
 msgstr "pod detailmi zákazníka"
 
 #: classes/tabs/class-wc-phone-orders-tabs-helper.php:231
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:815
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:816
 msgid "Billing address"
 msgstr "Fakturačná adresa"
 
@@ -179,7 +179,7 @@ msgstr "Fakturačná adresa"
 msgid "Billing Details"
 msgstr "Fakturačná adresa"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:626
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:627
 msgid "Billing Schedule"
 msgstr "Rozvrh platieb"
 
@@ -213,14 +213,14 @@ msgstr "Ukladať výsledky hľadania do cache"
 msgid "Can not add %1$d &quot;%2$s&quot; because it is not available."
 msgstr "Nedá sa pridať %1$d &quot;%2$s&quot; pretože nie je k dispozícii."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1047
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1048
 msgid "Can not create new product"
 msgstr "Nie je možné vytvoriť nový produkt"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:80
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:242
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:298
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:610
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:611
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -237,7 +237,7 @@ msgid "Check"
 msgstr "Zistiť"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:245
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:550
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:551
 msgid "Choose an option"
 msgstr "Vybrať možnosť"
 
@@ -245,15 +245,15 @@ msgstr "Vybrať možnosť"
 msgid "Choose gifts"
 msgstr "Zvoľ darček"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:641
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:642
 msgid "Choose interval"
 msgstr "Zvoľ interval"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:539
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:540
 msgid "Choose meta field"
 msgstr "Vybrať meta pole"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:642
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:643
 msgid "Choose period"
 msgstr "Vybrať obdobie"
 
@@ -261,11 +261,11 @@ msgstr "Vybrať obdobie"
 msgid "Choose your gift"
 msgstr "Vyberte si darček"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:834
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:835
 msgid "City"
 msgstr "Mesto"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:546
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:547
 msgid "Collapse edit meta"
 msgstr "Kolapsovať editovanie meta"
 
@@ -274,11 +274,11 @@ msgid "Collapse WordPress menu"
 msgstr "Kolapsovať WordPress menu"
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:86
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:798
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:799
 msgid "Common"
 msgstr "Základné údaje"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:822
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:823
 msgid "Company"
 msgstr "Spoločnosť"
 
@@ -301,20 +301,20 @@ msgstr "Skopírované z objednávky"
 msgid "Copy from billing address"
 msgstr "Skopíruj z fakturačnej adresy"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:616
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:617
 msgid "Copy to clipboard"
 msgstr "Skopírovať do medzipamäte"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:562
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:563
 msgid "Copy url to populate cart"
 msgstr "Skopírovať URL na načítanie košíka"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:478
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:534
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:535
 msgid "Cost"
 msgstr "Cena"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:818
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:819
 msgid "Country"
 msgstr "Krajina"
 
@@ -352,16 +352,16 @@ msgid "Create product"
 msgstr "Vytvoriť produkt"
 
 #. Who created it order
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1607
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1608
 #, php-format
 msgid "Created in Phone Orders by: %s."
 msgstr "Vytvorené v telefónnych objednávkach: %s."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:545
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:546
 msgid "Custom meta field key"
 msgstr "Kľúč vlastného meta poľa"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:541
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:542
 msgid "Custom meta field value"
 msgstr "Hodnota vlastného meta poľa"
 
@@ -377,7 +377,7 @@ msgstr "Login zákazníka"
 msgid "Customer note"
 msgstr "Poznámka zákazníka"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:592
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:593
 msgid "Customer provided note"
 msgstr "Poznámka od zákazníka"
 
@@ -394,7 +394,7 @@ msgctxt "default site language"
 msgid "Site Default"
 msgstr "Predvolené nastavenie lokality"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:527
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:528
 msgid "Delete item"
 msgstr "Zmaž položku"
 
@@ -404,7 +404,7 @@ msgid "Disable cache"
 msgstr "Vypnúť cache"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:485
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:620
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:621
 #: classes/tabs/class-wc-phone-orders-list-log.php:60
 msgid "Discount"
 msgstr "Zľava"
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Docs"
 msgstr "Dokumenty"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:656
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:657
 msgid "Don't apply pricing rules"
 msgstr "Neaplikovať cenové pravidlá"
 
@@ -440,12 +440,12 @@ msgstr "hotový"
 msgid "Draft"
 msgstr "Návrh"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:570
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:571
 msgid "Duplicate order"
 msgstr "Duplikovať objednávku"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:765
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:809
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:766
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:810
 msgid "E-mail"
 msgstr "Email"
 
@@ -453,7 +453,7 @@ msgstr "Email"
 msgid "Edit address"
 msgstr "Upraviť adresu"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:537
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:538
 msgid "Edit meta"
 msgstr "Upraviť meta"
 
@@ -501,8 +501,8 @@ msgstr "Nájsť produkty..."
 msgid "Find products..."
 msgstr "Nájsť produkty..."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:769
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:801
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:770
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:802
 msgid "First name"
 msgstr "Krstné meno"
 
@@ -524,7 +524,7 @@ msgstr ""
 msgid "Get report"
 msgstr "Vytvoriť zostavu"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:645
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:646
 msgid "Gift Card"
 msgstr "Darčeková poukážka"
 
@@ -540,7 +540,7 @@ msgstr "darčeky, ktoré zostali"
 msgid "Google Map API Key"
 msgstr "Google Map API Key"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:612
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:613
 msgid "granted by coupon"
 msgstr "upravené kupónom"
 
@@ -548,7 +548,7 @@ msgstr "upravené kupónom"
 msgid "Guest"
 msgstr "Hosť"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:646
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:647
 msgid "Have a gift card?"
 msgstr "Darčeková poukážka?"
 
@@ -572,8 +572,8 @@ msgstr "Skryť výsledky bez čísla domu"
 msgid "Hide tax line for item"
 msgstr "Nezobrazovať riadok s daňou pre položku"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:631
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:674
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:632
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:675
 msgctxt "hour placeholder"
 msgid "h"
 msgstr "h"
@@ -642,14 +642,14 @@ msgid "Interface"
 msgstr "Rozhranie"
 
 #. A message that the invoice for order has been sent to email
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1758
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1759
 #, php-format
 #| msgid "Invoice for order #%s has been sent to %s"
 msgid "Invoice for order #%1$s has been sent to %2$s"
 msgstr "Faktúra za objednávku #%1$s bola zaslaná pre %2$s"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1736
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1740
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1737
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1741
 msgid "Invoice manually sent to customer from Phone Order."
 msgstr ""
 "Faktúra ručne poslaná zákazníkovi z pluginu Ručné objednávky [Phone Order]."
@@ -658,7 +658,7 @@ msgstr ""
 msgid "Item"
 msgstr "Položka"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:605
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:606
 #: classes/tabs/class-wc-phone-orders-list-log.php:26
 msgid "item"
 msgstr "položka"
@@ -672,13 +672,13 @@ msgstr "Položka bola odstránená z košíka"
 msgid "Items"
 msgstr "Položky"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:604
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:605
 #: classes/tabs/class-wc-phone-orders-list-log.php:27
 msgid "items"
 msgstr "položky"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:773
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:805
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:774
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:806
 msgid "Last name"
 msgstr "Priezvisko"
 
@@ -704,9 +704,9 @@ msgstr "Názov"
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:105
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:142
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:207
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:683
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:700
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:708
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:684
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:701
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:709
 msgid "List is empty."
 msgstr "Zoznam je prázdny."
 
@@ -726,7 +726,7 @@ msgstr "Stránka s log"
 msgid "Longitude"
 msgstr "Longitude"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:561
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:562
 msgid "Manual Discount"
 msgstr "Manuálna zľava"
 
@@ -734,13 +734,13 @@ msgstr "Manuálna zľava"
 msgid "Manual discount"
 msgstr "Manuálna zľava"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:636
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:675
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:637
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:676
 msgctxt "minute placeholder"
 msgid "m"
 msgstr "m"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1056
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1057
 msgid "Missing data"
 msgstr "Chýbajúce údaje"
 
@@ -761,7 +761,7 @@ msgstr "Potrebujete viac nastavení?"
 msgid "New customer"
 msgstr "Nový zákazník"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:629
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:630
 msgid "Next Payment"
 msgstr "Nasledoujúca platba"
 
@@ -785,7 +785,7 @@ msgstr "Nenašli sa žiadne produkty"
 msgid "No shipping address was provided."
 msgstr "Dodacia adresa nebola udaná"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1430
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1431
 msgid "No shipping method has been selected."
 msgstr "Dodacia adresa nebola označená"
 
@@ -810,7 +810,7 @@ msgid "Not taxable"
 msgstr "Bez DPH"
 
 #. A message stating that only a certain number of items can be purchased
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:530
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:531
 #, php-format
 msgid "Only %s items can be purchased"
 msgstr "Môže byť kúpených len %s produktov"
@@ -818,12 +818,12 @@ msgstr "Môže byť kúpených len %s produktov"
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:90
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:151
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:421
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:519
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:520
 msgid "Oops! No elements found. Consider changing the search query."
 msgstr "Nič sa nenašlo. Skús zmeniť zadanie."
 
 #. Order created message
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1371
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1372
 #, php-format
 msgid "Order #%s created"
 msgstr "Objednávka #%s vytvorená"
@@ -835,11 +835,11 @@ msgstr "Objednávka #%s vytvorená"
 msgid "Order %s details"
 msgstr "Detaily objednávky %s"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:688
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:689
 msgid "Order currency"
 msgstr "Mena objednávky"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:670
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:671
 msgid "Order date"
 msgstr "Dátum objednávky"
 
@@ -855,7 +855,7 @@ msgstr "História objednávok &rarr;"
 msgid "Order history for"
 msgstr "História objednávky pre"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1709
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1710
 msgid "Order not found"
 msgstr "Objednávka sa nenašla"
 
@@ -864,7 +864,7 @@ msgstr "Objednávka sa nenašla"
 msgid "Order number"
 msgstr "Číslo obj."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:680
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:681
 msgid "Order status"
 msgstr "Stav objednávky"
 
@@ -876,7 +876,7 @@ msgstr "Objednávka celkom"
 msgid "Orders"
 msgstr "Objednávky"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:603
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:604
 msgid "Package"
 msgstr "Balík"
 
@@ -888,7 +888,7 @@ msgstr "Balík "
 msgid "Package contents"
 msgstr "Obsah balíka"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:705
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:706
 msgid "Payment method"
 msgstr "Spôsob platby"
 
@@ -897,7 +897,7 @@ msgid "Payment Type"
 msgstr "Spôsob platby"
 
 #: classes/tabs/class-wc-phone-orders-tabs-helper.php:243
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:846
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:847
 msgid "Phone"
 msgstr "Telefón"
 
@@ -936,7 +936,7 @@ msgstr "PHP súbory nie sú povolené"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:137
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:202
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:571
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:572
 msgid "Please fill out all required fields!"
 msgstr "Vyplňte všetky požadované polia!"
 
@@ -949,7 +949,7 @@ msgstr ""
 "<a href=\"plugins.php\">Deaktivujte</a> zdarma verziu pluginu Ručné "
 "objednávky (Phone Orders)"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:557
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:558
 msgid "Please, choose all attributes."
 msgstr "Vyberte všetky atribúty."
 
@@ -966,7 +966,7 @@ msgstr "Vložte platný API kľúč pre miesta v záložke Nastavenia"
 msgid "Please, fill empty required billing/shipping fields for customer"
 msgstr "Vyplňte prázdne vyžadované fakturačné/dodacie polia pre zákazníka"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1416
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1417
 msgid "Please, remove following items from the cart to continue"
 msgstr "Vyberte nasledujúce položky z košíka pred pokračovaním"
 
@@ -1004,7 +1004,7 @@ msgstr ""
 "Navštívte WooCommerce>Nastavenia>Doprava a pridajte dopravnú metódu pre "
 "potrebnú zónu"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:842
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:843
 msgid "Postcode"
 msgstr "PSČ"
 
@@ -1013,7 +1013,7 @@ msgid "Price per item"
 msgstr "Cena položky"
 
 #: classes/tabs/class-wc-phone-orders-tabs-helper.php:262
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:597
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:598
 msgid "Private note"
 msgstr "Interná poznámka"
 
@@ -1032,7 +1032,7 @@ msgid "Product is out of stock"
 msgstr "Produkt nie je na sklade"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:297
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:661
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:662
 #| msgid "Product history"
 msgid "Products history"
 msgstr "História produktov"
@@ -1042,7 +1042,7 @@ msgid "Profile &rarr;"
 msgstr "Profil &rarr;"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:479
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:535
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:536
 msgid "Qty"
 msgstr "Počet"
 
@@ -1050,7 +1050,7 @@ msgstr "Počet"
 msgid "Quantity"
 msgstr "Počet"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:553
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:554
 msgid "Read more"
 msgstr "Čitať viac"
 
@@ -1063,7 +1063,7 @@ msgid "References"
 msgstr "Referencie"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:82
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:606
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:607
 msgid "Remove"
 msgstr "Odstrániť"
 
@@ -1080,7 +1080,7 @@ msgstr "Znovu nastaviť"
 msgid "Reset cache"
 msgstr "Vymazať cache"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:650
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:651
 msgid "Restore removed gifts"
 msgstr "Zobraziť vymazané darčeky"
 
@@ -1115,7 +1115,7 @@ msgctxt "search coupons"
 msgid "Type to search"
 msgstr "Začni písať"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:662
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:663
 msgid "Select customer to see purchased products"
 msgstr "Ak chcete zobraziť zakúpené produkty, vyberte zákazníka"
 
@@ -1145,7 +1145,7 @@ msgstr ""
 "zákazníka budú aplikované po tom, ako zatvoríte okno."
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:301
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:608
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:609
 msgid "Selected"
 msgstr "Označené"
 
@@ -1240,12 +1240,12 @@ msgstr "Zobraziť platobné metódy"
 msgid "Show records for last X days in log"
 msgstr "Zobraziť záznamy za posledných X dní v logu"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:643
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:644
 msgid "Sign-up Fee"
 msgstr "Poplatok zo prihlásenie"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:99
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:528
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:529
 msgid "SKU"
 msgstr "SKU"
 
@@ -1253,7 +1253,7 @@ msgstr "SKU"
 msgid "Standard rate"
 msgstr "Bežná sadzba"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:838
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:839
 msgid "State/County"
 msgstr "Okres"
 
@@ -1301,7 +1301,7 @@ msgstr "Maximálny počet krajín, ktoré je možné vybrať"
 msgid "There are no records to show"
 msgstr "Žiadny záznam na zobrazenie"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1749
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1750
 msgid "There was an error sending the email"
 msgstr "Vyskytla sa chyba pri zasielaní emailu"
 
@@ -1343,7 +1343,7 @@ msgid "Totals"
 msgstr "Celkom"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:435
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:579
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:580
 msgid "Type search phrase to see results"
 msgstr "Začni písať slovo a zobrazia sa výsledky"
 
@@ -1356,7 +1356,7 @@ msgstr "Neočakávaný výstup"
 msgid "Unknown product &quot;%d&quot;."
 msgstr "Neznámy produkt &quot;%d&quot;."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:566
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:567
 msgid "Url has been copied to clipboard"
 msgstr "URL bolo skopírované do schránky"
 
@@ -1369,7 +1369,7 @@ msgstr "Vytvoril"
 msgid "USPS"
 msgstr "USPS"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:533
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:534
 msgid "Variation ID"
 msgstr "ID variácie"
 
@@ -1394,8 +1394,8 @@ msgid "warning : this feature is not compatible with discounts"
 msgstr "upozornenie - toto nie je kompatibilné so zľavami"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:108
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:552
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:654
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:553
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:655
 msgid "Weight"
 msgstr "Váha"
 
