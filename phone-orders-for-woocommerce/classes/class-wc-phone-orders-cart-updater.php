@@ -1282,9 +1282,10 @@ class WC_Phone_Orders_Cart_Updater
              * Sometimes we need to get this price without hooks!
              * E.g. With dynamic pricing the price is already calculated with hooks in filter "wpo_product_before_get_item"
              */
-            $price_excluding_tax = (float)$product->get_price(
-                apply_filters('wpo_get_item_by_product_default_price_context', 'view', $product, $item_data)
-            );
+            $context =  apply_filters('wpo_get_item_by_product_default_price_context', 'view', $product, $item_data);
+            $price_excluding_tax = (float)$product->get_price($context);
+            if( $product->get_sale_price($context) )
+                $price_excluding_tax = $product->get_sale_price($context);
         }
 
         $item_meta_data = array();

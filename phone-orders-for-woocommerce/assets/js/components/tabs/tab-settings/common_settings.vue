@@ -507,29 +507,29 @@ export default {
       this.mapAPIKeyIsValid = null;
       this.mapAPIErrorMsg = '';
       var self = this;
-      var successCallback = async function () {
-        const {Places} = await google.maps.importLibrary('places');
-        var service = new google.maps.places.AutocompleteService();
+      var successCallback = async () => {
+        const self = this;
 
-        var oldConsoleErr = console.error;
-        console.error = function () {
-          self.mapAPIErrorMsg = arguments[0];
-          return oldConsoleErr.apply(this, arguments);
-        };
-        service.getQueryPredictions({input: 'pizza near Syd'}, function (predictions, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            self.mapAPIKeyIsValid = true;
-          } else if (status === google.maps.places.PlacesServiceStatus.REQUEST_DENIED) {
-            //alert( 'ERROR: Access denied' );
-            self.mapAPIKeyIsValid = false;
-          } else {
-            //alert( 'ERROR: Error occured accessing the API.' );
-            self.mapAPIKeyIsValid = false;
-          }
+        try {
+          const { AutocompleteSuggestion } = await google.maps.importLibrary('places');
+
+          const request = {
+            input: 'pizza near Syd',
+            sessionToken: new google.maps.places.AutocompleteSessionToken(),
+          };
+
+          const { suggestions } = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
+
+          self.mapAPIKeyIsValid = Array.isArray(suggestions) && suggestions.length > 0;
+        } catch (error) {
+
+          self.mapAPIErrorMsg = error.message || 'Unknown error';
+          self.mapAPIKeyIsValid = false;
+        } finally {
           self.isChecking = false;
-          console.error = oldConsoleErr;
-        });
+        }
       };
+
 
       var errorCallback = function () {
         self.mapAPIKeyIsValid = false;

@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 6.8
-Stable tag: 3.9.7
+Stable tag: 3.9.8
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,13 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.9.8 2025-06-05 =
+* Switched to new "Google Map API" library
+* If you use  Google Maps - you must enable "Places API (New)" for existing project! Or just [create new project](https://docs.algolplus.com/algol_phone_order/free-version/settings/common/)
+* Updated UI - minified popup "New Customer" (removed labels for sections)
+* Fixed bug - button "Copy url to populate cart" didn't work
+* Fixed bug - other plugins broke layout for section "Find or create customer"
 
 = 3.9.7 2025-04-23 =
 * Speed up product search

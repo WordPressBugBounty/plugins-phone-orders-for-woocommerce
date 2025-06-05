@@ -595,26 +595,41 @@ export default {
       });
     },
     filterQuickCustomerList(query) {
-      const searchWords = query.toLowerCase().trim().split(/\s+/);
+      var searchWords = query.toLowerCase().trim().split(/\s+/);
 
-      this.customerList = this.quickCustomerList
-        .filter(customer => {
-          const searchableFields = [
-            customer.name.toLowerCase(),
-            customer.email.toLowerCase(),
-            customer.billing_address?.toLowerCase() || '',
-            customer.shipping_address?.toLowerCase() || ''
-          ];
+      var matchesCustomers = this.quickCustomerList.filter(customer => {
+        var searchableFields = [
+          customer.name.toLowerCase(),
+          customer.email.toLowerCase(),
+          customer.billing_address?.toLowerCase() || '',
+          customer.shipping_address?.toLowerCase() || '',
+          String(customer.id)
+        ];
 
-          return searchWords.every(word =>
-            searchableFields.some(field => field.includes(word))
-          );
-        })
-        .map(customer => ({
-          title: `${customer.name} (#${customer.id} &ndash; ${customer.email})`,
-          value: customer.id,
-          type: customer.type
-        }));
+        return searchWords.every(word =>
+          searchableFields.some(field => field.includes(word))
+        );
+      });
+
+      var idMatches = [];
+      var otherMatches = [];
+
+      matchesCustomers.forEach(customer => {
+        var idMatch = searchWords.some(word => String(customer.id).includes(word));
+        if (idMatch) {
+          idMatches.push(customer);
+        } else {
+          otherMatches.push(customer);
+        }
+      });
+
+      var sortedMatches = [...idMatches, ...otherMatches];
+
+      this.customerList = sortedMatches.map(customer => ({
+        title: `${customer.name} (#${customer.id} &ndash; ${customer.email})`,
+        value: customer.id,
+        type: customer.type
+      }));
     },
     asyncFind(query) {
 

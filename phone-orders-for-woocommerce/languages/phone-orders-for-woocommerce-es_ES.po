@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Phone Orders for WooCommerce\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 06:30+0000\n"
-"PO-Revision-Date: 2025-04-23 08:23+0000\n"
+"PO-Revision-Date: 2025-06-05 06:11+0000\n"
 "Last-Translator: Test Admin1\n"
 "Language-Team: Spanish (Spain)\n"
 "Language: es_ES\n"
@@ -34,7 +34,7 @@ msgstr ""
 " <a href=%2$s target=_blank>this free plugin</a>.  Son Compatibles Stripe "
 "and Authorize.Net."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1721
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1719
 msgid "A valid email address is required"
 msgstr "Se requiere una dirección de correo electrónico válida"
 
@@ -113,11 +113,11 @@ msgstr ""
 "Clave API del servicio de validación de direcciones (nombre de usuario de "
 "USPS)"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:827
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:825
 msgid "Address1"
 msgstr "Dirección 1"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:831
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:829
 msgid "Address2"
 msgstr "Dirección 2"
 
@@ -177,7 +177,6 @@ msgid "below customer details"
 msgstr "debajo de los detalles del cliente"
 
 #: classes/tabs/class-wc-phone-orders-tabs-helper.php:231
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:816
 msgid "Billing address"
 msgstr "Dirección de Envío"
 
@@ -219,7 +218,7 @@ msgstr "Almacenamiento en caché de resultados de búsqueda"
 msgid "Can not add %1$d &quot;%2$s&quot; because it is not available."
 msgstr "No se puede agregar %1$d \"%2$s\" porque no está disponible."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1048
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1046
 msgid "Can not create new product"
 msgstr "No se puede crear un nuevo producto"
 
@@ -267,7 +266,7 @@ msgstr "Elija período"
 msgid "Choose your gift"
 msgstr "Elige tu regalo"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:835
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:833
 msgid "City"
 msgstr "Ciudad"
 
@@ -280,11 +279,10 @@ msgid "Collapse WordPress menu"
 msgstr "Contraer el menú de WordPress"
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:86
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:799
 msgid "Common"
 msgstr "Común"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:823
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:821
 msgid "Company"
 msgstr "Común"
 
@@ -320,7 +318,7 @@ msgstr "Copiar url para poblar carrito"
 msgid "Cost"
 msgstr "Costo"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:819
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:817
 msgid "Country"
 msgstr "País"
 
@@ -345,7 +343,7 @@ msgid "Create new order"
 msgstr "Crear nueva orden"
 
 #: classes/class-wc-phone-orders-loader.php:69
-#: classes/class-wc-phone-orders-loader.php:464
+#: classes/class-wc-phone-orders-loader.php:460
 msgid "Create Order"
 msgstr "Crear orden"
 
@@ -358,7 +356,7 @@ msgid "Create product"
 msgstr "Crear producto"
 
 #. Who created it order
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1608
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1606
 #, php-format
 msgid "Created in Phone Orders by: %s."
 msgstr "Creado en Pedidos telefónicos por: %s."
@@ -422,7 +420,7 @@ msgstr ""
 "Mostrar resultados de autocompletar solo para países seleccionados (API de "
 "Google Map)"
 
-#: classes/class-wc-phone-orders-loader.php:468
+#: classes/class-wc-phone-orders-loader.php:464
 msgid "Docs"
 msgstr "Docs"
 
@@ -451,7 +449,7 @@ msgid "Duplicate order"
 msgstr "Duplicar la orden"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:766
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:810
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:809
 msgid "E-mail"
 msgstr "Email"
 
@@ -509,11 +507,11 @@ msgstr ""
 "Encuentra productos ...\n"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:770
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:802
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:801
 msgid "First name"
 msgstr "Primer Nombre"
 
-#: classes/class-wc-phone-orders-loader.php:382
+#: classes/class-wc-phone-orders-loader.php:378
 msgid "five star"
 msgstr "cinco estrellas"
 
@@ -632,7 +630,7 @@ msgstr ""
 "solicitud de soporte</a> y adjuntarle el informe generado."
 
 #. 1: WooCommerce 2:: five stars
-#: classes/class-wc-phone-orders-loader.php:374
+#: classes/class-wc-phone-orders-loader.php:370
 #, php-format
 msgid ""
 "If you like %1$s please leave us a %2$s rating. Thank you so much in advance!"
@@ -652,14 +650,14 @@ msgid "Interface"
 msgstr "Interfaz"
 
 #. A message that the invoice for order has been sent to email
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1759
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1757
 #, php-format
 #| msgid "Invoice for order #%s has been sent to %s"
 msgid "Invoice for order #%1$s has been sent to %2$s"
 msgstr "La factura para la orden #%1$s se ha enviado a%2$s"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1737
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1741
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1735
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1739
 msgid "Invoice manually sent to customer from Phone Order."
 msgstr "Factura enviada manualmente al cliente desde Pedidos telefónicos."
 
@@ -687,7 +685,7 @@ msgid "items"
 msgstr "artículos"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:774
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:806
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:805
 msgid "Last name"
 msgstr "Apellido"
 
@@ -750,7 +748,7 @@ msgctxt "minute placeholder"
 msgid "m"
 msgstr "m"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1057
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1055
 msgid "Missing data"
 msgstr "Datos perdidos"
 
@@ -796,7 +794,7 @@ msgstr "No se encontraron productos"
 msgid "No shipping address was provided."
 msgstr "No se proporcionó una dirección de envío."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1431
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1429
 msgid "No shipping method has been selected."
 msgstr "No se ha seleccionado ningún método de envío."
 
@@ -805,8 +803,8 @@ msgstr "No se ha seleccionado ningún método de envío."
 msgid "No shipping methods available"
 msgstr "No hay métodos de envío disponibles"
 
-#: classes/class-wc-phone-orders-cart-updater.php:1660
-#: classes/class-wc-phone-orders-cart-updater.php:1697
+#: classes/class-wc-phone-orders-cart-updater.php:1661
+#: classes/class-wc-phone-orders-cart-updater.php:1698
 #: classes/tabs/abstract-wc-phone-orders-tab.php:494
 #: classes/tabs/abstract-wc-phone-orders-tab.php:515
 msgid "No value"
@@ -836,7 +834,7 @@ msgstr ""
 "Oops! No se encontraron elementos Considera cambiar la consulta de búsqueda."
 
 #. Order created message
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1372
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1370
 #, php-format
 msgid "Order #%s created"
 msgstr "Pedido #%s creado"
@@ -868,7 +866,7 @@ msgstr "Historial de pedidos &rarr;"
 msgid "Order history for"
 msgstr "Historial de pedidos para"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1710
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1708
 msgid "Order not found"
 msgstr "Pedido no encontrado"
 
@@ -910,11 +908,11 @@ msgid "Payment Type"
 msgstr "Tipo de pago"
 
 #: classes/tabs/class-wc-phone-orders-tabs-helper.php:243
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:847
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:845
 msgid "Phone"
 msgstr "Teléfono"
 
-#: classes/class-wc-phone-orders-loader.php:485
+#: classes/class-wc-phone-orders-loader.php:481
 msgid "Phone order"
 msgstr "Orden de telefono"
 
@@ -924,7 +922,7 @@ msgid "Phone Orders"
 msgstr "Pedidos telefónicos"
 
 #. Name of the plugin
-#: classes/class-wc-phone-orders-loader.php:380
+#: classes/class-wc-phone-orders-loader.php:376
 msgid "Phone Orders for WooCommerce"
 msgstr "Pedidos telefónicos para WooCommerce"
 
@@ -981,7 +979,7 @@ msgstr ""
 "Por favor, complete los campos de facturación / envío obligatorios vacíos "
 "para el cliente"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1417
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1415
 msgid "Please, remove following items from the cart to continue"
 msgstr "Por favor, elimine los siguientes artículos del carrito para continuar"
 
@@ -1020,7 +1018,7 @@ msgstr ""
 "Por favor, visite >WooCommerce>Ajustes>Envío y agregue el método de envío "
 "para las zonas necesarias.\n"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:843
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:841
 msgid "Postcode"
 msgstr "Código Postal"
 
@@ -1280,7 +1278,7 @@ msgstr "SKU"
 msgid "Standard rate"
 msgstr "Tarifa estándar"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:839
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:837
 msgid "State/County"
 msgstr ""
 "Provincia / Región\n"
@@ -1297,7 +1295,7 @@ msgstr "número de calle"
 msgid "Subtotal"
 msgstr "Total parcial"
 
-#: classes/class-wc-phone-orders-loader.php:472
+#: classes/class-wc-phone-orders-loader.php:468
 msgid "Support"
 msgstr "Apoyo"
 
@@ -1318,7 +1316,7 @@ msgid "Taxes"
 msgstr ""
 "Impuestos\n"
 
-#: classes/class-wc-phone-orders-loader.php:385
+#: classes/class-wc-phone-orders-loader.php:381
 msgid "Thanks :)"
 msgstr "Gracias :)"
 
@@ -1330,7 +1328,7 @@ msgstr "El número máximo de países que se pueden seleccionar."
 msgid "There are no records to show"
 msgstr "No hay registros para mostrar."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1750
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1748
 msgid "There was an error sending the email"
 msgstr ""
 "Hubo un error al enviar el correo electrónico\n"

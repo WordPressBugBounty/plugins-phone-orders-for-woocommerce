@@ -1,10 +1,8 @@
 <template>
   <b-row>
     <b-col cols="12" class="google-autocomplete-component">
-      <div class="autocomplete-block alert alert-primary" v-show="isValidAPIKey">
-        <b-form-input :placeholder="inputPlaceholder" ref="autocomplete_address" v-model="autocompleteInput" :key="key"
-                      autocomplete="off"/>
-        <fa-icon icon="search-location" class="autocomplete-icon"/>
+      <div class="autocomplete-block alert alert-primary"  v-show="isValidAPIKey">
+        <div ref="autocomplete_address" style="display:none;"></div>
       </div>
       <b-alert show variant="warning" class="alert-autocomplete" v-show="!isValidAPIKey">
         {{ invalidMessage }}
@@ -92,51 +90,42 @@ export default {
     };
   },
   methods: {
-    init() {
-      if (!this.isValidAPIKey) {
-        return;
-      }
+    async init() {
+      if (!this.isValidAPIKey) return;
 
-      this.autocomplete = null;
       this.key = +(new Date);
 
-      this.$nextTick(() => {
-        var options = {types: ['geocode']};
+      this.$nextTick(async () => {
+        const inputWrapper = this.$refs.autocomplete_address?.$el || this.$refs.autocomplete_address;
 
-        if (typeof window.wpo_init_google_autcomplete === "function") {
-          options = window.wpo_init_google_autcomplete(options);
+        if (!inputWrapper) {
+          console.error('Input element not found');
+          return;
         }
 
-        var autocomplete = new google.maps.places.Autocomplete(
-          this.$refs.autocomplete_address.$el,
-          options
-        );
+        const placeAutocomplete = new google.maps.places.PlaceAutocompleteElement();
 
-        const selectedCountriesList = this.getSettingsOption('google_map_api_selected_countries');
+        placeAutocomplete.classList.add('form-control');
+        placeAutocomplete.classList.add('pac-target-input');
+        placeAutocomplete.style.padding = '0';
+        placeAutocomplete.style.border = 'none';
+        placeAutocomplete.placeholder = this.inputPlaceholder || 'Input your address';
 
-        if (selectedCountriesList !== undefined && selectedCountriesList.length !== 0 && !this.$store.state.add_order.is_google_autocomplete) {
-          autocomplete.setComponentRestrictions({
-            country: selectedCountriesList.map(countryObj => countryObj.value)
-          })
+        const selectedCountriesList = this.getSettingsOption?.('google_map_api_selected_countries');
+        if (selectedCountriesList && selectedCountriesList.length) {
+          placeAutocomplete.componentRestrictions = {
+            country: selectedCountriesList.map(c => c.value),
+          };
         }
 
-        autocomplete.addListener('place_changed', () => {
-          this.onChanged(autocomplete.getPlace());
+        inputWrapper.replaceWith(placeAutocomplete);
+        this.autocomplete = placeAutocomplete;
+
+        placeAutocomplete.addEventListener('gmp-select', async ({ placePrediction }) => {
+          var place = placePrediction.toPlace();
+          await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'location', 'addressComponents'] });
+          this.onChanged(place);
         });
-
-        if (this.getSettingsOption('google_map_api_hide_routes') && !this.$store.state.add_order.is_google_autocomplete) {
-          var get = autocomplete.__proto__.__proto__.get
-          autocomplete.__proto__.__proto__.get = function (prop) {
-            var value = get.call(this, prop)
-            if (prop === 'predictions') {
-              value = value.filter((v) => v.types.indexOf('route') === -1)
-            }
-            return value
-          }
-          this.$store.commit('add_order/setIsGoogleAutocomplete', true)
-        }
-
-        this.autocomplete = autocomplete;
       });
     },
     onChanged(place) {
@@ -226,22 +215,20 @@ export default {
 
         // prefill with empty strings
         // no need to use many if !== 'undefined' checks
-        for (var j = 0; j < componentForm.length; j++) {
-          dataComponents[componentForm[j]] = {
-            'long_name': '',
-            'short_name': '',
-          };
+        for (let type of componentForm) {
+          dataComponents[type] = { long_name: '', short_name: '' };
         }
 
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-          var addressType = place.address_components[i].types[0];
-          var val = {
-            'long_name': place.address_components[i]['long_name'],
-            'short_name': place.address_components[i]['short_name'],
-          };
-          dataComponents[addressType] = val;
+        for (let component of place.addressComponents) {
+          const long_name = component.Fg;
+          const short_name = component.Gg;
+          const types = component.Eg;
+
+          for (let type of types) {
+            if (componentForm.includes(type)) {
+              dataComponents[type] = { long_name, short_name };
+            }
+          }
         }
 
 
@@ -251,8 +238,8 @@ export default {
       }//end IF
 
       var numeral = require("numeral");
-      fields['lat'] = numeral(place.geometry.location.lat()).format("0.0000").toString();
-      fields['lng'] = numeral(place.geometry.location.lng()).format("0.0000").toString();
+      fields['lat'] = numeral(place.location.lat()).format("0.0000").toString();
+      fields['lng'] = numeral(place.location.lng()).format("0.0000").toString();
 
       fields = typeof window[this.customGoogleAutocompleteJsCallback] === 'function' ? window[this.customGoogleAutocompleteJsCallback](fields, dataComponents, place) : fields;
 

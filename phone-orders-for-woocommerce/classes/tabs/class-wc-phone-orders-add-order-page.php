@@ -796,7 +796,6 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
     {
         $fields = array(
             'common'         => array(
-                'label'  => __('Common', 'phone-orders-for-woocommerce'),
                 'fields' => array(
                     'first_name' => array(
                         'label' => __('First name', 'phone-orders-for-woocommerce'),
@@ -813,7 +812,6 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
             ),
             'billingAddress' => array(
-                'label'  => __('Billing address', 'phone-orders-for-woocommerce'),
                 'fields' => array(
                     'country'   => array(
                         'label' => __('Country', 'phone-orders-for-woocommerce'),

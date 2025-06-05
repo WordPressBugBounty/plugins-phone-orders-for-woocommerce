@@ -38,6 +38,11 @@ const app = createApp({
 
         var setActiveTab = () => {
             var hash = this.getWindowLocationHash();
+
+            if (!this.$refs.tabs || !this.$refs.tabs.tabs) {
+                return;
+            }
+
             this.$refs.tabs.tabs.forEach((tab, index) => {
                 if (tab.tab.props.href === hash) {
                     this.$refs.tabs.tabIndex = index;
@@ -65,26 +70,30 @@ const app = createApp({
         this.$store.init(this);
 
         var initAutocomplete = () => {
-
             var self = this;
 
             this.registerGoogleMapJs(this.getSettingsOption('google_map_api_key'), async () => {
-                const {Places} = await google.maps.importLibrary('places');
-                var service = new google.maps.places.AutocompleteService();
+                const { AutocompleteSuggestion } = await google.maps.importLibrary('places');
 
-                service.getQueryPredictions({input: 'pizza near Syd'}, function (predictions, status) {
-                    var success = false;
+                let sessionToken = new google.maps.places.AutocompleteSessionToken();
 
-                    if (status === google.maps.places.PlacesServiceStatus.OK) {
-                        success = true;
-                    } else if (status === google.maps.places.PlacesServiceStatus.REQUEST_DENIED) {
-                        //alert( 'ERROR: Access denied' );
+                let request = {
+                    input: 'pizza near Syd',
+                    sessionToken: sessionToken,
+                };
+
+                try {
+                    const { suggestions } = await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(request);
+
+                    if (suggestions && suggestions.length > 0) {
+                        self.bus.$emit('google-map-autocomplete-ready', { status: true });
                     } else {
-                        //alert( 'ERROR: Error occured accessing the API.' );
+                        self.bus.$emit('google-map-autocomplete-ready', { status: false });
                     }
+                } catch (error) {
+                    self.bus.$emit('google-map-autocomplete-ready', { status: false });
+                }
 
-                    self.bus.$emit('google-map-autocomplete-ready', {status: success});
-                });
             }, () => {
                 self.bus.$emit('google-map-autocomplete-ready', {status: false});
             });

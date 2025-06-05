@@ -263,18 +263,14 @@ class WC_Phone_Orders_Loader
     {
         $key = 'wpo_fill_cart';
 
-        //phpcs:ignore WordPress.Security.NonceVerification.Recommended
-        $nonce = isset($_GET['nonce']) ? sanitize_text_field(wp_unslash($_GET['nonce'])) : "";
-        if ( ! wp_verify_nonce($nonce, 'phone-orders-for-woocommerce')) {
-            return;
-        }
+		//phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ( ! isset($_GET[$key])) {
             return;
         }
 
         include_once 'class-wc-phone-orders-fill-cart.php';
 
-        //phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+        //phpcs:ignore WordPress.Security.ValidatedSanitizedInput, WordPress.Security.NonceVerification.Recommended
         WC_Phone_Orders_Fill_Cart::fill_cart($_GET[$key]);
         //phpcs:ignore WordPress.Security.ValidatedSanitizedInput
         wp_redirect(remove_query_arg(array($key), get_home_url(null, $_SERVER['REQUEST_URI'])));

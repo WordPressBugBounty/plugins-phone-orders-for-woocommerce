@@ -72,7 +72,7 @@
         </b-container>
 
         <b-container v-for="section in sectionFields" :key="section.label">
-          <b-form-group :label="section.label">
+          <b-form-group>
             <template v-for="(group, groupKey) in section.groups">
               <google-autocomplete
                 ref="google_autocomplete"
