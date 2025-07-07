@@ -113,9 +113,7 @@ export default {
 
         const selectedCountriesList = this.getSettingsOption?.('google_map_api_selected_countries');
         if (selectedCountriesList && selectedCountriesList.length) {
-          placeAutocomplete.componentRestrictions = {
-            country: selectedCountriesList.map(c => c.value),
-          };
+          placeAutocomplete.includedRegionCodes = selectedCountriesList.map(c => c.value);
         }
 
         inputWrapper.replaceWith(placeAutocomplete);
@@ -131,10 +129,22 @@ export default {
     onChanged(place) {
       var fields = {};
 
-      var UK_mask = /^([^,]+), ([^,]+), ([^,]+) ([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}), UK$/;
-      var UK_mask_2 = /^([^,]+), ([^,]+) ([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}), UK$/;
-      var UK_results = UK_mask.exec(place.formatted_address);
-      var UK_results_2 = UK_mask_2.exec(place.formatted_address);
+      var UK_mask = /^([^,]+), ([^,]+), ([^,]+) ([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}), (GB|UK)$/;
+      var UK_mask_2 = /^([^,]+), ([^,]+) ([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}), (GB|UK)$/;
+
+      var formattedAddressNew = place.formattedAddress || place.displayName;
+
+      var countryComponent = place.addressComponents.find(c => c.types.includes('country'));
+      var countryLong = countryComponent?.longText || '';
+      var countryShort = countryComponent?.shortText || '';
+
+      if (formattedAddressNew && countryLong && countryShort) {
+        formattedAddressNew = formattedAddressNew.replace(countryLong, countryShort);
+      }
+
+      var UK_results = UK_mask.exec(formattedAddressNew);
+      var UK_results_2 = UK_mask_2.exec(formattedAddressNew);
+
       if (UK_results) {
         fields['address_1'] = UK_results[1];
         fields['address_2'] = UK_results[2];
@@ -220,9 +230,9 @@ export default {
         }
 
         for (let component of place.addressComponents) {
-          const long_name = component.Fg;
-          const short_name = component.Gg;
-          const types = component.Eg;
+          const long_name = component.longText;
+          const short_name = component.shortText;
+          const types = component.types;
 
           for (let type of types) {
             if (componentForm.includes(type)) {

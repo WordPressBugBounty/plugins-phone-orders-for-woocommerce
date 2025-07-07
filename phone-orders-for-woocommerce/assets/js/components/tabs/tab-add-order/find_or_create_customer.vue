@@ -652,7 +652,7 @@ export default {
         this.filterQuickCustomerList(query);
       }
 
-      if((!this.customerList.length && this.searchInOrders) || (!this.searchInOrders && !this.quickSearchCustomers)){
+      if (this.searchInOrders || !this.quickSearchCustomers) {
         this.lastRequestTimeoutID = setTimeout(() => {
           this.axios.get(this.url, {
             params: {

@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 6.8
-Stable tag: 3.9.8
+Stable tag: 3.9.9
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,11 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.9.9 2025-07-07 =
+* Fixed bug - new autocomplete didn't work for many addresses
+* Fixed bug - new autocomplete didn't work when option "Display autocomplete results only for selected countries" was active
+* Added Portuguese language
 
 = 3.9.8 2025-06-05 =
 * Switched to new "Google Map API" library
