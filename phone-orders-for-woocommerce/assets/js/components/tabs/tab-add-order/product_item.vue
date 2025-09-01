@@ -1169,6 +1169,11 @@ export default {
       this.updateVariableAttributeOptions();
       if (this.suitableVariation) {
         this.cost = String(this.suitableVariation.price);
+        this.$store.state.add_order.cart.items.forEach((_item) => {
+          if (_item.variation_id == this.item.variation_id) {
+            _item.variation_id = this.suitableVariation.variation_id;
+          }
+        })
         this.item.variation_id = this.suitableVariation.variation_id;
         this.item.sku = this.suitableVariation.sku;
       } else {

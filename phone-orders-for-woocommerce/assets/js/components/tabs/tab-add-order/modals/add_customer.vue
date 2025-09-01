@@ -244,10 +244,12 @@
       </b-form>
 
       <template v-slot:footer>
-        <div>
+        <div style="display: flex; flex-direction: column; width: 100%">
           <b-alert :show="!!error" variant="danger" class="error-alert">{{ this.error }}</b-alert>
-          <b-button @click="cancel()">{{ cancelLabel }}</b-button>
-          <b-button @click="createCustomer()" variant="primary">{{ saveCustomerLabel }}</b-button>
+          <div style="margin-left: auto">
+            <b-button @click="cancel()">{{ cancelLabel }}</b-button>
+            <b-button @click="createCustomer()" variant="primary">{{ saveCustomerLabel }}</b-button>
+          </div>
         </div>
       </template>
     </b-modal>

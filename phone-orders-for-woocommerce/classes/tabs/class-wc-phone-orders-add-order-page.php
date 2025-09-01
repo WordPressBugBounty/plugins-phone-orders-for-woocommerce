@@ -1216,6 +1216,50 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         return $this->updater->update_customer($id, $customer_data);
     }
 
+    protected function ajax_get_validated_address_usps($request) {
+        $token_expires = $this->option_handler->get_option('address_validation_usps_token_expires');
+
+        if (floatval($token_expires) <= (microtime(true) * 1000)) {
+            $response = $this->refresh_usps_token(
+                $this->option_handler->get_option('address_validation_usps_key'),
+                $this->option_handler->get_option('address_validation_usps_secret')
+            );
+
+            if (!$response['success']) {
+                return $this->wpo_send_json_error($response['data']);
+            }
+        }
+
+        $address = $request['address'];
+
+        $url = "https://apis.usps.com/addresses/v3/address";
+        $body = array(
+            "streetAddress" => $address['street1'],
+            "secondaryAddress" => $address['street2'],
+            "city" => $address['city'],
+            "state" => $address['state'],
+            "ZIPCode" => $address['zip']
+        );
+
+        $response = wp_remote_get($url, array(
+            'body' => $body,
+            'headers' => array(
+                'Authorization' => 'Bearer ' . $this->option_handler->get_option('address_validation_usps_token')
+            )
+        ));
+
+        $respBody = json_decode($response['body']);
+
+        if ( $response['response']['code'] !== 200 || !isset($respBody->address)) {
+            error_log(var_export($respBody->error, true));
+            $errorMsg = isset($respBody->error) ? $respBody->error->message :  __('Unknown error', 'phone-orders-for-woocommerce');
+            return $this->wpo_send_json_error($errorMsg);
+        } else {
+            error_log(var_export($respBody, true));
+            return $this->wpo_send_json_success($respBody->address);
+        }
+    }
+
     protected function ajax_get_formatted_address($request)
     {
         $customer_data = isset($request['data']) ? json_decode(stripslashes($request['data']), true) : array();
@@ -2210,7 +2254,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'limit'   => apply_filters("wpo_search_product_limit", -1, $limit),
         );
         $single_product_search = apply_filters("wpo_search_single_product", false);
-        $post_content_search = apply_filters("wpo_search_post_content", true);
+        $post_content_search = apply_filters("wpo_search_post_content", $this->option_handler->get_option('verbose_search'));
 
         // filter by category/tags ?
         $query_args = array_merge($query_args, $additional_query_args);
@@ -2220,7 +2264,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         } elseif ($single_product_search  AND !empty($term) AND preg_match('#^\d+$#', $term) and ($product = wc_get_product($term)) ) {
             $products_ids = array( (int)$term );
             //exact product by sku
-        } elseif ($single_product_search  AND !empty($term) AND $this->option_handler->get_option('search_by_sku') AND $product_id = wc_get_product_id_by_sku($term) ) {
+        } elseif (!empty($term) AND $this->option_handler->get_option('search_by_sku') AND $product_id = wc_get_product_id_by_sku($term) ) {
             $products_ids = array( $product_id );
         } elseif (isset($term) and $term) { // keyword?
             $products_ids = $this->get_products($term, $query_args, $post_content_search);
@@ -2259,8 +2303,15 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                             }
                         }//end foreach variations
                     }
-                } elseif ($this->is_valid_product($product)) // add simple product or exact variation
-                {
+                } elseif ($this->is_valid_product($product)) { // add simple product or exact variation
+                    if( $product->is_type('variation') AND $showOnlyVariable) {
+                        //must replace product with parent!
+                        $parent = wc_get_product($product->get_parent_id());
+                        if( $parent ) {
+                            $product = $parent;
+                            $product_id = $parent->get_id();
+                        }
+                    }
                     $selected_products[$product_id] = $product;
                 }
             }
@@ -2317,10 +2368,6 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         if ( ! $product->is_purchasable() and $product->is_type('variation') and ! $option_handler->get_option(
                 'sell_disable_variation'
             )) {
-            return false;
-        }
-
-        if ($product->is_type('variation') and $option_handler->get_option('show_only_variable_product')) {
             return false;
         }
 

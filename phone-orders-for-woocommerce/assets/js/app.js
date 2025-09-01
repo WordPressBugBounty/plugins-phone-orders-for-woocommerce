@@ -249,6 +249,7 @@ import checkDateDatetimepicker from './directives/check-date-datetimepicker';
 app.directive("check-date-datetimepicker", checkDateDatetimepicker);
 
 import numeral from "numeral"
+import {add} from "lodash/math";
 
 // Create a global mixin to expose strings, global config, and single backend resource.
 app.mixin({
@@ -346,6 +347,19 @@ app.mixin({
             document.body.appendChild(scriptTag);
 
             successCallback();
+        },
+        getUSPSToken(key, secret, handleResponse) {
+            this.axios.post(this.url, this.qs.stringify({
+                action: 'phone-orders-for-woocommerce',
+                method: 'refresh_usps_token',
+                tab: 'settings',
+                nonce: this.nonce,
+                credentials: {
+                    client_id: key,
+                    client_secret: secret
+                }
+            }))
+                .then(handleResponse)
         },
         removeGetParameter(parameterName) {
             var result = null,
@@ -486,92 +500,48 @@ app.mixin({
             }).join(' ');
         },
         validateAddressByUSPS(address, successCallback, errorCallback) {
+            let usps_key = this.getSettingsOption("address_validation_usps_key");
+            let usps_secret = this.getSettingsOption("address_validation_usps_secret");
 
-            var usps_user_id = this.getSettingsOption('address_validation_service_api_key');
-
-            if (address.country !== 'US' || !usps_user_id) {
+            if (address.country !== 'US' || !usps_key || !usps_secret) {
                 successCallback(address);
                 return;
             }
 
-            var encodeHTML = function (string) {
-                return string.replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&apos;');
-            };
+            this.axios.post(this.url, this.qs.stringify({
+                action: 'phone-orders-for-woocommerce',
+                method: 'get_validated_address_usps',
+                tab: 'add-order',
+                nonce: this.nonce,
+                address: address
+            })).then(res => {
+                let resData = res.data.data;
 
-            var str = '';
+                if (res.data.success) {
+                    let formattedZip = resData.ZIPCode;
 
-            str += '<ZipCodeLookupRequest USERID="' + encodeHTML(usps_user_id) + '"><Address ID="1">';
-            str += '<Address1>' + encodeHTML(address.street1.replace("#", '')) + '</Address1>';
-            str += '<Address2>' + encodeHTML(address.street2.replace("#", '')) + '</Address2>';
-            str += '<City>' + encodeHTML(address.city) + '</City>';
-            str += '<State>' + encodeHTML(address.state) + '</State>';
-            str += '<Zip5>' + encodeHTML(address.zip) + '</Zip5>';
-            str += '<Zip4></Zip4></Address></ZipCodeLookupRequest>';
+                    if (resData.hasOwnProperty('ZIPPlus4') && resData.ZIPPlus4.length > 0) {
+                        formattedZip += '-' + resData.ZIPPlus4
+                    }
 
-            this.axios.get('https://secure.shippingapis.com/ShippingAPI.dll', {
-                params: {
-                    API: 'ZipCodeLookup',
-                    XML: str,
-                }
-            }).then((response) => {
+                    let validatedAddress = {
+                        street1: this.ucwordsAddress(resData.streetAddress),
+                        street2: this.ucwordsAddress(resData.secondaryAddress),
+                        city: this.ucwordsAddress(resData.city),
+                        state: resData.state,
+                        zip: formattedZip
+                    }
 
-                var xmlDoc = null;
-
-                if (window.DOMParser) {
-                    var parser = new DOMParser();
-                    xmlDoc = parser.parseFromString(response.data, "text/xml");
-                } else if (window.ActiveXObject) { // Internet Explorer
-                    xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                    xmlDoc.async = false;
-                    xmlDoc.loadXML(response.data);
+                    successCallback(validatedAddress)
                 } else {
-                    throw new Error("No XML parser found");
-                }
-
-                if (!xmlDoc) {
-                    throw new Error("XML parse error");
-                }
-
-                if (xmlDoc.getElementsByTagName("Error").length) {
-                    var error = PhoneOrdersData.usps_label + ': ' + xmlDoc.getElementsByTagName("Description")[0].childNodes[0].nodeValue;
+                    let regex = /failed with reason:(.+?)$/
+                    if (regex.test(resData)) {
+                        resData = regex.exec(resData)[1]
+                        resData = resData.replaceAll(/[\[|\]:]/g, '')
+                    }
+                    let error = PhoneOrdersData.usps_label + ": " + resData
                     errorCallback(error);
-                    return;
                 }
-
-                var zip = xmlDoc.getElementsByTagName("Zip5")[0].childNodes[0].nodeValue;
-
-                if (xmlDoc.getElementsByTagName("Zip4").length && xmlDoc.getElementsByTagName("Zip4")[0].childNodes.length) {
-                    zip += '-' + xmlDoc.getElementsByTagName("Zip4")[0].childNodes[0].nodeValue;
-                }
-
-                var street1 = '';
-                var street2 = '';
-
-                if (xmlDoc.getElementsByTagName("Address1").length) {
-                    street1 = xmlDoc.getElementsByTagName("Address1")[0].childNodes[0].nodeValue;
-                }
-
-                if (xmlDoc.getElementsByTagName("Address2").length) {
-                    street2 = xmlDoc.getElementsByTagName("Address2")[0].childNodes[0].nodeValue;
-                }
-
-
-                var validated_address = {
-                    // SWAP them!
-                    street1: this.ucwordsAddress(street2),
-                    street2: this.ucwordsAddress(street1),
-                    city: this.ucwordsAddress(xmlDoc.getElementsByTagName("City")[0].childNodes[0].nodeValue),
-                    state: xmlDoc.getElementsByTagName("State")[0].childNodes[0].nodeValue,
-                    zip: zip,
-                };
-
-                successCallback(validated_address);
-
-            }, (error) => {
             });
         },
         clearCartParam(cart) {

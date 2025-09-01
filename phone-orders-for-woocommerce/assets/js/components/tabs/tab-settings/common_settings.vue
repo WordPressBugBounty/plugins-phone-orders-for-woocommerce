@@ -160,21 +160,61 @@
         </tr>
         <tr>
           <td>
-            {{ addressValidationServiceAPIKeyLabel }}
+            {{ addressValidationUSPSAPILabel }}
+
+            <div class="link-note">
+              <a href="https://developers.usps.com/getting-started"
+                 target="_blank">{{ addressValidationUSPSDocumentationLabel }}</a>
+            </div>
           </td>
           <td>
-            <input type="text" class="option" v-model.trim="elAddressValidationServiceAPIKey"
-                   name="address_validation_service_api_key">
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <label>
-              <input type="radio" class="option" v-model="elAddressValidationService" name="address_validation_service"
-                     value="usps">
-              {{ addressValidationServiceUSPSLabel }}
-            </label>
+            <table style="width: 100%">
+              <tr>
+                <td>
+                  {{ addressValidationUSPSKeyLabel }}
+                </td>
+                <td>
+                  <input type="text" class="option" v-model.trim="elAddressValidationUSPSKey"
+                     name="address_validation_usps_key">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  {{ addressValidationUSPSSecretLabel }}
+                </td>
+                <td>
+                  <input type="text" class="option" v-model.trim="elAddressValidationUSPSSecret"
+                     name="address_validation_usps_secret">
+                </td>
+              </tr>
+              <tr v-show="!!elAddressValidationUSPSKey && !!elAddressValidationUSPSSecret">
+                <td colspan="100%">
+                  <button
+                    class="btn btn-secondary btn-sm btn-check-api-key"
+                    @click="refreshUSPSToken"
+                    style="margin-right: 16px"
+                  >
+                    {{ refreshUSPSTokenLabel }}
+                    <loader v-show="isRefreshingUSPS"></loader>
+                  </button>
+                  <span class="block-refresh-usps">
+                    <span class="fa-icon green-color" v-show="USPSTokenRefreshed === true"
+                          :title="refreshedUSPSTokenSuccessTitle">
+                      <fa-icon icon="check-circle"/>
+                    </span>
+                    <span class="fa-icon red-color" v-show="USPSTokenRefreshed === false"
+                          :title="refreshedUSPSTokenErrorTitle">
+                      <fa-icon icon="exclamation-circle"/>
+                    </span>
+                  </span>
+                  <span class="error-message__usps"  v-show="USPSTokenErrorMsg !== '' && USPSTokenErrorMsg !== undefined" >
+                    {{ USPSTokenErrorMsg }}
+                  </span>
+                </td>
+<!--                <td colspan="100%">-->
+<!--                </td>-->
+              </tr>
+            </table>
           </td>
         </tr>
         <tr>
@@ -210,11 +250,11 @@
   width: 10px !important;
 }
 
-.block-input-check-map-api .fa-icon.green-color {
+.block-input-check-map-api .fa-icon.green-color, .block-refresh-usps .fa-icon.green-color {
   color: green;
 }
 
-.block-input-check-map-api .fa-icon.red-color {
+.block-input-check-map-api .fa-icon.red-color, .block-refresh-usps .fa-icon.red-color {
   color: red;
 }
 
@@ -232,16 +272,23 @@
   padding-right: 30px;
 }
 
+.block-refresh-usps {
+  margin-right: 4px;
+}
+
 .link-note {
   margin-top: 5px;
   font-size: 13px;
 }
 
-.form-table td .error-message__api {
+.form-table td .error-message__api, .form-table td .error-message__usps {
   margin-top: 0;
   padding-top: 0;
-  padding-bottom: 10px;
   color: red;
+}
+
+.form-table td .error-message__api {
+  padding-bottom: 10px;
 }
 </style>
 
@@ -404,25 +451,50 @@ export default {
         return 'List is empty.';
       }
     },
-    addressValidationServiceAPIKeyLabel: {
+    addressValidationUSPSAPILabel: {
       default: function () {
-        return 'Address Validation Service API Key (USPS Username)';
+        return 'Address Validation (USPS)';
       }
     },
-    addressValidationServiceAPIKey: {
+    addressValidationUSPSDocumentationLabel: {
+      default: function () {
+        return 'USPS documentation';
+      },
+    },
+    addressValidationUSPSKeyLabel: {
+      default: function () {
+        return 'Consumer Key';
+      }
+    },
+    addressValidationUSPSSecretLabel: {
+      default: function () {
+        return 'Consumer Secret';
+      }
+    },
+    addressValidationUSPSKey: {
       default: function () {
         return '';
       }
     },
-    addressValidationServiceUSPSLabel: {
-      default: function () {
-        return 'USPS';
-      }
-    },
-    addressValidationService: {
+    addressValidationUSPSSecret: {
       default: function () {
         return '';
       }
+    },
+    refreshUSPSTokenLabel: {
+      default: function () {
+        return 'Refresh Token'
+      }
+    },
+    refreshedUSPSTokenSuccessTitle: {
+      default: function () {
+        return 'Check';
+      },
+    },
+    refreshedUSPSTokenErrorTitle: {
+      default: function () {
+        return 'Check';
+      },
     },
     allowToCreateOrdersWithoutPaymentLabel: {
       default: function () {
@@ -439,6 +511,11 @@ export default {
         return 'Select option';
       }
     },
+    unknownErrorLabel: {
+      default: function () {
+        return 'Unknown error';
+      }
+    }
   },
   mounted() {
     this.addSettingsTab(this.getTabsHeaders())
@@ -458,8 +535,11 @@ export default {
       isChecking: false,
       elSwitchCustomerInCart: this.switchCustomerInCart,
       elDisableOrderEmails: this.disableOrderEmails,
-      elAddressValidationServiceAPIKey: this.addressValidationServiceAPIKey,
-      elAddressValidationService: this.addressValidationService,
+      elAddressValidationUSPSKey: this.addressValidationUSPSKey,
+      elAddressValidationUSPSSecret: this.addressValidationUSPSSecret,
+      isRefreshingUSPS: false,
+      USPSTokenRefreshed: null,
+      USPSTokenErrorMsg: '',
       elAllowToCreateOrdersWithoutPayment: this.allowToCreateOrdersWithoutPayment,
     };
   },
@@ -494,8 +574,8 @@ export default {
         google_map_api_selected_countries: this.elGoogleMapAPISelectedCountries,
         switch_customer_while_calc_cart: this.elSwitchCustomerInCart,
         disable_order_emails: this.elDisableOrderEmails,
-        address_validation_service_api_key: this.elAddressValidationServiceAPIKey,
-        address_validation_service: this.elAddressValidationService,
+        address_validation_usps_key: this.elAddressValidationUSPSKey,
+        address_validation_usps_secret: this.elAddressValidationUSPSSecret,
         allow_to_create_orders_without_payment: this.elAllowToCreateOrdersWithoutPayment,
       };
 
@@ -523,7 +603,7 @@ export default {
           self.mapAPIKeyIsValid = Array.isArray(suggestions) && suggestions.length > 0;
         } catch (error) {
 
-          self.mapAPIErrorMsg = error.message || 'Unknown error';
+          self.mapAPIErrorMsg = error.message || self.unknownErrorLabel;
           self.mapAPIKeyIsValid = false;
         } finally {
           self.isChecking = false;
@@ -543,6 +623,25 @@ export default {
       }
 
       this.registerGoogleMapJs(this.mapAPIKey, successCallback, errorCallback);
+    },
+    refreshUSPSToken () {
+      this.isRefreshingUSPS = true;
+
+      const handleResponse = async (res) => {
+        const self = this;
+
+        if (res.hasOwnProperty('data') && res.data.hasOwnProperty('success') && res.data.success) {
+          self.USPSTokenErrorMsg = '';
+          self.USPSTokenRefreshed = true;
+        } else {
+          self.USPSTokenErrorMsg = self.unknownErrorLabel;
+          self.USPSTokenRefreshed = false;
+        }
+
+        self.isRefreshingUSPS = false;
+      }
+
+      this.getUSPSToken(this.elAddressValidationUSPSKey, this.elAddressValidationUSPSSecret, handleResponse)
     },
     getTabsHeaders() {
       return {

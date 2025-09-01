@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Phone Orders for WooCommerce (Pro)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-10-05 06:30+0000\n"
-"PO-Revision-Date: 2025-07-03 10:21+0000\n"
+"PO-Revision-Date: 2025-08-31 05:44+0000\n"
 "Last-Translator: Test Admin1\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -33,11 +33,11 @@ msgstr ""
 "Admin-Bereich bezahlen, indem man <a href=%2$s target=_blank>dieses gratis "
 "Plugin</a> verwendet. Es wird Stripe und Authorize.Net unterstützt."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1719
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1763
 msgid "A valid email address is required"
 msgstr "Eine gültige Email-Adresse ist vonnöten"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:208
+#: classes/tabs/class-wc-phone-orders-settings-page.php:225
 msgid "above customer details"
 msgstr "oben Kundendaten"
 
@@ -104,8 +104,8 @@ msgid "Add to Order"
 msgstr "Zur Bestellung hinzufügen"
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:146
-msgid "Address Validation Service API Key (USPS Username)"
-msgstr "API-Schlüssel des Adressvalidierungsdienstes (USPS-Benutzername)"
+msgid "Address Validation (USPS)"
+msgstr "Adressvalidierung (USPS)"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:825
 msgid "Address1"
@@ -123,23 +123,23 @@ msgstr "Erweiterte Suche"
 msgid "AlgolPlus"
 msgstr "AlgolPlus"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:159
+#: classes/tabs/class-wc-phone-orders-settings-page.php:175
 msgid "Allow to create orders without payment"
 msgstr "Erlauben Sie Bestellungen ohne Bezahlung zu erstellen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:297
+#: classes/tabs/class-wc-phone-orders-settings-page.php:314
 msgid "Allow to create orders without shipping"
 msgstr "Bestellungen können ohne Versand erstellt werden"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:285
+#: classes/tabs/class-wc-phone-orders-settings-page.php:302
 msgid "Allow to edit shipping cost"
 msgstr "Bearbeitungskosten bearbeiten lassen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:288
+#: classes/tabs/class-wc-phone-orders-settings-page.php:305
 msgid "Allow to edit shipping title"
 msgstr "Versandtitel bearbeiten lassen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:234
+#: classes/tabs/class-wc-phone-orders-settings-page.php:251
 msgid "Allow to input fractional qty"
 msgstr "Eingabe von Nachkommastellen zulassen"
 
@@ -166,7 +166,7 @@ msgstr ""
 "Barcode-Modus aktiviert! Die Produktsuche funktioniert erst nach Drücken der "
 "Eingabetaste"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:212
+#: classes/tabs/class-wc-phone-orders-settings-page.php:229
 msgid "below customer details"
 msgstr "unten Kundendaten"
 
@@ -197,11 +197,11 @@ msgstr "\"Bestellung erstellen\" macht nichts"
 msgid "Buy Pro version"
 msgstr "Pro-Version kaufen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:272
+#: classes/tabs/class-wc-phone-orders-settings-page.php:289
 msgid "Caching locations/categories/tags"
 msgstr "Orte/ Kategorien / Schlagwörter zwischenspeichern in den Cache"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:262
+#: classes/tabs/class-wc-phone-orders-settings-page.php:279
 msgid "Caching search results"
 msgstr "Suchergebnisse zwischenspeichern in den Cache"
 
@@ -224,7 +224,7 @@ msgstr "Kann neues Produkt nicht anlegen"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:224
+#: classes/tabs/class-wc-phone-orders-settings-page.php:241
 msgid "Cart Items"
 msgstr "Warenkorb Artikel"
 
@@ -269,7 +269,7 @@ msgstr "Ort"
 msgid "Collapse edit meta"
 msgstr "Meta bearbeiten reduzieren"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:178
+#: classes/tabs/class-wc-phone-orders-settings-page.php:195
 msgid "Collapse WordPress menu"
 msgstr "Reduzieren Sie das WordPress-Menü"
 
@@ -291,6 +291,14 @@ msgstr "Kompatibilität / Codebeispiele / Pro-Version"
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:473
 msgid "Configure product"
 msgstr "Produkt konfigurieren"
+
+#: classes/tabs/class-wc-phone-orders-settings-page.php:160
+msgid "Consumer Key"
+msgstr "Kundenschlüssel"
+
+#: classes/tabs/class-wc-phone-orders-settings-page.php:164
+msgid "Consumer Secret"
+msgstr "Kundengeheimnis"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:156
 msgid "Copied from order"
@@ -321,7 +329,7 @@ msgstr "Land"
 msgid "Coupon Name"
 msgstr "Gutscheinnamen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:261
+#: classes/tabs/class-wc-phone-orders-settings-page.php:278
 msgid "Coupons"
 msgstr "Gutscheine"
 
@@ -353,7 +361,7 @@ msgid "Create product"
 msgstr "Produkt erstellen"
 
 #. Who created it order
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1606
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1650
 #, php-format
 msgid "Created in Phone Orders by: %s."
 msgstr "Erstellt in Telefonbestellungen von: %s."
@@ -386,7 +394,7 @@ msgstr "Vom Kunden angemerkt"
 msgid "Date"
 msgstr "Datum"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:291
+#: classes/tabs/class-wc-phone-orders-settings-page.php:308
 msgid "Default shipping method"
 msgstr "Standard Versandart"
 
@@ -399,8 +407,8 @@ msgstr "Site-Standard"
 msgid "Delete item"
 msgstr "Artikel entfernen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:264
-#: classes/tabs/class-wc-phone-orders-settings-page.php:277
+#: classes/tabs/class-wc-phone-orders-settings-page.php:281
+#: classes/tabs/class-wc-phone-orders-settings-page.php:294
 msgid "Disable cache"
 msgstr "Cache abschalten"
 
@@ -425,7 +433,7 @@ msgstr "Dokumentation"
 msgid "Don't apply pricing rules"
 msgstr "Wenden Sie keine Preisregeln an"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:174
+#: classes/tabs/class-wc-phone-orders-settings-page.php:191
 msgid "Don't close popup on click outside"
 msgstr "Schließen Sie das Popup nicht, wenn Sie außerhalb klicken"
 
@@ -569,7 +577,7 @@ msgstr "Helpdesk-System"
 msgid "Hide results without house number"
 msgstr "Ergebnisse ohne Hausnummer ausblenden"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:256
+#: classes/tabs/class-wc-phone-orders-settings-page.php:273
 msgid "Hide tax line for item"
 msgstr "Steuerzeile für Artikel ausblenden"
 
@@ -579,8 +587,8 @@ msgctxt "hour placeholder"
 msgid "h"
 msgstr "h"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:263
-#: classes/tabs/class-wc-phone-orders-settings-page.php:276
+#: classes/tabs/class-wc-phone-orders-settings-page.php:280
+#: classes/tabs/class-wc-phone-orders-settings-page.php:293
 msgid "hours"
 msgstr "Stunden"
 
@@ -640,19 +648,19 @@ msgstr ""
 msgid "Input your address"
 msgstr "Geben Sie Ihre Adresse ein"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:169
+#: classes/tabs/class-wc-phone-orders-settings-page.php:186
 msgid "Interface"
 msgstr "Schnittstelle"
 
 #. A message that the invoice for order has been sent to email
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1757
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1801
 #, php-format
 #| msgid "Invoice for order #%s has been sent to %s"
 msgid "Invoice for order #%1$s has been sent to %2$s"
 msgstr "Rechnung für Bestellung #%1$s wurde an %2$s versandt"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1735
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1739
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1779
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1783
 msgid "Invoice manually sent to customer from Phone Order."
 msgstr "Rechnung manuell an den Kunden aus Telefonbestellungen gesendet."
 
@@ -688,7 +696,7 @@ msgstr "Nachname"
 msgid "Latitude"
 msgstr "Breite"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:187
+#: classes/tabs/class-wc-phone-orders-settings-page.php:204
 msgid "Layout"
 msgstr "Layout"
 
@@ -701,7 +709,7 @@ msgid "Line item name"
 msgstr "Einzelpostenname"
 
 #: classes/tabs/class-wc-phone-orders-settings-page.php:126
-#: classes/tabs/class-wc-phone-orders-settings-page.php:304
+#: classes/tabs/class-wc-phone-orders-settings-page.php:321
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:95
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:105
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:142
@@ -787,7 +795,7 @@ msgstr "Keine Produkte gefunden"
 msgid "No shipping address was provided."
 msgstr "Es wurde keine Versandanschrift angelegt."
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1429
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1473
 msgid "No shipping method has been selected."
 msgstr "Es wurde keine Versandart ausgewählt."
 
@@ -826,7 +834,7 @@ msgstr ""
 "Ups! Keine Elemente gefunden. Erwägen Sie bitte, die Suchanfrage abzuändern."
 
 #. Order created message
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1370
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1414
 #, php-format
 msgid "Order #%s created"
 msgstr "Bestellung #%s wurde angelegt"
@@ -846,7 +854,7 @@ msgstr "Bestellwährung"
 msgid "Order date"
 msgstr "Bestelldatum"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:204
+#: classes/tabs/class-wc-phone-orders-settings-page.php:221
 msgid "Order fields position"
 msgstr "Bestellfelder Position"
 
@@ -858,7 +866,7 @@ msgstr "Bestellhistorie &rarr;"
 msgid "Order history for"
 msgstr "Bestellhistorie für"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1708
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1752
 msgid "Order not found"
 msgstr "Bestellung nicht gefunden"
 
@@ -972,7 +980,7 @@ msgstr ""
 "Bitte füllen Sie die leeren erforderlichen Rechnungs- / Versandfelder für "
 "den Kunden aus"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1415
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1459
 msgid "Please, remove following items from the cart to continue"
 msgstr ""
 "Bitte entfernen Sie die folgenden Artikel aus dem Warenkorb, um fortzufahren"
@@ -1065,9 +1073,13 @@ msgstr "Weiterlesen"
 msgid "Recalculate"
 msgstr "Neu berechnen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:271
+#: classes/tabs/class-wc-phone-orders-settings-page.php:288
 msgid "References"
 msgstr "Referenzen"
+
+#: classes/tabs/class-wc-phone-orders-settings-page.php:168
+msgid "Refresh Token"
+msgstr "Aktualisierungstoken"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:82
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:607
@@ -1082,8 +1094,8 @@ msgstr "wird von einigen Preis-Plugins benötigt"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:265
-#: classes/tabs/class-wc-phone-orders-settings-page.php:278
+#: classes/tabs/class-wc-phone-orders-settings-page.php:282
+#: classes/tabs/class-wc-phone-orders-settings-page.php:295
 msgid "Reset cache"
 msgstr "Cache zurücksetzen"
 
@@ -1107,7 +1119,7 @@ msgstr "Änderungen speichern"
 msgid "Save customer"
 msgstr "Kunde speichern"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:233
+#: classes/tabs/class-wc-phone-orders-settings-page.php:250
 msgid "Scrollable cart contents"
 msgstr "Inhalt des Rollwagens"
 
@@ -1126,7 +1138,7 @@ msgstr "Tippe um zu suchen"
 msgid "Select customer to see purchased products"
 msgstr "Wählen Sie „Kunde“ aus, um gekaufte Produkte anzuzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:166
+#: classes/tabs/class-wc-phone-orders-settings-page.php:182
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:106
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:124
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:191
@@ -1192,7 +1204,7 @@ msgstr "Einstellungen wurden nicht aktualisiert"
 msgid "Ship to a different address?"
 msgstr "An andere Adresse versenden?"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:284
+#: classes/tabs/class-wc-phone-orders-settings-page.php:301
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:487
 #: classes/tabs/class-wc-phone-orders-list-log.php:62
 msgid "Shipping"
@@ -1215,39 +1227,39 @@ msgstr "Versandmethode"
 msgid "Short FAQ"
 msgstr "Kurzes FAQ"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:225
+#: classes/tabs/class-wc-phone-orders-settings-page.php:242
 msgid "Show button \"Copy url to populate cart\""
 msgstr "Schaltfläche \"URL zum Auffüllen des Warenkorbs kopieren\" anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:242
+#: classes/tabs/class-wc-phone-orders-settings-page.php:259
 msgid "Show column \"Discount\""
 msgstr "Spalte \"Rabatt\" anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:196
+#: classes/tabs/class-wc-phone-orders-settings-page.php:213
 msgid "Show currency selector"
 msgstr "Währungsauswahl anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:255
+#: classes/tabs/class-wc-phone-orders-settings-page.php:272
 msgid "Show detailed taxes"
 msgstr "Detaillierte Steuern anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:247
+#: classes/tabs/class-wc-phone-orders-settings-page.php:264
 msgid "Show icon for phone orders in orders list"
 msgstr "Symbol für telefonische Bestellungen in der Bestellliste anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:188
+#: classes/tabs/class-wc-phone-orders-settings-page.php:205
 msgid "Show order date/time"
 msgstr "Bestelldatum / -uhrzeit anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:192
+#: classes/tabs/class-wc-phone-orders-settings-page.php:209
 msgid "Show order status"
 msgstr "Auftragsstatus anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:200
+#: classes/tabs/class-wc-phone-orders-settings-page.php:217
 msgid "Show payment method"
 msgstr "Zahlungsmethode anzeigen"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:170
+#: classes/tabs/class-wc-phone-orders-settings-page.php:187
 msgid "Show records for last X days in log"
 msgstr "Zeige Aufzeichungen der letzten X Tage im Logbuch"
 
@@ -1288,7 +1300,7 @@ msgstr "Unterstützung"
 msgid "Switch customer during cart calculations"
 msgstr "Kunden während der Warenkorbberechnung wechseln"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:254
+#: classes/tabs/class-wc-phone-orders-settings-page.php:271
 msgid "Tax"
 msgstr "MwSt"
 
@@ -1312,7 +1324,7 @@ msgstr "Die maximale Anzahl der Länder, die ausgewählt werden können"
 msgid "There are no records to show"
 msgstr "Es gibt keine Aufzeichnungen zu zeigen"
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1748
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1792
 msgid "There was an error sending the email"
 msgstr "Es gab einen Fehler beim Versand der E-Mail"
 
@@ -1362,6 +1374,12 @@ msgstr "Geben Sie den Suchbegriff ein, um die Ergebnisse anzuzeigen"
 msgid "Unexpected output"
 msgstr "Unerwarteter Ausgang"
 
+#: classes/tabs/class-wc-phone-orders-settings-page.php:183
+#: classes/tabs/abstract-wc-phone-orders-tab.php:814
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1255
+msgid "Unknown error"
+msgstr "Unbekannter Fehler"
+
 #. A message about an unknown product
 #: classes/class-wc-phone-orders-fill-cart.php:56
 msgid "Unknown product &quot;%d&quot;."
@@ -1376,9 +1394,20 @@ msgid "Username"
 msgstr "Benutzername"
 
 #: classes/class-wc-phone-orders-main.php:153
-#: classes/tabs/class-wc-phone-orders-settings-page.php:154
 msgid "USPS"
 msgstr "USPS"
+
+#: classes/tabs/class-wc-phone-orders-settings-page.php:150
+msgid "USPS documentation"
+msgstr "USPS-Dokumentation"
+
+#: classes/tabs/class-wc-phone-orders-settings-page.php:173
+msgid "USPS token not refreshed"
+msgstr "USPS-Token nicht aktualisiert"
+
+#: classes/tabs/class-wc-phone-orders-settings-page.php:172
+msgid "USPS token refreshed"
+msgstr "USPS-Token aktualisiert"
 
 #: classes/tabs/class-wc-phone-orders-add-order-page.php:534
 msgid "Variation ID"
@@ -1400,7 +1429,7 @@ msgstr "Andere Aufträge anzeigen &rarr;"
 msgid "Want to pay order as customer?"
 msgstr "Bestellung als Kunde bezahlen?"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:229
+#: classes/tabs/class-wc-phone-orders-settings-page.php:246
 msgid "warning : this feature is not compatible with discounts"
 msgstr "Warnung: Diese Funktion ist nicht mit Rabatten kompatibel"
 
@@ -1424,7 +1453,7 @@ msgstr "mit Steuern"
 msgid "without tax"
 msgstr "ohne Steuer"
 
-#: classes/tabs/class-wc-phone-orders-settings-page.php:246
+#: classes/tabs/class-wc-phone-orders-settings-page.php:263
 msgid "WooCommerce"
 msgstr "WooCommerce"
 

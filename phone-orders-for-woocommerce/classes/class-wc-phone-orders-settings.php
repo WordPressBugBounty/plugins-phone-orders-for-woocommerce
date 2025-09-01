@@ -21,8 +21,10 @@ class WC_Phone_Orders_Settings
         'google_map_api_hide_routes'        => false,
         'google_map_api_selected_countries' => array(),
 
-        'address_validation_service_api_key'     => '',
-        'address_validation_service'             => 'usps',
+        'address_validation_usps_key'     => '',
+        'address_validation_usps_secret'  => '',
+        'address_validation_usps_token'   => '',
+        'address_validation_usps_token_expires'   => '',
         'allow_to_create_orders_without_payment' => false,
         'order_default_zones_shipping_method'    => array(),
 
@@ -38,6 +40,7 @@ class WC_Phone_Orders_Settings
         'show_column_discount'           => false,
         'dont_close_popup_click_outside' => true,
         'hide_tax_line_product_item'     => false,
+        'hide_totals_without_tax'        => false,
         'collapse_wp_menu'               => false,
 
         'switch_customer_while_calc_cart' => false,
@@ -106,16 +109,23 @@ class WC_Phone_Orders_Settings
                 'filter'  => FILTER_CALLBACK,
                 'options' => array($this, 'filter_sanitize_string')
             ),
-
-            'address_validation_service_api_key'     => array(
+            'address_validation_usps_key'     => array(
+                'filter'  => FILTER_CALLBACK,
+                'options' => array($this, 'filter_sanitize_string')
+            ),
+            'address_validation_usps_secret'     => array(
+                'filter'  => FILTER_CALLBACK,
+                'options' => array($this, 'filter_sanitize_string')
+            ),
+            'address_validation_usps_token'     => array(
+                'filter'  => FILTER_CALLBACK,
+                'options' => array($this, 'filter_sanitize_string')
+            ),
+            'address_validation_usps_token_expires'     => array(
                 'filter'  => FILTER_CALLBACK,
                 'options' => array($this, 'filter_sanitize_string')
             ),
             'allow_to_create_orders_without_payment' => FILTER_VALIDATE_BOOLEAN,
-            'address_validation_service'             => array(
-                'filter'  => FILTER_CALLBACK,
-                'options' => array($this, 'filter_sanitize_string')
-            ),
             'order_default_zones_shipping_method'    => array(
                 'filter'  => FILTER_CALLBACK,
                 'options' => array($this, 'filter_sanitize_string_array'),
@@ -142,6 +152,7 @@ class WC_Phone_Orders_Settings
             'show_column_discount'           => FILTER_VALIDATE_BOOLEAN,
             'dont_close_popup_click_outside' => FILTER_VALIDATE_BOOLEAN,
             'hide_tax_line_product_item'     => FILTER_VALIDATE_BOOLEAN,
+            'hide_totals_without_tax'        => FILTER_VALIDATE_BOOLEAN,
             'collapse_wp_menu'               => FILTER_VALIDATE_BOOLEAN,
 
             'switch_customer_while_calc_cart' => FILTER_VALIDATE_BOOLEAN,

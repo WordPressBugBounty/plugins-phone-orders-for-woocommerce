@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 6.8
-Stable tag: 3.9.9
+Stable tag: 3.10.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,10 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.10.0 2025-09-01 =
+* USPS address validation uses [oAuth api!](https://developers.usps.com/getting-started)
+* Fixed bug - product search can't find variations by exact name
 
 = 3.9.9 2025-07-07 =
 * Fixed bug - new autocomplete didn't work for many addresses

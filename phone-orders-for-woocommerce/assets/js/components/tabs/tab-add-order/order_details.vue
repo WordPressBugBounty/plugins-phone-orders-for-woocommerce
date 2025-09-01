@@ -310,7 +310,8 @@
             <tr>
               <td class="label-total">{{ subtotalLabel }}</td>
               <td width="1%"></td>
-              <td class="subtotal">
+              <td v-if="hideTotalsWithoutTax"></td>
+              <td class="subtotal" v-else>
                 <strong v-html="wcPrice(subtotal)"></strong>
               </td>
               <td class="total-value subtotal">
@@ -326,7 +327,7 @@
                                                @click.prevent.stop="cartEnabled ? removeCoupon(coupon, index) : null"
                                                :class="{disabled: !cartEnabled}">[{{ removeLabel }}]
 					    </a>
-					    <span v-if="coupon.amount" v-html="wcPrice(coupon.amount)"></span>
+					    <span v-if="coupon.amount" v-show="!hideTotalsWithoutTax" v-html="wcPrice(coupon.amount)"></span>
                                         </span>
               </td>
               <td class="total-value">
@@ -371,7 +372,8 @@
                 </a>
               </td>
               <td width="1%"></td>
-              <td>
+              <td v-if="hideTotalsWithoutTax"></td>
+              <td v-else>
                 <strong v-show="discount && discountAmount" v-html="wcPrice(discountAmount)"></strong>
               </td>
               <td class="total-value">
@@ -391,7 +393,8 @@
                                                :class="{disabled: !cartEnabled}">
                                                 [{{ removeLabel }}]
                                             </a>
-					    <span
+
+					    <span v-show="!hideTotalsWithoutTax"
                 v-html="wcPrice( (fee.type === 'percent' ? subtotal * fee.original_amount / 100  : fee.amount) )"></span>
                                         </span>
               </td>
@@ -440,7 +443,8 @@
 
               <td width="1%"/>
 
-              <td>
+              <td v-if="hideTotalsWithoutTax"></td>
+              <td v-else>
                 <span class="shipping-value amount"
                       v-if="shippingPackage.chosen_rate && shippingPackage.chosen_rate.cost"
                       v-html="wcPrice(shippingPackage.chosen_rate.cost)"/>
@@ -455,21 +459,23 @@
             <tr class="order-discount-line order-total-line--updated">
               <td class="label-total">{{ discountLabel }}</td>
               <td width="1%"></td>
-              <td class="total" style="border-top: 1px solid grey;" v-html="wcPrice(totalDiscount)"></td>
+              <td v-if="hideTotalsWithoutTax"></td>
+              <td class="total" v-else style="border-top: 1px solid grey;" v-html="wcPrice(totalDiscount)"></td>
               <td class="total-value" v-html="wcPrice(totalDiscountWithTax)"></td>
             </tr>
             <tr v-if="showTotalTax" class="order-taxes-line order-total-line--updated">
               <td class="label-total">{{ taxLabel }}:</td>
               <td width="1%"></td>
-              <td class=""></td>
+              <td></td>
               <td class="total total-value" v-html="wcPrice(totalTax)"></td>
             </tr>
 
             <tr v-if="showTaxTotalsOption" class="order-taxes-line order-total-line--updated"
                 v-for="(rateTotal, code) in taxTotals">
               <td class="label-total"><span v-if="!showTotalTax">{{ taxLabel }}</span></td>
-              <td width="1%"></td>
-              <td class="">
+              <td width="1%" ></td>
+              <td v-if="hideTotalsWithoutTax"></td>
+              <td class="" v-else>
                 <span>{{ code }}</span><span>({{ rateTotal.formatted_percent }})</span>
               </td>
               <td class="total total-value" v-html="wcPrice(rateTotal.amount)"></td>
@@ -516,7 +522,8 @@
             <tr class="order-total-line order-total-line--updated">
               <td class="label-total">{{ orderTotalLabel }}</td>
               <td width="1%"></td>
-              <td class="total" v-html="wcPrice(orderTotal)"></td>
+              <td v-if="hideTotalsWithoutTax"></td>
+              <td class="total" v-else v-html="wcPrice(orderTotal)"></td>
               <td class="total total-value" v-html="wcPrice(orderTotalWithTax)"></td>
             </tr>
             <tr v-if="orderTotalCustomHtml">
@@ -1976,6 +1983,9 @@ export default {
     },
     scrollableCartContentsOption() {
       return this.getSettingsOption('scrollable_cart_contents');
+    },
+    hideTotalsWithoutTax() {
+      return this.getSettingsOption('hide_totals_without_tax');
     },
     excludeIDs() {
 

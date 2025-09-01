@@ -205,10 +205,12 @@
                         v-if="this.addressType === 'shipping'">{{ copyFromBillingAddressLabel }}
               </b-button>
             </b-col>
-            <b-col cols="12" md="9" style="text-align: right">
+            <b-col cols="12" md="9" style="width: 100%; display: flex; flex-direction: column">
               <b-alert :show="!!error" variant="danger" class="error-alert">{{ this.error }}</b-alert>
-              <b-button @click="cancel()">{{ cancelLabel }}</b-button>
-              <b-button @click="saveAddress()" variant="primary">{{ saveAddressLabel }}</b-button>
+              <div style="margin-left: auto">
+                <b-button @click="cancel()">{{ cancelLabel }}</b-button>
+                <b-button @click="saveAddress()" variant="primary">{{ saveAddressLabel }}</b-button>
+              </div>
               <slot
                 name="multi-addresses-buttons-slot"
                 :customer-group-fields="groupFields"

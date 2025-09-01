@@ -143,18 +143,34 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'orderStatusesList'         => $this->make_order_statuses_list(),
                     'disableOrderEmails'        => $this->option_handler->get_option('disable_order_emails'),
 
-                    'addressValidationServiceAPIKeyLabel' => __(
-                        'Address Validation Service API Key (USPS Username)',
+                    'addressValidationUSPSAPILabel' => __(
+                        'Address Validation (USPS)',
                         'phone-orders-for-woocommerce'
                     ),
-                    'addressValidationServiceAPIKey'      => $this->option_handler->get_option(
-                        'address_validation_service_api_key'
+                    'addressValidationUSPSDocumentationLabel' => __(
+                        'USPS documentation',
+                        'phone-orders-for-woocommerce'
                     ),
-
-                    'addressValidationServiceUSPSLabel' => __('USPS', 'phone-orders-for-woocommerce'),
-                    'addressValidationService'          => $this->option_handler->get_option(
-                        'address_validation_service'
+                    'addressValidationUSPSKey'      => $this->option_handler->get_option(
+                        'address_validation_usps_key'
                     ),
+                    'addressValidationUSPSSecret'      => $this->option_handler->get_option(
+                        'address_validation_usps_secret'
+                    ),
+                    'addressValidationUSPSKeyLabel'      => __(
+                        'Consumer Key',
+                        'phone-orders-for-woocommerce'
+                    ),
+                    'addressValidationUSPSSecretLabel'      => __(
+                        'Consumer Secret',
+                        'phone-orders-for-woocommerce'
+                    ),
+                    'refreshUSPSTokenLabel' => __(
+                        'Refresh Token',
+                        'phone-orders-for-woocommerce'
+                    ),
+                    'refreshedUSPSTokenSuccessTitle'     => __('USPS token refreshed', 'phone-orders-for-woocommerce'),
+                    'refreshedUSPSTokenErrorTitle'       => __('USPS token not refreshed', 'phone-orders-for-woocommerce'),
 
                     'allowToCreateOrdersWithoutPaymentLabel' => __(
                         'Allow to create orders without payment',
@@ -164,6 +180,7 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                         'allow_to_create_orders_without_payment'
                     ),
                     'selectOptionLabel' => __('Select option', 'phone-orders-for-woocommerce'),
+                    'unknownErrorLabel' => __('Unknown error', 'phone-orders-for-woocommerce'),
                 ),
                 'interfaceSettings'   => array(
                     'title'                           => __("Interface", 'phone-orders-for-woocommerce'),
@@ -410,6 +427,12 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
     private function generate_session_key()
     {
         return md5(time() . wp_rand(1, 100000));
+    }
+
+    protected function ajax_refresh_usps_token($request) {
+        $credentials = $request['credentials'];
+
+        return $this->refresh_usps_token($credentials['client_id'], $credentials['client_secret']);
     }
 
     protected function ajax_save_settings($request)

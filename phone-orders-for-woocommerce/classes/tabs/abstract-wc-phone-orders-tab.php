@@ -793,6 +793,35 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
         }
     }
 
+    protected function refresh_usps_token($clientID, $clientSecret) {
+        $url = 'https://apis.usps.com/oauth2/v3/token';
+
+        $body = [
+            'grant_type' => 'client_credentials',
+            'client_id' => $clientID,
+            'client_secret' => $clientSecret,
+            'scope' => 'addresses',
+        ];
+
+        $response = wp_remote_post($url, array(
+            'body' => $body,
+            'headers' => array()
+        ));
+
+        $respBody = json_decode($response['body']);
+
+        if ( $response['response']['code'] !== 200 && !isset($respBody->access_token) ) {
+            $errorMsg = isset($respBody->error_description) ? __('Unknown error', 'phone-orders-for-woocommerce') : $respBody->error_description;
+            return $this->wpo_send_json_error($errorMsg);
+        } else {
+            $this->option_handler->set_option('address_validation_usps_key', $clientID);
+            $this->option_handler->set_option('address_validation_usps_secret', $clientSecret);
+            $this->option_handler->set_option('address_validation_usps_token', $respBody->access_token);
+            $this->option_handler->set_option('address_validation_usps_token_expires', strval($respBody->issued_at + ($respBody->expires_in * 1000)));
+            return $this->wpo_send_json_success('');
+        }
+    }
+
     protected function clear_cart_for_switch_user($switched_customer_id)
     {
         if (apply_filters(
