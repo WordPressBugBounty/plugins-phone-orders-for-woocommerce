@@ -90,6 +90,7 @@
       </edit-address-modal>
       <configure-product-modal v-bind="configureProductModalSettings"></configure-product-modal>
       <order-history-customer-modal v-bind="orderHistoryCustomerModalSettings"></order-history-customer-modal>
+      <load-sessions-modal v-bind="loadSessionsModalSettings"></load-sessions-modal>
       <add-gift-card-modal v-bind="addGiftCardModalSettings"></add-gift-card-modal>
       <choose-gifts-modal v-bind="chooseGiftsModalSettings"></choose-gifts-modal>
       <product-description-modal v-bind="productDescriptionModalSettings"></product-description-modal>
@@ -386,6 +387,7 @@
 import addCouponModal from './tab-add-order/modals/add_coupon.vue';
 import addCustomItemModal from './tab-add-order/modals/add_custom_item_modal.vue';
 import addCustomerModal from './tab-add-order/modals/add_customer.vue';
+import loadSessionsModal from './tab-add-order/modals/load_sessions.vue';
 import addDiscountModal from './tab-add-order/modals/add_discount.vue';
 import addFeeModal from './tab-add-order/modals/add_fee.vue';
 import shippingModal from './tab-add-order/modals/shipping_modal.vue';
@@ -451,6 +453,11 @@ export default {
       }
     },
     orderHistoryCustomerModalSettings: {
+      default: function () {
+        return {};
+      }
+    },
+    loadSessionsModalSettings: {
       default: function () {
         return {};
       }
@@ -563,6 +570,7 @@ export default {
     addCouponModal,
     addCustomItemModal,
     addCustomerModal,
+    loadSessionsModal,
     addDiscountModal,
     addFeeModal,
     shippingModal,

@@ -172,15 +172,17 @@
               </multiselect>
 
               <button id="wpo-advanced-search-button" class="btn btn-primary"
-                      @click="cartEnabled ? openSelectSearchProduct() : null" :class="{disabled: !cartEnabled}">
+                      @click="cartEnabled ? openSelectSearchProduct() : null" :class="{disabled: !cartEnabled}"
+                      v-show="!hideButtonAdvancedSearch"
+              >
                 {{ browseProductsMultipleSelectedProductsLabel }}
               </button>
               <button id="wpo-product-history-button" class="btn btn-primary" v-if="cartEnabled && +customer.id"
-                      v-b-modal="'productHistoryCustomer'" :title="productHistoryButtonDescription">
+                      v-b-modal="'productHistoryCustomer'" :title="productHistoryButtonDescription" v-show="!hideButtonProductsHistory">
                 {{ productHistoryButtonLabel }}
               </button>
               <button id="wpo-product-history-button" class="btn btn-primary disabled" v-else
-                      :title="productHistoryButtonDescription">
+                      :title="productHistoryButtonDescription" v-show="!hideButtonProductsHistory">
                 {{ productHistoryButtonLabel }}
               </button>
             </div>
@@ -1130,6 +1132,7 @@ import _ from 'lodash';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faCopy} from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon as FaIcon} from '@fortawesome/vue-fontawesome';
+import levenshtein from 'js-levenshtein';
 
 library.add(faCopy)
 
@@ -1338,7 +1341,7 @@ export default {
     },
     productsTableCostColumnTitle: {
       default: function () {
-        return 'Cost';
+        return 'Price';
       }
     },
     productsTableQtyColumnTitle: {
@@ -1686,6 +1689,16 @@ export default {
         return 'Select customer to see purchased products';
       }
     },
+    hideButtonAdvancedSearch: {
+      default: function () {
+        return false;
+      }
+    },
+    hideButtonProductsHistory: {
+      default: function () {
+        return false;
+      }
+    },
   },
   data: function () {
     return {
@@ -1807,6 +1820,9 @@ export default {
     },
     findProductsList(newVal) {
       this.$nextTick(() => {
+        const el = this.$refs.productSearchNoResult
+        if (!el || !el.parentElement || !el.parentElement.parentElement) return
+
         if ((this.$refs.productSelectSearch.search !== '' || this.isExistsAdditionalProductSearchParams) && !newVal.length) {
           this.$refs.productSearchNoResult.parentElement.parentElement.setAttribute('style', 'display: inline-block;')
         } else {
@@ -2308,6 +2324,12 @@ export default {
         })
       }
 
+      products.sort((a, b) => {
+        const distA = levenshtein(query.toLowerCase(), a.title.toLowerCase());
+        const distB = levenshtein(query.toLowerCase(), b.title.toLowerCase());
+        return distA - distB;
+      });
+
       if (products.length > this.numberOfProductsToShow) {
         products = products.slice(0, this.numberOfProductsToShow)
       }
@@ -2336,6 +2358,14 @@ export default {
 
       let newShippingPackage = Object.assign({}, shippingPackage, {
         chosen_rate: chosenRate,
+        custom_price: {
+          'enabled': shippingPackage.custom_price.enabled,
+          'cost': chosenRate.cost
+        },
+        custom_title: {
+          'enabled': shippingPackage.custom_title.enabled,
+          'title': chosenRate.label
+        },
       });
 
       this.shippingPackages.forEach((item) => {
@@ -2415,6 +2445,12 @@ export default {
               });
             }
           }
+
+          products.sort((a, b) => {
+            const distA = levenshtein(query.toLowerCase(), a.title.toLowerCase());
+            const distB = levenshtein(query.toLowerCase(), b.title.toLowerCase());
+            return distA - distB;
+          });
 
           this.isLoading = false;
 
@@ -3170,6 +3206,8 @@ export default {
             });
           }
         }
+
+        products.sort((a, b) => a.title.localeCompare(b.title));
 
         this.defaultFindProducts = products;
 

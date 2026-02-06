@@ -4,8 +4,8 @@ Donate link: https://paypal.me/ipprokaev/0usd
 Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
-Tested up to: 6.8
-Stable tag: 3.10.0
+Tested up to: 6.9
+Stable tag: 3.10.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,8 +14,9 @@ Easy way to take a manual/phone order in WooCommerce
 == Description ==
 
 Speeds up adding manual/phone orders in WooCommerce backend.
+Discount plugins correctly adjust product price too.
 
-Having created an order, you can view the order, send an invoice and complete payment of the order ( [Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD) only ).
+Having created an order, you can view the order, send an invoice and complete payment of the order ( [Pro version only](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/)  ).
 
 = Features =
 * UI was adapted for keyboard input
@@ -29,21 +30,18 @@ Having created an order, you can view the order, send an invoice and complete pa
 * Log created orders
 
 = Pro features =
-* A lot of UI options to suit different workflows and setups
-* Separate web page for adding orders (without access to /wp-admin)
 * Create new order based on existing order
 * Pause and resume the order
+* Separate web page for adding orders (without access to /wp-admin)
 * Customer search by shipping/billing fields
 * Configure fields and default values while adding new customers
+* Setup custom fields for the order/customer
 * Define products that can be sold (out of stock? without price?)
 * Support composite/bundled/other complex products
 * Add any additional fees
-* Setup custom fields for the order/customer
+* A lot of UI options to suit different workflows and setups
 * Extra WooCommerce reports
-* and much more ...
-
-Have an idea or feature request?
-Please create a topic in the "Support" section with any ideas or suggestions for new features.
+* and [much more ...](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/)
 
 
 == Installation ==
@@ -63,7 +61,7 @@ It's not recommended, as WooCommerce remembers customer details and cart content
 Please, use [free plugin](https://wordpress.org/plugins/loggedin/) to prevent this situation.
 
 = How to set default country/state for new customers =
-[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD) has more settings  and we keep adding them.
+[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) has more settings  and we keep adding them.
 
 = I can't add new customer, I see the message "Please enter an account password"  =
 Please, visit >WooCommerce>Settings, select tab "Accounts & Privacy" and mark checkbox "When creating an account, automatically generate an account password".
@@ -78,7 +76,7 @@ Please, visit >WooCommerce>Settings>Shipping  and add shipping method for necess
 You should add non-virtual product to the cart at first. If you want to hide this method at frontend - [use this code](https://gist.github.com/alexv66/82d623841d33dc3f6abb1fd98873d710)
 
 = How to pay order?  =
-[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD) allows you to pay as customer, via checkout page.
+[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) allows you to pay as customer, via checkout page.
 You can pay directly from admin area too - use [this free plugin](https://wordpress.org/plugins/woo-mp/). They support Stripe and Authorize.Net.
 
 = How to apply bulk/roles/others discounts?  =
@@ -88,7 +86,7 @@ Use our free [discount plugin](https://wordpress.org/plugins/advanced-dynamic-pr
 Please, mark checkbox "Switch customer during cart calculations" at tab Settings.
 
 = Button "Create Order" does nothing  =
-Probably, there is a conflict with another plugin. [Please, check javascript errors at first](https://wordpress.org/support/article/using-your-browser-to-diagnose-javascript-errors/#step-3-diagnosis)
+Probably, there is a conflict with another plugin. [Please, check javascript errors at first](https://developer.wordpress.org/advanced-administration/debug/debug-javascript/#step-3-diagnosis)
 
 = New phone order does not change the stock =
 WooCommerce reduces stock only for orders having following statuses -  Completed, Processing, On hold
@@ -109,6 +107,17 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 == Changelog ==
 
+= 3.10.2 2025-12-15 =
+* Fixed bug - "Manual discount" was ignored when apply "Individual use only" coupon
+* Fixed bug - our shipping methods were visible in frontend cart
+* Fixed bug - quotes doubled in product name when create custom product
+* Fixed bug - private note was not assigned to correct user
+
+= 3.10.1 2025-10-13 =
+* Fixed bug - wrong sorting for product search
+* Fixed bug - sale start/end dates were ignored
+* Fixed bug - removed unused tags {wpo_billing_xxx} from Checkout block
+
 = 3.10.0 2025-09-01 =
 * USPS address validation uses [oAuth api!](https://developers.usps.com/getting-started)
 * Fixed bug - product search can't find variations by exact name
@@ -120,7 +129,7 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 = 3.9.8 2025-06-05 =
 * Switched to new "Google Map API" library
-* If you use  Google Maps - you must enable "Places API (New)" for existing project! Or just [create new project](https://docs.algolplus.com/algol_phone_order/free-version/settings/common/)
+* If you use  Google Maps - you must enable "Places API (New)" for existing project! Or just [create new project](https://docs.algolplus.com/algol_phone_order/settings-pro-version/common-2/)
 * Updated UI - minified popup "New Customer" (removed labels for sections)
 * Fixed bug - button "Copy url to populate cart" didn't work
 * Fixed bug - other plugins broke layout for section "Find or create customer"
@@ -472,80 +481,3 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 = 3.0.0 2018-08-08 =
 * UI migrated to modern JavaScript framework (Vue.js)
-
-= 2.6.8 2018-06-18 =
-* Added section "Coupons" to tab "Settings"
-* Cache search results (only for coupons)
-* Fixed bug in product search (for variable products)
-* Added Spanish language
-
-= 2.6.7 2018-06-06 =
-* Fixed some incompatibility issues with WooCommerce 3.4
-* Removed unnecessary ajax method which updates shipping rates after modifying cart items
-
-= 2.6.6 2018-05-11 =
-* Support **subscription products**
-* Prompting to save changes if user adds items and doesn't create the order
-* Added tab "Log"
-* Only admin has access to tab "Settings"
-* Default payment method was added to tab "Settings"
-* Bug fixed, we clear the cart for current user after order creation
-
-= 2.6.5 2018-04-23 =
-* Added column to show full amounts
-* Added tab "Help"
-* Show shipping address for selected customer (if it doesn't match with billing address)
-* Call necessary WooCommerce hooks to support discount plugins
-* Bug fixed in popup "edit address", autocomplete didn't work for state/county
-
-= 2.6.4 2018-04-02 =
-* Increased speed of UI (reduced number of ajax requests)
-* Supports multicurrency plugins
-* Coupon search is not case sensitive
-* Show extra information for  product in autocomplete (instock status, price, sku)
-* Bug fixed, new customer didn't see password in welcome email
-* Bug fixed, we show all applied coupons now (including automatic ones)
-
-= 2.6.3 2018-03-13 =
-* Show "Discount" in totals
-* Coupon shows deducted amount
-* Conflict was resolved if two versions (free and pro) are active
-
-= 2.6.2 2018-03-03 =
-* Fixed critial bug, products autocomplete doesn't work
-
-= 2.6.1 2018-03-02 =
-* Supports products with zero price
-* Automatically adds shipping if cart has real products
-* Input validation was added to all popups
-
-= 2.6.0 2018-02-16 =
-* Settings were moved to separate tab
-* Fixed wrong item link (for variable products)
-* Fixed error in custom prices for the items
-* A lot of minor UI tweaks
-
-= 2.5 2018-02-06 =
-* Added "Free Shipping" method (in admin area only). Don't forget to assign it to necessary shipping zones!
-
-= 2.4 2017-12-13 =
-* Bug fixed - "create customer" fills address and phone
-
-= 2.3 2017-11-17 =
-* Bug fixed - localization works now
-
-= 2.2 2017-09-07 =
-* Added field "Private Note"
-* Bug fixed - fill billing email for registered user
-
-= 2.1 2017-08-04 =
-* Create new products on fly
-* Add new customer from same page
-* Apply coupons to the order
-
-= 2.0 2017-07-04 =
-* Rebuild UI (show buttons after order creation )
-* Skip out of stock products
-
-= 1.0 2017-06-10 =
-* Initial release

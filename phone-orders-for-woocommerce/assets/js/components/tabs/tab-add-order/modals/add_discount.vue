@@ -8,9 +8,9 @@
              :static="true"
              v-model="showModal"
     >
-      <b-form inline @submit.stop.prevent="apply">
-        <div v-if="isAllowToEditCouponName" class="wpo-add-discount-name">
-          <input type="text" name="coupon_name" v-model="elCouponName" :placeholder="couponNameLabel">
+      <b-form ref="discountForm" inline @submit.stop.prevent="apply">
+      <div v-if="isAllowToEditCouponName" class="wpo-add-discount-name">
+          <input type="text" name="coupon_name" v-model="elCouponName" :placeholder="couponNameLabel" :required="isAllowToEditCouponName" ref="couponName">
         </div>
         <b-form-radio-group buttons
                             button-variant="outline-primary"
@@ -114,7 +114,7 @@ export default {
     return {
       elDiscountType: '',
       elDiscountValue: this.discountValue,
-      elCouponName: '',
+      elCouponName: this.isAllowToEditCouponName ? this.defaultCouponName : '',
       showModal: false,
     };
   },
@@ -132,7 +132,7 @@ export default {
       return this.getSettingsOption('allow_to_edit_coupon_name');
     },
     defaultCouponName() {
-      return this.getSettingsOption('manual_coupon_title');
+      return this.getSettingsOption('manual_coupon_title') ? this.getSettingsOption('manual_coupon_title') : '';
     },
     defaultDiscountType() {
       return this.getSettingsOption('default_discount_type');
@@ -143,6 +143,13 @@ export default {
       this.close();
     },
     apply() {
+      const form = this.$refs.discountForm.$el;
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
       var discount = {type: this.elDiscountType, amount: this.elDiscountValue, name: this.elCouponName};
       this.$root.bus.$emit('set-manual-discount', discount);
       this.$store.commit('add_order/setDiscount', discount);
@@ -160,8 +167,18 @@ export default {
       var discount = this.discount;
       this.elDiscountType = discount ? discount.type : this.defaultDiscountType;
       this.elDiscountValue = discount ? discount.amount : this.discountValue;
-      this.elCouponName = discount ? discount.name : '';
-      this.$refs.autofocus.focus();
+      if(this.isAllowToEditCouponName) {
+        this.elCouponName = discount ? discount.name : this.defaultCouponName;
+      } else {
+        this.elCouponName = discount ? discount.name : '';
+      }
+      this.$nextTick(() => {
+        if (this.isAllowToEditCouponName) {
+          this.$refs.couponName.focus();
+        } else {
+          this.$refs.autofocus.focus();
+        }
+      });
     },
     enter() {
       console.log('enter');

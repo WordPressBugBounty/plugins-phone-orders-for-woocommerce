@@ -179,6 +179,147 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
         );
     }
 
+    protected function ajax_get_sessions($request) {
+        global $wpdb;
+
+        $table = $wpdb->prefix . 'woocommerce_sessions';
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, PluginCheck.Security.DirectDB
+        $rows = $wpdb->get_results("SELECT session_key, session_value, session_expiry FROM $table ORDER BY session_expiry DESC LIMIT 100");
+        $sessions = [];
+
+        foreach ($rows as $row) {
+
+            $value = maybe_unserialize($row->session_value);
+            if (!is_array($value)) {
+                continue;
+            }
+
+            $customer = $value['customer'] ?? [];
+
+            if (is_string($customer)) {
+                $customer = maybe_unserialize($customer);
+            }
+            if (!is_array($customer)) {
+                $customer = [];
+            }
+
+            $first_name = $customer['first_name'] ?? '';
+            $last_name  = $customer['last_name'] ?? '';
+            $email      = $customer['email'] ?? '';
+
+            $full_name = trim("$first_name $last_name");
+            if (!$full_name) {
+                if($email) {
+                    $full_name = $email;
+                } else{
+                    $full_name = __('Guest', 'phone-orders-for-woocommerce');
+                }
+            }
+
+            $address_parts = [
+                $customer['address_1'] ?? '',
+                $customer['address_2'] ?? '',
+                $customer['city'] ?? '',
+                $customer['state'] ?? '',
+                $customer['postcode'] ?? '',
+                $customer['country'] ?? '',
+            ];
+            $address = implode(', ', array_filter($address_parts));
+            if (!$address) {
+                $address = '';
+            }
+
+            $cart = $value['cart'] ?? [];
+            if (is_string($cart)) {
+                $cart = maybe_unserialize($cart);
+            }
+            $cart_items = is_array($cart) ? count($cart) : 0;
+
+            $cart_items_list = [];
+
+            foreach ($cart as $cart_key => $cart_item) {
+
+                $product_id = $cart_item['product_id'] ?? 0;
+                $qty        = $cart_item['quantity'] ?? 0;
+
+                if (!$product_id || !$qty) {
+                    continue;
+                }
+
+                $product = wc_get_product($product_id);
+                if (!$product) {
+                    continue;
+                }
+
+                $cart_items_list[] = $qty . ' x ' . $product->get_name();
+            }
+
+            if (!empty($customer['date_modified'])) {
+                $date_mod = gmdate(wc_date_format(). " " .wc_time_format(), strtotime($customer['date_modified']));
+            } else {
+                $date_mod = '';
+            }
+
+            $customer_id = $customer['id'] ?? 0;
+
+            if ($customer_id > 0) {
+                $user_info = get_userdata($customer_id);
+                $customer_type = $user_info ? implode(',', $user_info->roles) : '';
+            } else {
+                $customer_type = 'guest';
+            }
+
+
+            if($cart_items != 0) {
+                $sessions[] = [
+                    'key'        => $row->session_key,
+                    'customer'   => [
+                        'id'   => $customer_id,
+                        'type' => $customer_type,
+                        'name' => $full_name,
+                    ],
+                    'cart_items' => $cart_items_list,
+                    'address'    => $address,
+                    'date'       => $date_mod,
+                ];
+            }
+
+        }
+
+        return $this->wpo_send_json_success([
+            'sessions' => $sessions
+        ]);
+    }
+
+    function add_customer_cart_items_to_current_cart(&$cart,$session_cart){
+        $customer_cart = maybe_unserialize($session_cart);
+        if( !is_array($customer_cart) )
+            return ;
+
+        $add_ids = [];
+        foreach($customer_cart as $customer_item){
+            $found_item = false;
+            foreach($cart['items'] as $cart_item){
+                if($customer_item['variation_id'] AND $customer_item['variation_id'] == $cart_item['variation_id']
+                    OR
+                    !$customer_item['variation_id'] AND $customer_item['product_id'] == $cart_item['product_id']
+                ) {
+                    $found_item = true;
+                    break;
+                }
+            }
+            if(!$found_item) {
+                $id = $customer_item['variation_id'] ? $customer_item['variation_id'] : $customer_item['product_id'];
+                $add_ids[] = array( 'id'=>$id, 'qty'=>$customer_item['quantity']);
+            }
+        }
+
+        //add missed
+        foreach( $this->updater->get_formatted_product_items_by_ids($add_ids) as $new_item)
+            $cart['items'][] = $new_item;
+    }
+
     protected function ajax_get_all_customers($request)
     {
         $users = get_users();
@@ -193,6 +334,8 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
             $user_type = !empty($roles) ? $roles[0] : 'customer';
 
             $billing_address = [
+                'billing_company' => get_user_meta($user_id, 'billing_company', true),
+                'billing_phone' => get_user_meta($user_id, 'billing_phone', true),
                 'billing_address_1' => get_user_meta($user_id, 'billing_address_1', true),
                 'billing_address_2' => get_user_meta($user_id, 'billing_address_2', true),
                 'billing_city' => get_user_meta($user_id, 'billing_city', true),
@@ -202,6 +345,8 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
             ];
 
             $shipping_address = [
+                'shipping_company' => get_user_meta($user_id, 'shipping_company', true),
+                'shipping_phone' => get_user_meta($user_id, 'shipping_phone', true),
                 'shipping_address_1' => get_user_meta($user_id, 'shipping_address_1', true),
                 'shipping_address_2' => get_user_meta($user_id, 'shipping_address_2', true),
                 'shipping_city' => get_user_meta($user_id, 'shipping_city', true),
@@ -226,6 +371,35 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
         return $this->wpo_send_json_success($user_data);
     }
 
+    protected function get_session_by_key( $session_key, $default_value = [] ) {
+        global $wpdb;
+        $table = $wpdb->prefix . 'woocommerce_sessions';
+
+        //phpcs:ignore PluginCheck.Security.DirectDB, WordPress.DB.DirectDatabaseQuery
+        $value = $wpdb->get_var(
+            $wpdb->prepare(
+                // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery
+                "SELECT session_value FROM $table WHERE session_key = %s",
+                $session_key
+            )
+        );
+
+        if ( is_null($value) ) {
+            return $default_value;
+        }
+
+        $value = maybe_unserialize($value);
+
+        if ( isset($value['cart']) && is_string($value['cart']) ) {
+            $value['cart'] = maybe_unserialize($value['cart']);
+        }
+        if ( isset($value['customer']) && is_string($value['customer']) ) {
+            $value['customer'] = maybe_unserialize($value['customer']);
+        }
+
+        return $value;
+    }
+
 
     protected function ajax_set_customer($request)
     {
@@ -245,6 +419,14 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
         $cart['customer'] = $updated_customer;
 
         $payment_method = isset($updated_customer_data['customer_last_order_payment_method']) ? $updated_customer_data['customer_last_order_payment_method'] : $cart['payment_method'];
+
+        if( isset($request['session_key']) ){
+            $session = $this->get_session_by_key($request['session_key']);
+            if( is_array($session) AND !empty($session['cart']) ) {
+                $cart['items'] = [];
+                $this->add_customer_cart_items_to_current_cart($cart,$session['cart']);
+            }
+        }
 
         $cart['payment_method'] = $payment_method;
 

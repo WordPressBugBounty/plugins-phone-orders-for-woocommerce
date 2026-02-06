@@ -245,6 +245,38 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'chooseOptionLabel' => __('Choose an option', 'phone-orders-for-woocommerce'),
                 ),
             ),
+            'loadSessionsModalSettings'       => array(
+                'tabName' => 'add-order',
+                'loadSessionsModalLabel' => __('Active customer sessions at website', 'phone-orders-for-woocommerce'),
+                'loadSessionsBtnLoadCart' => __('Load cart', 'phone-orders-for-woocommerce'),
+                'loadSessionsBtnCancelLabel' => __('Cancel', 'phone-orders-for-woocommerce'),
+                'loadSessionsTableEmpty'     => __(
+                    'No sessions found',
+                    'phone-orders-for-woocommerce'
+                ),
+                'loadSessionsTableHeaders' => apply_filters('wpo_load_sessions_table_headers', array(
+                    array(
+                        'key'   => 'customer',
+                        'label' => __('Customer', 'phone-orders-for-woocommerce'),
+                    ),
+                    array(
+                        'key'   => 'cart_items',
+                        'label' => __('Cart Items', 'phone-orders-for-woocommerce'),
+                    ),
+                    array(
+                        'key'   => 'address',
+                        'label' => __('Address', 'phone-orders-for-woocommerce'),
+                    ),
+                    array(
+                        'key'   => 'date',
+                        'label' => __('Date', 'phone-orders-for-woocommerce'),
+                    ),
+                    array(
+                        'key'   => 'actions',
+                        'label' => __('Actions', 'phone-orders-for-woocommerce'),
+                    ),
+                )),
+            ),
             'orderHistoryCustomerModalSettings' => array(
                 'tabName'                                => 'add-order',
                 'orderHistoryCustomerLabel'              => __('Order history for', 'phone-orders-for-woocommerce'),
@@ -383,6 +415,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'phone-orders-for-woocommerce'
                 ),
                 'createNewCustomerLabel'                         => __('New customer', 'phone-orders-for-woocommerce'),
+                'browseVisitorsLabel'                            => __('Browse visitors', 'phone-orders-for-woocommerce'),
                 'billingDetailsLabel'                            => __(
                     'Billing Details',
                     'phone-orders-for-woocommerce'
@@ -475,7 +508,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'phone-orders-for-woocommerce'
                 ),
                 'productsTableItemColumnTitle'                => __('Item', 'phone-orders-for-woocommerce'),
-                'productsTableCostColumnTitle'                => __('Cost', 'phone-orders-for-woocommerce'),
+                'productsTableCostColumnTitle'                => __('Price', 'phone-orders-for-woocommerce'),
                 'productsTableQtyColumnTitle'                 => __('Qty', 'phone-orders-for-woocommerce'),
                 'productsTableTotalColumnTitle'               => __('Total', 'phone-orders-for-woocommerce'),
                 'subtotalLabel'                               => __('Subtotal', 'phone-orders-for-woocommerce'),
@@ -552,6 +585,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     ),
                     'weightLabel'                        => __('Weight', 'phone-orders-for-woocommerce'),
                     'readMoreLabel'                      => __('Read more', 'phone-orders-for-woocommerce'),
+                    'costLabel'                          => __('inc. tax', 'phone-orders-for-woocommerce'),
                 ),
                 'couponsEnabled'                              => wc_coupons_enabled(),
                 'activateCouponsLabel'                        => $wc_settings_url_html,
@@ -664,6 +698,8 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'Select customer to see purchased products',
                     'phone-orders-for-woocommerce'
                 ),
+                'hideButtonAdvancedSearch'                    => $this->option_handler->get_option('hide_button_advanced_search'),
+                'hideButtonProductsHistory'                   => $this->option_handler->get_option('hide_button_products_history'),
             ),
             'orderDateSettings'             => array(
                 'title'                    => apply_filters(
@@ -904,6 +940,8 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             }
         }
 
+        add_filter('adp_rules_suppression', '__return_true');//suppress our pricing
+
         $result = array(
             'items' => $this->get_formatted_product_items_by_ids($ids),
         );
@@ -1005,6 +1043,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
      */
     protected function create_item($data)
     {
+        $data = wp_unslash($data);
         $product = $this->custom_prod_control->create_custom_product();
         $this->set_created_item_props($product, $data);
         $product->save();
@@ -1251,11 +1290,9 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         $respBody = json_decode($response['body']);
 
         if ( $response['response']['code'] !== 200 || !isset($respBody->address)) {
-            error_log(var_export($respBody->error, true));
             $errorMsg = isset($respBody->error) ? $respBody->error->message :  __('Unknown error', 'phone-orders-for-woocommerce');
             return $this->wpo_send_json_error($errorMsg);
         } else {
-            error_log(var_export($respBody, true));
             return $this->wpo_send_json_success($respBody->address);
         }
     }
@@ -1328,9 +1365,9 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         return $this->wpo_send_json_success($result['shipping']);
     }
 
-    public function update_cart($data)
+    public function update_cart($data, $force_not_selected_shipping = false)
     {
-        return $this->updater->process($data);
+        return $this->updater->process($data, $force_not_selected_shipping);
     }
 
     protected function get_cart_total()
@@ -1412,7 +1449,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
         // translators: Order created message
         $message      = sprintf(__('Order #%s created', 'phone-orders-for-woocommerce'), $order->get_order_number());
-        $loaded_order = $this->load_order($order_id, 'edit');
+        $loaded_order = $this->load_order($order_id, 'view');
         $result       = $this->update_cart($loaded_order['cart']);
         if ($result instanceof WC_Data_Exception) {
             return $this->wpo_send_json_error($result->getMessage());
@@ -1578,12 +1615,6 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             $order->save();
         }
 
-        if (isset($cart['private_note']) and ! empty($cart['private_note'])) {
-            $order->add_order_note($cart['private_note'], false, true);
-            $order->update_meta_data($this->meta_key_private_note, $cart['private_note']);
-            $order->save();
-        }
-
         $created_date_time = ! empty($data['created_date_time']) ? (int)$data['created_date_time'] : null;
         if (is_integer($created_date_time)) {
             $order->set_date_created($data['created_date_time']);
@@ -1642,6 +1673,12 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         $this->clear_cart_for_switch_user($cart['customer']['id']);
 
         $this->disable_email_notifications($_enabled = false);
+
+        if (isset($cart['private_note']) and ! empty($cart['private_note'])) {
+            $order->add_order_note($cart['private_note'], false, true);
+            $order->update_meta_data($this->meta_key_private_note, $cart['private_note']);
+            $order->save();
+        }
 
         if (apply_filters("wpo_add_note_created_with", true)) {
             $admin_user = wp_get_current_user();
@@ -1809,6 +1846,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
     protected function ajax_recalculate($data)
     {
+
         $cart = $data['cart'];
 
         $result = $this->update_cart($cart);
@@ -1933,6 +1971,9 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         if ($this->option_handler->get_option('show_long_attribute_names')) {
             add_filter("woocommerce_product_variation_title_include_attributes", "__return_true");
         }
+
+        add_filter('adp_rules_suppression', '__return_true');//suppress our pricing
+
         $products = $this->search_products_and_variations($term, $exclude, $additional_query_args);
 
         $result     = array();
@@ -2253,31 +2294,25 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'order'   => 'ASC',
             'limit'   => apply_filters("wpo_search_product_limit", -1, $limit),
         );
-        $single_product_search = apply_filters("wpo_search_single_product", false);
-        $post_content_search = apply_filters("wpo_search_post_content", $this->option_handler->get_option('verbose_search'));
-
         // filter by category/tags ?
         $query_args = array_merge($query_args, $additional_query_args);
         if ($products_ids = apply_filters("wpo_custom_product_search", array(), $query_args, $term)) {
             ; // do nothing,  just use  custom results
-            //exact product by id?
-        } elseif ($single_product_search  AND !empty($term) AND preg_match('#^\d+$#', $term) and ($product = wc_get_product($term)) ) {
-            $products_ids = array( (int)$term );
-            //exact product by sku
-        } elseif (!empty($term) AND $this->option_handler->get_option('search_by_sku') AND $product_id = wc_get_product_id_by_sku($term) ) {
-            $products_ids = array( $product_id );
         } elseif (isset($term) and $term) { // keyword?
-            $products_ids = $this->get_products($term, $query_args, $post_content_search);
+            $products_ids = $this->get_products($term, $query_args, true);
+            if (count($products_ids) < $limit) {
+                $query_args['limit'] = apply_filters("wpo_search_product_limit", -1, $limit - count($products_ids));
+                $products_ids        = array_merge($products_ids, $this->get_products($term, $query_args, false));
+            }
         } else { // just category/tag  ?
             $products_ids = wc_get_products($query_args);
         }
 
         //exact product by id ? add at top!
-        if (!$single_product_search AND preg_match('#^\d+$#', $term) and ($product = wc_get_product($term))) {
+        if (preg_match('#^\d+$#', $term) and ($product = wc_get_product($term))) {
             array_unshift($products_ids, (int)$term);
-            $products_ids = array_unique($products_ids);
         }
-
+        $products_ids = array_unique($products_ids);
 
         $selected_products = array();
         foreach ($products_ids as $index => $product_id) {
@@ -2319,7 +2354,6 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 break;
             }
         }
-
         return $selected_products;
     }
 
@@ -2924,7 +2958,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ) && $mode === 'copy' || $option_handler->get_option(
                     'set_current_price_when_edit_order'
                 ) && $mode === 'edit') {
-                $item_cost             = $_product->get_sale_price() ? $_product->get_sale_price(
+                $item_cost             = $_product->is_on_sale() ? $_product->get_sale_price(
                 ) : $_product->get_price();
                 $line_subtotal         = (float)$item_cost * $order_item_qty;
                 $cost_updated_manually = false;

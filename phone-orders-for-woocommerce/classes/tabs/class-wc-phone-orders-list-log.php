@@ -96,7 +96,7 @@ class WC_Phone_Orders_List_Log extends WP_List_Table
             $where = substr($where, 0, -4);
         }
 
-        //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery
+        //phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery, PluginCheck.Security.DirectDB
         $r   = $wpdb->get_results("SELECT * FROM {$this->log_table_name} $where", ARRAY_A);
 
         $amount_rows = 0;

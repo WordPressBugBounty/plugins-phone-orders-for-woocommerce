@@ -58,7 +58,15 @@ class WC_Phone_Orders_Loader
             });
 
             add_filter('woocommerce_shipping_methods', function ($methods) {
-                $methods['phone_orders'] = 'WC_Phone_Shipping_Method';
+                //phpcs:ignore  WordPress.Security.NonceVerification.Recommended
+                if (isset( $_REQUEST['action'] )) $action = sanitize_key( wp_unslash( $_REQUEST['action'] ) ); else $action = '';
+
+                if(
+                    //phpcs:ignore  WordPress.Security.NonceVerification.Recommended
+                   wp_doing_ajax() AND isset($action) AND ($action=='phone-orders-for-woocommerce' OR strpos($action,'woocommerce_shipping_zone_') !== false )
+                    OR !wp_doing_ajax() //wp-admin pages
+                )
+                    $methods['phone_orders'] = 'WC_Phone_Shipping_Method';
 
                 return $methods;
             });
@@ -98,7 +106,8 @@ class WC_Phone_Orders_Loader
         self::$log_table_name = "{$wpdb->prefix}phone_orders_log";
 
         add_action('wp_loaded', function () {
-            $this->add_billing_phone_email_to_wc_customer_formatted_address();
+            if( is_admin() )
+                $this->add_billing_phone_email_to_wc_customer_formatted_address();
             $this->add_billing_phone_email_to_wpo_customer_formatted_address();
         });
 
@@ -272,7 +281,7 @@ class WC_Phone_Orders_Loader
 
         //phpcs:ignore WordPress.Security.ValidatedSanitizedInput, WordPress.Security.NonceVerification.Recommended
         WC_Phone_Orders_Fill_Cart::fill_cart($_GET[$key]);
-        //phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+        //phpcs:ignore WordPress.Security
         wp_redirect(remove_query_arg(array($key), get_home_url(null, $_SERVER['REQUEST_URI'])));
         exit;
     }

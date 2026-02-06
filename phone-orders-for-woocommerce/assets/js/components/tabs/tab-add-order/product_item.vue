@@ -330,8 +330,8 @@
                                              @keydown.tab.prevent="openProductQty">
           </template>
           <div class="cost_with_tax" style="padding: 4px 0" v-if="showCostWithTax">
-            <del v-if="costWithTaxOrig">{{ formatPrice(costWithTaxOrig, precision) }}</del>
-            {{ itemCostIncTaxPrefix }} <span v-html="wcPrice(costWithTax, {decimals: this.precision})"></span>
+            <del v-if="costWithTaxOrig && costWithTax !== cost">{{ formatPrice(costWithTaxOrig, precision) }}</del>
+            {{ itemCostIncTaxPrefix }} <span style="background-color:antiquewhite;" v-html="wcPrice(costWithTax, {decimals: this.precision})"></span>
           </div>
         </div>
       </td>
@@ -364,17 +364,24 @@
       </td>
       <td class="line_total">
         <div class="wpo-line-total-value">
-          <div class="total" style="padding: 4px;" v-if="this.item.readonly_line_subtotal_html"
-               v-html="this.item.readonly_line_subtotal_html"></div>
-          <div class="total" style="padding: 4px;" v-else v-html="wcPrice(total, {decimals: this.precision})"></div>
-          <div class="total_with_tax" v-if="showTotalWithTax" style="padding: 4px;"
-               v-html="wcPrice(totalWithTax, {decimals: this.precision})"></div>
+          <template v-if="isReadOnly || isGiftItem">
+            <div class="total" style="padding: 4px;" v-if="this.item.readonly_line_subtotal_html"
+                 v-html="this.item.readonly_line_subtotal_html"></div>
+            <div class="total" style="padding: 4px;" v-else v-html="wcPrice(total, {decimals: this.precision})"></div>
+          </template>
+          <template v-else>
+            <input type="text" style="text-align: right;" autocomplete="off" placeholder="0" :value="formatPrice(total, precision)"
+                   size="4" name="wpo-item-cost-value" readonly disabled>
+          </template>
+          <div class="total_with_tax" v-if="showTotalWithTax" style="padding: 4px;"> <span style="background-color:antiquewhite;"
+            v-html="wcPrice(totalWithTax, {decimals: this.precision})"></span></div>
         </div>
       </td>
       <td class="wc-order-edit-line-item">
         <div class="wc-order-edit-line-item-actions" v-if="isAllowDelete">
-          <a @click.prevent.stop="cartEnabled ? removeItem(item) : null" class="delete-order-item tips" href="#"
+          <a @click.prevent.stop="cartEnabled ? removeItem(item) : null" style="margin-bottom: 0.6rem;" class="delete-order-item tips" href="#"
              :title="deleteProductItemButtonTooltipText"></a>
+          <span v-if="totalWithTax" style="white-space: nowrap; background-color:antiquewhite;">{{costLabel}}</span>
         </div>
       </td>
     </template>
@@ -614,6 +621,11 @@ export default {
     readMoreLabel: {
       default: function () {
         return 'Read more';
+      }
+    },
+    costLabel:{
+      default: function () {
+        return '';
       }
     },
   },

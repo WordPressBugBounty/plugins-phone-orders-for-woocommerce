@@ -105,7 +105,7 @@ class WC_Phone_Orders_Cart_Updater
         return $lineSubtotalTax;
     }
 
-    public function process($cart_data)
+    public function process($cart_data, $force_not_selected_shipping = false)
     {
         if ( ! defined('WOOCOMMERCE_CART')) {
             define('WOOCOMMERCE_CART', 1);
@@ -160,12 +160,15 @@ class WC_Phone_Orders_Cart_Updater
         // Suppress total recalculation until finished.
         remove_action('woocommerce_add_to_cart', array(WC()->cart, 'calculate_totals'), 20);
 
+        $dont_apply_rules = false;
         if ( ! empty($cart_data['dont_apply_pricing_rules']) || $this->option_handler->get_option(
                 'dont_apply_pricing_rules'
             )) {
             add_filter('adp_rules_suppression', '__return_true');
+            $dont_apply_rules = true;
         }
 
+        add_filter( 'wc_avatax_cart_needs_calculation', "__return_true");//for Avatax
         do_action("wpo_before_update_cart", $cart_data);
 
         if (isset($cart_data['adp']['add_gifts_to_cart'])) {
@@ -232,6 +235,13 @@ class WC_Phone_Orders_Cart_Updater
         $this->woocs_cmp = new WC_Phone_Woocs_Compatibility(
             isset($cart_data['order_currency']['code']) ? $cart_data['order_currency']['code'] : ''
         );
+
+
+        $order = null;
+        if(!empty($cart_data['edit_order_id'])) {
+            $order = wc_get_order($cart_data['edit_order_id']);
+        }
+        $is_edit_order = ! is_null($order);
 
         // items
         $cart_item_key___original_item = array();
@@ -384,15 +394,33 @@ class WC_Phone_Orders_Cart_Updater
                     $cart_item_key,
                     WC()->cart
                 )) {
-                    WC()->cart->get_cart()[$cart_item_key]['data']->set_price(
-                        apply_filters(
-                            'wpo_update_cart_set_cart_item_data_set_price',
-                            $item['item_cost'],
-                            $item,
-                            $cart_item_key,
-                            WC()->cart
-                        )
-                    );
+                    if( !empty($cart_item_meta['cost_updated_manually']) OR !$dont_apply_rules ) {
+                            WC()->cart->get_cart()[$cart_item_key]['data']->set_price(
+                                apply_filters(
+                                    'wpo_update_cart_set_cart_item_data_set_price',
+                                    $item['item_cost'],
+                                    $item,
+                                    $cart_item_key,
+                                    WC()->cart
+                                )
+                            );
+                    } else { // $dont_apply_rules and !cost_updated_manually
+                            if ( $is_edit_order AND isset($item['order_item_id']) AND
+                                !$this->option_handler->get_option('set_current_price_when_edit_order')) {
+                                $found_order_item = false;
+                                foreach ($order->get_items() as $order_item) {
+                                    if ($order_item->get_id() == $item['order_item_id']) {
+                                        WC()->cart->cart_contents[$cart_item_key]['data']->set_price($order_item->get_subtotal()/$order_item->get_quantity());
+                                        $found_order_item = true;
+                                        break;
+                                    }
+                                }
+                                if(!$found_order_item)
+                                    WC()->cart->cart_contents[$cart_item_key]['data']->set_price($product->get_price());
+                            } else {
+                                WC()->cart->cart_contents[$cart_item_key]['data']->set_price($product->get_price());
+                            }
+                    }
                 }
                 $cart_item_key___original_item[$cart_item_key] = $item;
 //				WC()->cart->cart_contents[ $cart_item_key ] = apply_filters( 'wdp_after_cart_item_add', WC()->cart->cart_contents[ $cart_item_key ], $item );;
@@ -595,6 +623,8 @@ class WC_Phone_Orders_Cart_Updater
         }
 
         // coupons
+
+        //apply cart coupons
         foreach ($cart_data['coupons'] as $item) {
             $code = isset($item['code']) ? $item['code'] : (isset($item['title']) ? $item['title'] : false);
             if( !in_array($code, WC()->cart->get_applied_coupons()) ) // coupon can be aded already by another plugin!
@@ -612,10 +642,9 @@ class WC_Phone_Orders_Cart_Updater
                 WC()->session->set('chosen_shipping_methods', $chosen_shipping_methods);
             }
         }
-
         $coupon_errors = wc_get_notices('error');
 
-        // discount as another coupon
+        // "Manual discount" is another coupon
         $manual_cart_discount_code = strtolower($this->option_handler->get_option('manual_coupon_title'));
         if ( ! empty($cart_data['discount']) && ($manual_cart_discount_code || $cart_data['discount']['name'])) {
             $discount           = $cart_data['discount'];
@@ -657,6 +686,18 @@ class WC_Phone_Orders_Cart_Updater
                 10,
                 2
             );
+            //Apply if "individual_use" coupons added
+            add_filter(
+                'woocommerce_apply_with_individual_use_coupon',
+                function($apply, $the_coupon, $coupon, $applied_coupons ) use ($manual_cart_discount_code) {
+                    if($the_coupon->get_code() == $manual_cart_discount_code)
+                        $apply = true;
+                    return $apply;
+                },
+                10,
+                4
+            );
+
             WC()->cart->add_discount($manual_cart_discount_code);
         }
 
@@ -779,6 +820,11 @@ class WC_Phone_Orders_Cart_Updater
                     $item['custom_name'] = $cart_item_key___original_item[$cart_key]['custom_name'];
                 }
             } else {
+                if(! empty($item['adp']['orig']['original_price']) ) // overriden by ADP plugin ?
+                    $item['item_cost'] = $item['adp']['orig']['original_price'];
+                else
+                    $item['item_cost'] = $item['data']->get_price();
+                /*
                 if (wc_prices_include_tax()) {
                     $item['item_cost'] = wc_format_decimal(
                         ($item['line_subtotal'] + $this->calculateFullLineSubtotalTax($item)) / $item['qty']
@@ -786,6 +832,7 @@ class WC_Phone_Orders_Cart_Updater
                 } else {
                     $item['item_cost'] = wc_format_decimal($item['line_subtotal'] / $item['qty']);
                 }
+                */
 
                 $item['custom_name'] = $item['data']->get_name();
             }
@@ -940,10 +987,8 @@ class WC_Phone_Orders_Cart_Updater
                         );
                     }
                 }
-                $item['item_cost_with_tax']          = wc_get_price_including_tax(
-                    $product,
-                    array('qty' => 1, 'price' => $item['item_cost'])
-                );
+
+                $item['item_cost_with_tax']  =   wc_format_decimal(($item['line_subtotal'] + $item['line_subtotal_tax'])/ $item['qty']);
                 $item['item_cost_with_tax_original'] = $this->adpGetOriginalPriceOfCartItem($cart_key);
                 $item['line_total_with_tax']         = $item['line_subtotal'] + $item['line_subtotal_tax'];
             }
@@ -963,12 +1008,12 @@ class WC_Phone_Orders_Cart_Updater
         }
 
         do_action('wpo_cart_updated_with_user');
-
         //disable default shipping method before final calculations, if necessary
-        if ( ! isset($cart_data['shipping']['packages']) or
+        if ( empty($cart_data['shipping']['packages']) or
              isset($cart_data['shipping']['packages'][0]) and ($cart_data['shipping']['packages'][0]['chosen_rate'] === null)) {
-            if ($default_chosen_shipping_methods[0] == WC_Phone_Orders_Cart_Shipping_Processor::METHOD_NOT_SELECTED) {
-                WC()->session->set('chosen_shipping_methods', $default_chosen_shipping_methods);
+            if ($default_chosen_shipping_methods[0] == WC_Phone_Orders_Cart_Shipping_Processor::METHOD_NOT_SELECTED
+                OR $force_not_selected_shipping) { // load existing order without shipping!
+                WC()->session->set('chosen_shipping_methods', [WC_Phone_Orders_Cart_Shipping_Processor::METHOD_NOT_SELECTED]);
                 add_filter("woocommerce_shipping_chosen_method", function ($default, $rates, $chosen_method) {
                     return false;
                 }, 1000, 3);
@@ -987,7 +1032,7 @@ class WC_Phone_Orders_Cart_Updater
         $discount        = 0;
         $discountWithTax = 0;
         foreach ($items as $item) {
-            if ( ! $item['cost_updated_manually'] AND !empty($item['item_cost_with_tax_original']) ) {
+            if ( empty( $item['cost_updated_manually'] ) AND !empty($item['item_cost_with_tax_original']) ) {
                 $discount        += ($item['data']->get_regular_price() - $item['data']->get_price()) * $item['qty'];
                 $discountWithTax += ($item['item_cost_with_tax_original'] - $item['item_cost_with_tax']) * $item['qty'];
             }
@@ -1284,8 +1329,8 @@ class WC_Phone_Orders_Cart_Updater
              */
             $context =  apply_filters('wpo_get_item_by_product_default_price_context', 'view', $product, $item_data);
             $price_excluding_tax = (float)$product->get_price($context);
-            if( $product->get_sale_price($context) )
-                $price_excluding_tax = $product->get_sale_price($context);
+             if( $product->is_on_sale($context) )
+                 $price_excluding_tax = $product->get_sale_price($context);
         }
 
         $item_meta_data = array();

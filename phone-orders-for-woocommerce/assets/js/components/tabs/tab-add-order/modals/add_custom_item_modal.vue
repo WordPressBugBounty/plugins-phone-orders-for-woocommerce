@@ -11,7 +11,7 @@
     >
       <b-form @submit.stop.prevent="submit">
         <div>
-          <label class="col-12 col-md-4">{{ lineItemNameLabel }}
+          <label class="col-12 col-md-6">{{ lineItemNameLabel }}
             <b-form-input type="text" name="name" v-model.trim="name" ref="name" required
                           v-if="typeFieldName.type === 'input'" autocomplete="off"></b-form-input>
             <b-form-textarea name="name" v-model.trim="name" ref="name" required
@@ -22,7 +22,7 @@
           <label class="col-12 col-md-3">{{ pricePerItemLabel }}
             <b-form-input type="text" name="price" v-model.trim="price" ref="price" required></b-form-input>
           </label>
-          <label class="col-12 col-md-3">{{ quantityLabel }}
+          <label class="col-12 col-md-2">{{ quantityLabel }}
             <b-form-input type="text" name="quantity" v-model.trim="quantity" ref="quantity" required></b-form-input>
           </label>
           <b-button type="submit" v-show="false"></b-button>

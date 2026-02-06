@@ -12,13 +12,17 @@
     </h2>
     <div class="inside">
       <div id="search-customer-box">
-        <a v-if="allowAddCustomers && cartEnabled" href="#" @click.prevent.stop v-b-modal="'addCustomer'"
-           :class="{disabled: !cartEnabled}">
-          {{ createNewCustomerLabel }}
-        </a>
-        <a href="#" @click.prevent.stop v-else-if="allowAddCustomers" :class="{disabled: !cartEnabled}">
-          {{ createNewCustomerLabel }}
-        </a>
+        <div style="display: flex; justify-content:space-between;">
+          <a v-if="allowAddCustomers && cartEnabled" href="#" @click.prevent.stop v-b-modal="'addCustomer'"
+             :class="{disabled: !cartEnabled}">
+            {{ createNewCustomerLabel }}
+          </a>
+          <a href="#" @click.prevent.stop v-else-if="allowAddCustomers" :class="{disabled: !cartEnabled}">
+            {{ createNewCustomerLabel }}
+          </a>
+          <a v-if="allowToBrowseVisitors" href="#" @click.prevent.stop v-b-modal="'loadSessions'">{{browseVisitorsLabel}}</a>
+        </div>
+
         <multiselect
           style="width: 100%;"
           label="title"
@@ -193,6 +197,11 @@ export default {
         return 'New customer';
       }
     },
+    browseVisitorsLabel: {
+      default: function () {
+        return 'Browse visitors';
+      }
+    },
     billingDetailsLabel: {
       default: function () {
         return 'Billing Details';
@@ -325,6 +334,7 @@ export default {
       where: '',
       quickSearchCustomers: this.getSettingsOption('quick_search_customers'),
       searchInOrders: this.getSettingsOption('search_customer_in_orders'),
+      allowToBrowseVisitors : this.getSettingsOption('allow_to_browse_visitors'),
     };
   },
   computed: {
@@ -559,6 +569,9 @@ export default {
     },
     createNewCustomer() {
       this.openModal('addCustomer');
+    },
+    loadLastSessions() {
+      this.openModal('loadSessions');
     },
     clearCustomer() {
       this.storedCustomer = null;
