@@ -14,6 +14,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
     protected $meta_key_order_creator;
     protected $meta_key_order_item_discount;
     protected $meta_key_order_item_cost_updated_manually = "_wpo_item_cost_updated_manually";
+    protected $meta_key_tax_exempt = 'is_vat_exempt';
 
     /**
      * @var WC_Phone_Orders_Custom_Products_Controller
@@ -1450,6 +1451,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         // translators: Order created message
         $message      = sprintf(__('Order #%s created', 'phone-orders-for-woocommerce'), $order->get_order_number());
         $loaded_order = $this->load_order($order_id, 'view');
+        $loaded_order['cart']['edit_order_id'] = $order_id; // reqired to skip checks for order coupons!
         $result       = $this->update_cart($loaded_order['cart']);
         if ($result instanceof WC_Data_Exception) {
             return $this->wpo_send_json_error($result->getMessage());
@@ -1731,6 +1733,14 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 $data           = $property->getValue($product);
                 $original_price = (float)($data['price']);
 
+                //custom product??
+                $custom_prod_control = $this->custom_prod_control;
+                if (defined(
+                        get_class($custom_prod_control) . "::CART_ITEM_KEY"
+                    ) && isset($item[$custom_prod_control::CART_ITEM_KEY])) {
+                    $original_price = $item[$custom_prod_control::CART_ITEM_KEY]['regular_price'];
+                }
+
                 if ($order->get_prices_include_tax()) {
                     add_filter('woocommerce_prices_include_tax', "__return_true", PHP_INT_MAX);
                     $original_price = wc_get_price_excluding_tax($product, array(
@@ -1836,7 +1846,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'message'  => sprintf(
                 // translators: A message that the invoice for order has been sent to email
                 __('Invoice for order #%1$s has been sent to %2$s', 'phone-orders-for-woocommerce'),
-                $order_id,
+                $order->get_order_number(),
                 $email
             ),
         );

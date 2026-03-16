@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 6.9
-Stable tag: 3.10.2
+Stable tag: 3.10.3
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -96,16 +96,23 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 == Screenshots ==
 
-1. Filled order
-2. Order was created
-3. Edit customer details
-4. Apply coupon, autocomplete
-5. Adjust discount type and amount
+1. Cart with added items
+2. Created order
+3. Address autocomplete
+4. Apply coupon
+5. Cart discount type and amount
 6. Select shipping method
 7. Common settings
 8. Interface settings
 
 == Changelog ==
+
+= 3.10.3 2026-03-16 =
+* Manual discounts (applied to items) are included in the "Discount" total line
+* Updated compatibility with [our pricing plugin](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/)
+* Fixed bug - button "Send Invoice" shown wrong order number
+* Fixed bug - modified prices were invisible if taxes were disabled in >WooCommerce>Settings
+* Fixed some warnings (PHP 8.5)
 
 = 3.10.2 2025-12-15 =
 * Fixed bug - "Manual discount" was ignored when apply "Individual use only" coupon

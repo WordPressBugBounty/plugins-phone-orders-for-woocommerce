@@ -381,7 +381,7 @@
         <div class="wc-order-edit-line-item-actions" v-if="isAllowDelete">
           <a @click.prevent.stop="cartEnabled ? removeItem(item) : null" style="margin-bottom: 0.6rem;" class="delete-order-item tips" href="#"
              :title="deleteProductItemButtonTooltipText"></a>
-          <span v-if="totalWithTax" style="white-space: nowrap; background-color:antiquewhite;">{{costLabel}}</span>
+          <span v-if="totalWithTax && !hideTaxLineProductItem" style="white-space: nowrap; background-color:antiquewhite;">{{costLabel}}</span>
         </div>
       </td>
     </template>

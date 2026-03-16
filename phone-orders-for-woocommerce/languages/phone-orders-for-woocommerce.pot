@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 08:14+0000\n"
+"POT-Creation-Date: 2026-03-15 18:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgid ""
 "Authorize.Net."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1800
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1809
 msgid "A valid email address is required"
 msgstr ""
 
@@ -261,7 +261,7 @@ msgstr ""
 msgid "Choose period"
 msgstr ""
 
-#: classes/class-wc-phone-orders-cart-updater.php:794
+#: classes/class-wc-phone-orders-cart-updater.php:796
 msgid "Choose your gift"
 msgstr ""
 
@@ -362,7 +362,7 @@ msgid "Create product"
 msgstr ""
 
 #. Who created it order
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1687
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1688
 #, php-format
 msgid "Created in Phone Orders by: %s."
 msgstr ""
@@ -649,13 +649,13 @@ msgid "Interface"
 msgstr ""
 
 #. A message that the invoice for order has been sent to email
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1838
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1847
 #, php-format
 msgid "Invoice for order #%1$s has been sent to %2$s"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1816
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1820
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1825
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1829
 msgid "Invoice manually sent to customer from Phone Order."
 msgstr ""
 
@@ -798,7 +798,7 @@ msgstr ""
 msgid "No shipping address was provided."
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1510
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1511
 msgid "No shipping method has been selected."
 msgstr ""
 
@@ -807,8 +807,8 @@ msgstr ""
 msgid "No shipping methods available"
 msgstr ""
 
-#: classes/class-wc-phone-orders-cart-updater.php:1706
-#: classes/class-wc-phone-orders-cart-updater.php:1743
+#: classes/class-wc-phone-orders-cart-updater.php:1733
+#: classes/class-wc-phone-orders-cart-updater.php:1770
 #: classes/tabs/abstract-wc-phone-orders-tab.php:676
 #: classes/tabs/abstract-wc-phone-orders-tab.php:697
 msgid "No value"
@@ -867,7 +867,7 @@ msgstr ""
 msgid "Order history for"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1789
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1798
 msgid "Order not found"
 msgstr ""
 
@@ -972,7 +972,7 @@ msgstr ""
 msgid "Please, fill empty required billing/shipping fields for customer"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1496
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1497
 msgid "Please, remove following items from the cart to continue"
 msgstr ""
 
@@ -1299,7 +1299,7 @@ msgstr ""
 msgid "There are no records to show"
 msgstr ""
 
-#: classes/tabs/class-wc-phone-orders-add-order-page.php:1829
+#: classes/tabs/class-wc-phone-orders-add-order-page.php:1838
 msgid "There was an error sending the email"
 msgstr ""
 
@@ -1433,7 +1433,7 @@ msgid "WooCommerce"
 msgstr ""
 
 #. Ability to add a certain number of free products to the cart
-#: classes/class-wc-phone-orders-cart-updater.php:791
+#: classes/class-wc-phone-orders-cart-updater.php:793
 msgid "You can add %d products for free to the cart."
 msgstr ""
 

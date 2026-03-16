@@ -2445,12 +2445,13 @@ export default {
               });
             }
           }
-
+/* don't apply  levenshtein sorting for results from backend
           products.sort((a, b) => {
             const distA = levenshtein(query.toLowerCase(), a.title.toLowerCase());
             const distB = levenshtein(query.toLowerCase(), b.title.toLowerCase());
             return distA - distB;
           });
+*/
 
           this.isLoading = false;
 

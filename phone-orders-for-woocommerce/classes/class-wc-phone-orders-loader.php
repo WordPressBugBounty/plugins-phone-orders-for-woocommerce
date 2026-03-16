@@ -392,7 +392,11 @@ class WC_Phone_Orders_Loader
                         'phone-orders-for-woocommerce'
                     ) . '">&#9733;&#9733;&#9733;&#9733;&#9733;</a>'
                 );
-                wc_enqueue_js(
+
+				$handle = 'wpo-admin-footer-text';
+				wp_register_script( $handle, '', array(), WC_PHONE_ORDERS_VERSION, true );
+				wp_enqueue_script( $handle );
+                wp_add_inline_script( $handle,
                     "jQuery( 'a.wpo-rating-link' ).on('click', function() {
 						jQuery.post( '" . admin_url('admin-ajax.php') . "', { action: 'phone-orders-for-woocommerce', method: 'wpo_rated', tab: 'add-order' } );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );

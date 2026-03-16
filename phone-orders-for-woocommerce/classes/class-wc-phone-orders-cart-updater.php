@@ -107,6 +107,8 @@ class WC_Phone_Orders_Cart_Updater
 
     public function process($cart_data, $force_not_selected_shipping = false)
     {
+        $cart_data = apply_filters("wpo_process_cart_data_prepare", $cart_data);
+
         if ( ! defined('WOOCOMMERCE_CART')) {
             define('WOOCOMMERCE_CART', 1);
         }
@@ -547,7 +549,7 @@ class WC_Phone_Orders_Cart_Updater
                                 'type'      => $fee_data['type'],
                                 'name'      => $fee_data['name'] . ($fee_data['type'] == 'percent' ? " (" . $fee_data['original_amount'] . '%)' : ""),
                                 'amount'    => ($fee_data['type'] == 'percent') ? $perc_amount : $fixed_amount,
-                                'taxable'   => (boolean)$tax_class,
+                                'taxable'   => (bool)$tax_class,
                                 'tax_class' => $tax_class
                             ));
                             $fee_ids[$id]       = $id;
@@ -803,7 +805,6 @@ class WC_Phone_Orders_Cart_Updater
             } else {
                 $product = wc_get_product($product_id);
             }
-
             $item['qty']               = $item['quantity'];
             $item['sold_individually'] = $product->is_sold_individually();
             $item['is_readonly_price'] = $this->is_readonly_product_price($product_id, $item);
@@ -820,8 +821,13 @@ class WC_Phone_Orders_Cart_Updater
                     $item['custom_name'] = $cart_item_key___original_item[$cart_key]['custom_name'];
                 }
             } else {
-                if(! empty($item['adp']['orig']['original_price']) ) // overriden by ADP plugin ?
-                    $item['item_cost'] = $item['adp']['orig']['original_price'];
+                if( !empty($item['adp']['orig']['original_price'])  ) {// overriden by ADP plugin ?
+                    if( $item['data']->is_on_sale() ){
+                        $item['item_cost'] = $item['data']->get_sale_price();
+                    }
+                    else
+                        $item['item_cost'] = $item['adp']['orig']['original_price'];
+                }
                 else
                     $item['item_cost'] = $item['data']->get_price();
                 /*
@@ -835,6 +841,17 @@ class WC_Phone_Orders_Cart_Updater
                 */
 
                 $item['custom_name'] = $item['data']->get_name();
+            }
+
+            //final fix if NO tax at all
+            if (!wc_tax_enabled() )
+                $item['item_cost'] = wc_format_decimal($item['line_subtotal'] / $item['qty']);
+            elseif($this->option_handler->get_option('hide_tax_line_product_item')) { // OR taxes hidden
+                if (wc_prices_include_tax()) {
+                    $item['item_cost'] = wc_format_decimal(($item['line_subtotal'] + $this->calculateFullLineSubtotalTax($item)) / $item['qty'] );
+                } else {
+                    $item['item_cost'] = wc_format_decimal($item['line_subtotal'] / $item['qty']);
+                }
             }
 
             $item['item_cost'] = apply_filters('wpo_update_cart_item_cost', $item['item_cost'], $item);
@@ -1035,6 +1052,16 @@ class WC_Phone_Orders_Cart_Updater
             if ( empty( $item['cost_updated_manually'] ) AND !empty($item['item_cost_with_tax_original']) ) {
                 $discount        += ($item['data']->get_regular_price() - $item['data']->get_price()) * $item['qty'];
                 $discountWithTax += ($item['item_cost_with_tax_original'] - $item['item_cost_with_tax']) * $item['qty'];
+            }elseif(!empty($item['wpo_item_discount']) ) {
+                $item_discount = ($item['wpo_item_discount']['original_price'] - $item['wpo_item_discount']['discounted_price']) * $item['qty'];
+                $item_tax_rate = $item['line_subtotal'] ? $item['line_subtotal_tax']/$item['line_subtotal'] : 0;
+                if ( wc_prices_include_tax() ) {
+                    $discount        += $item_discount / (1 + $item_tax_rate);
+                    $discountWithTax += $item_discount;
+                } else {
+                    $discount        += $item_discount;
+                    $discountWithTax += $item_discount * (1 +$item_tax_rate);
+                }
             }
         }
 

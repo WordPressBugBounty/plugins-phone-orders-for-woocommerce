@@ -112,7 +112,7 @@ abstract class WC_Phone_Orders_Admin_Abstract_Page
                 $data = ! empty($result['data']) ? $result['data'] : false;
 
                 $result = array(
-                    'success' => (boolean)$result['success'],
+                    'success' => (bool)$result['success'],
                     'data'    => $data,
                 );
 
