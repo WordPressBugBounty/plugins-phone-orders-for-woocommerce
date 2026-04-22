@@ -16,7 +16,7 @@ Easy way to take a manual/phone order in WooCommerce
 Speeds up adding manual/phone orders in WooCommerce backend.
 Discount plugins correctly adjust product price too.
 
-Having created an order, you can view the order, send an invoice and complete payment of the order ( [Pro version only](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/)  ).
+Having created an order, you can view the order, send an invoice and complete payment of the order ( [Pro version only](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?utm_source=wordpress&utm_medium=banner&utm_campaign=2026)  ).
 
 = Features =
 * UI was adapted for keyboard input
@@ -41,7 +41,7 @@ Having created an order, you can view the order, send an invoice and complete pa
 * Add any additional fees
 * A lot of UI options to suit different workflows and setups
 * Extra WooCommerce reports
-* and [much more ...](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/)
+* and [much more ...](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?utm_source=wordpress&utm_medium=banner&utm_campaign=2026)
 
 
 == Installation ==
@@ -61,7 +61,7 @@ It's not recommended, as WooCommerce remembers customer details and cart content
 Please, use [free plugin](https://wordpress.org/plugins/loggedin/) to prevent this situation.
 
 = How to set default country/state for new customers =
-[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) has more settings  and we keep adding them.
+[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?utm_source=wordpress&utm_medium=banner&utm_campaign=2026) has more settings  and we keep adding them.
 
 = I can't add new customer, I see the message "Please enter an account password"  =
 Please, visit >WooCommerce>Settings, select tab "Accounts & Privacy" and mark checkbox "When creating an account, automatically generate an account password".
@@ -76,7 +76,7 @@ Please, visit >WooCommerce>Settings>Shipping  and add shipping method for necess
 You should add non-virtual product to the cart at first. If you want to hide this method at frontend - [use this code](https://gist.github.com/alexv66/82d623841d33dc3f6abb1fd98873d710)
 
 = How to pay order?  =
-[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/) allows you to pay as customer, via checkout page.
+[Pro version](https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?utm_source=wordpress&utm_medium=banner&utm_campaign=2026) allows you to pay as customer, via checkout page.
 You can pay directly from admin area too - use [this free plugin](https://wordpress.org/plugins/woo-mp/). They support Stripe and Authorize.Net.
 
 = How to apply bulk/roles/others discounts?  =
