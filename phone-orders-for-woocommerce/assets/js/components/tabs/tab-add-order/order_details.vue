@@ -419,8 +419,8 @@
             <tr v-if="!hideAddShipping" v-for="(shippingPackage, index) in shipping.packages">
               <td class="label-total" v-if="shippingMethodsSelectType === 'in_popup'">
                 <a href="#"
-                   @click.prevent.stop="cartEnabled && !selectOptimalShipping ? addShipping(shippingPackage.hash) : null"
-                   :class="{disabled: !cartEnabled || selectOptimalShipping}">
+                   @click.prevent.stop="cartEnabled ? addShipping(shippingPackage.hash) : null"
+                   :class="{disabled: !cartEnabled}">
                   {{
                     shippingPackage.chosen_rate ? (shipping.is_free_shipping_coupon_applied ? getRateLabelGrantedByCoupon(shippingPackage.chosen_rate.label) : shippingPackage.chosen_rate.label) : addShippingLabel
                   }}
@@ -496,14 +496,14 @@
               </td>
               <td width="1%"></td>
               <td>
-				    <span class="woocommerce-Price-amount gift-card-value">
-					<a class="remove-gift-card" href="#"
-             @click.prevent.stop="cartEnabled ? removeGiftCard(card, index) : null"
-             :class="{disabled: !cartEnabled}">
-					    [{{ removeLabel }}]
-					</a>
-					<span v-if="card.amount" v-html="wcPrice(card.amount)"></span>
-				    </span>
+				        <span class="woocommerce-Price-amount gift-card-value">
+					      <a class="remove-gift-card" href="#"
+                  @click.prevent.stop="cartEnabled ? removeGiftCard(card, index) : null"
+                  :class="{disabled: !cartEnabled}">
+                  [{{ removeLabel }}]
+					      </a>
+					      <span v-if="card.amount" v-html="wcPrice(card.amount)"></span>
+				        </span>
               </td>
             </tr>
             <tr v-if="giftCardEnabled && !hideAddGiftCard" class="gift-card-list-add">
@@ -538,6 +538,12 @@
               <td width="1%"></td>
               <td class="total"></td>
               <td class="total total-value">{{ weightTotal }} <span v-if="isShowWeightUnit">{{ weightUnit }}</span></td>
+            </tr>
+            <tr v-if="AccountFundsEnabled" >
+              <td class="label-total">{{ accountFundsLabel }}</td>
+              <td width="1%"></td>
+              <td class="total"></td>
+              <td class="total total-value" v-html="wcPrice(AccountFundsAmount)"></td>
             </tr>
             </tbody>
           </table>
@@ -623,7 +629,14 @@
                   {{ buyProVersionMessage }}
                 </a>
               </div>
+              <span v-if="AccountFundsEnabled && AccountFundsAmount >= orderTotal && AccountFundsAmount !== 0" style="float: right;">
+                <button class="btn btn-primary" @click="payStoreCredit" id="pay-store-credit-button"
+                        v-show="showStoreCreditButton || showCreateOrderButton">
+                        {{ payStoreCreditButtonLabel }}
+                </button>
+              </span>
             </td>
+
           </tr>
         </table>
       </div>
@@ -1434,6 +1447,11 @@ export default {
         return 'Order Total';
       }
     },
+    accountFundsLabel: {
+      default: function () {
+        return 'Available Balance';
+      }
+    },
     createOrderButtonLabel: {
       default: function () {
         return 'Create order';
@@ -1451,7 +1469,7 @@ export default {
     },
     sendOrderButtonLabel: {
       default: function () {
-        return 'Send invoice';
+        return 'Email order details to customer';
       }
     },
     createNewOrderLabel: {
@@ -1522,6 +1540,11 @@ export default {
     duplicateOrderLabel: {
       default: function () {
         return 'Duplicate order';
+      }
+    },
+    payStoreCreditButtonLabel: {
+      default: function () {
+        return 'Pay with store credit';
       }
     },
     copyCartButtonLabel: {
@@ -1861,6 +1884,9 @@ export default {
     showHeader() {
       return !this.getSettingsOption('search_by_cat_and_tag');
     },
+    showStoreCreditButton: function () {
+      return !!this.$store.state.add_order.cart.account_funds.enabled && !!this.$store.state.add_order.cart.order_id && !this.$store.state.add_order.cart.order_is_paid;
+    },
     buttonsMessage: {
       get() {
         return this.$store.state.add_order.buttons_message;
@@ -1965,6 +1991,9 @@ export default {
     },
     showCreateNewOrderButton() {
       return !!this.$store.state.add_order.cart.order_id;
+    },
+    showEditOrderFromViewButton() {
+      return !!this.$store.state.add_order.cart.view_order_id;
     },
     showOrderActions() {
       return this.showCreateOrderButton
@@ -2105,6 +2134,12 @@ export default {
     },
     giftCardEnabled() {
       return !!this.$store.state.add_order.cart.gift_card.enabled;
+    },
+    AccountFundsEnabled() {
+      return !!this.$store.state.add_order.cart.account_funds.enabled && this.customer.id != 0;
+    },
+    AccountFundsAmount() {
+      return this.$store.state.add_order.cart.account_funds.amount;
     },
     giftCardList() {
       return this.$store.state.add_order.cart.gift_card.cards || [];
@@ -2541,14 +2576,14 @@ export default {
 
       return all_selected;
     },
-    isCartValid(where) {
+    isCartValid(where, options = {}) {
 
       var valid = true;
 
       this.isValidCartErrorMessage = this.fillAllFieldsLabel;
 
       this.getCheckCartValidation().forEach((validation) => {
-        if (!!!validation.check_cart(where)) {
+        if (!!!validation.check_cart(where, options)) {
           valid = false;
           if (typeof validation.check_cart_message !== 'undefined' && !!validation.check_cart_message()) {
             this.isValidCartErrorMessage = validation.check_cart_message();
@@ -2559,20 +2594,20 @@ export default {
 
       return valid;
     },
-    onCreateOrder() {
+    onCreateOrder(options = {}) {
       if (!this.isAllAttributesSelected()) {
         alert(this.chooseMissingAttributeLabel);
         return;
       }
 
-      if (!this.isCartValid()) {
+      if (!this.isCartValid(null, options)) {
         this.showAlert();
         this.errorMessage = this.isValidCartErrorMessage;
         return;
       }
 
       if (!this.$store.state.add_order.cart.drafted_order_id) {
-        this.createOrder();
+        this.createOrder(options);
       }
 
       this.$root.bus.$emit('create-order');
@@ -2580,7 +2615,7 @@ export default {
     onCreateOrderCheckError() {
 
     },
-    createOrder() {
+    createOrder(options = {}) {
 
       var cart = this.$store.state.add_order.cart;
 
@@ -2628,9 +2663,20 @@ export default {
         this.$store.commit('add_order/setCartOrderPaymentUrl', response.data.data.payment_url);
         this.$store.commit('add_order/setCartAllowRefundOrder', response.data.data.allow_refund_order);
         this.$store.commit('add_order/setCartEnabled', false);
+        this.$store.commit('add_order/setCartInvoiceUrl', response.data.data.invoice_url);
+        this.$store.commit('add_order/setCartAllowEditOrder', response.data.data.allow_edit_order);
+        this.$store.commit('add_order/setCartAllowOrderIsPaid', response.data.data.order_is_paid);
         this.buttonsMessage = response.data.data.message;
         this.$store.commit('add_order/setIsLoading', false);
+
         this.updateStoredCartHash();
+
+        if (options.autoPay) {
+          setTimeout(() => {
+            this.payStoreCreditAfterCreate(response.data.data.order_id);
+          }, 500);
+          return;
+        }
 
         switch (this.getSettingsOption('when_click_create_order')) {
           case 'pay_as_customer':
@@ -2673,6 +2719,30 @@ export default {
         this.$store.commit('add_order/setIsLoading', false);
       });
 
+    },
+    payStoreCreditAfterCreate(order_id) {
+      this.$store.commit('add_order/setIsLoading', true);
+      this.axios.post(this.url, this.qs.stringify({
+        action: 'phone-orders-for-woocommerce',
+        method: 'pay_store_credit',
+        order_id: order_id,
+        tab: this.tabName,
+        nonce: this.nonce,
+      })).then((response) => {
+        this.$root.bus.$emit('marked-as-paid', response.data.data);
+      }).finally(() => {
+        this.$store.commit('add_order/setCartAllowOrderIsPaid', true);
+        this.$store.commit('add_order/setIsLoading', false);
+      });;
+    },
+    payStoreCredit() {
+      if (this.$store.state.add_order.cart.edit_order_id || this.$store.state.add_order.cart.order_id) {
+        this.payStoreCreditAfterCreate(
+          this.$store.state.add_order.cart.edit_order_id || this.$store.state.add_order.cart.order_id
+        );
+      } else {
+        this.onCreateOrder({ autoPay: true });
+      }
     },
     viewOrder() {
 
@@ -2970,6 +3040,7 @@ export default {
         this.$store.commit('add_order/setTaxSettings', cart.wc_tax_settings);
         this.$store.commit('add_order/setMeasurementsSettings', cart.wc_measurements_settings);
         this.$store.commit('add_order/setGiftCard', cart.gift_card);
+        this.$store.commit('add_order/setAccountFunds', cart.account_funds);
         this.$store.commit('add_order/setAdpSettings', cart.adp);
 
         let excludeIDs = cart.deleted_items.map(function (item) {

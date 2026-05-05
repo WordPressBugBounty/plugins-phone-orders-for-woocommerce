@@ -527,14 +527,16 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 'recalculateButtonLabel'                      => __('Recalculate', 'phone-orders-for-woocommerce'),
                 'taxLabel'                                    => __('Taxes', 'phone-orders-for-woocommerce'),
                 'orderTotalLabel'                             => __('Order Total', 'phone-orders-for-woocommerce'),
+                'accountFundsLabel'                           => __('Available Balance', 'phone-orders-for-woocommerce'),
                 'createOrderButtonLabel'                      => apply_filters(
                     'wpo_create_order_button_label',
                     __('Create order', 'phone-orders-for-woocommerce')
                 ),
                 'viewOrderButtonLabel'                        => __('View order', 'phone-orders-for-woocommerce'),
                 'viewDraftButtonLabel'                        => __('View draft', 'phone-orders-for-woocommerce'),
-                'sendOrderButtonLabel'                        => __('Send invoice', 'phone-orders-for-woocommerce'),
+                'sendOrderButtonLabel'                        => __('Email order details to customer', 'phone-orders-for-woocommerce'),
                 'createNewOrderLabel'                         => __('Create new order', 'phone-orders-for-woocommerce'),
+                'editOrderFromViewLabel'                         => __('Edit order', 'phone-orders-for-woocommerce'),
                 'payOrderNeedProVersionMessage'               => __(
                     'Want to pay order as customer?',
                     'phone-orders-for-woocommerce'
@@ -604,6 +606,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'phone-orders-for-woocommerce'
                 ),
                 'duplicateOrderLabel'                         => __('Duplicate order', 'phone-orders-for-woocommerce'),
+                'payStoreCreditButtonLabel'                   => __('Pay with store credit', 'phone-orders-for-woocommerce'),
                 'fillAllFieldsLabel'                          => __(
                     'Please fill out all required fields!',
                     'phone-orders-for-woocommerce'
@@ -1448,6 +1451,15 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         $order       = wc_get_order($order_id);
         $payment_url = $order->get_checkout_payment_url();
 
+        $invoice_url = urldecode(
+            apply_filters(
+                'wpo_view_invoice_url',
+                add_query_arg(array('order_id' => '%order_id', 'nonce' => '%nonce'),
+                    get_home_url(null, 'wpo-view-invoice')),
+                $order_id
+            )
+        );
+
         // translators: Order created message
         $message      = sprintf(__('Order #%s created', 'phone-orders-for-woocommerce'), $order->get_order_number());
         $loaded_order = $this->load_order($order_id, 'view');
@@ -1456,6 +1468,10 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         if ($result instanceof WC_Data_Exception) {
             return $this->wpo_send_json_error($result->getMessage());
         }
+
+        $option_handler      = $this->option_handler;
+        $dontEditOrderStatusList = $option_handler->get_option('dont_allow_edit_order_have_status_list');
+
         $recalculated_cart = $result;
         $result            = array(
             'order_id'           => $order_id,
@@ -1466,6 +1482,13 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'allow_refund_order' => $this->get_allow_refund_order($order),
             'cart'               => $loaded_order['cart'],
             'recalculated_cart'  => $recalculated_cart,
+            'invoice_url'        => $invoice_url,
+            'allow_edit_order'     => $this->get_allow_refund_order(
+                    $order
+                ) && ( ! $dontEditOrderStatusList || ( ! in_array(
+                            'wc-' . $order->get_status(),
+                            $dontEditOrderStatusList
+                        ) && ! in_array($order->get_status(), $dontEditOrderStatusList))),
         );
 
         $this->clear_cart_for_switch_user($loaded_order['cart']['customer']['id']);
@@ -1808,6 +1831,11 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
 
         if ( ! is_email($email)) {
             return $this->wpo_send_json_error(__('A valid email address is required', 'phone-orders-for-woocommerce'));
+        }
+
+        $custom_mailer_result = apply_filters("wpo_send_custom_order_email", false, $order);
+        if ( $custom_mailer_result ) {
+            return $this->wpo_send_json_success( ['message'=>$custom_mailer_result] );
         }
 
         try {

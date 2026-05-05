@@ -119,173 +119,179 @@
         </div>
       </td>
       <td class="name">
-        <template v-if="!itemRenaming">
-          <a v-if="productLink" target="_blank" :href="productLink" class="wc-order-item-name">
-            {{ itemName }}
-          </a>
-          <div v-else class="wc-order-item-name">
-            {{ itemName }}
-          </div>
-        </template>
-        <div v-else>
-          <input type="text" ref="renameInput" style="width: 100%" @keydown.esc="toggleRenameCartItem"
-                 @keyup.enter="renameCartItem">
-        </div>
-        <div v-if="isAllowedToRenameCartItems && !itemRenaming" style="display: inline"
-             @click.prevent="cartEnabled ? toggleRenameCartItem() : null">
-          <fa-icon icon="edit"/>
-        </div>
-        <div v-if="isShowProductDescription">
-          <div v-if="this.stripTags(item.description).length <= showProductDescriptionPreviewSize">
-            <span v-html="item.description"></span>
-          </div>
+        <div class="block-main">
+          <template v-if="!itemRenaming">
+            <a v-if="productLink" target="_blank" :href="productLink" class="wc-order-item-name">
+              {{ itemName }}
+            </a>
+            <div v-else class="wc-order-item-name">
+              {{ itemName }}
+            </div>
+          </template>
           <div v-else>
-            <span v-html="item.description.substring(0, this.showProductDescriptionPreviewSize)"></span>... <a href="#"
-                                                                                                               @click.prevent="cartEnabled ? showItemDescription() : null">{{
-              readMoreLabel
-            }}</a>
+            <input type="text" ref="renameInput" style="width: 100%" @keydown.esc="toggleRenameCartItem"
+                   @keyup.enter="renameCartItem">
           </div>
-        </div>
-        <div class="wc-order-item-name" v-if="item.is_subscribed" v-html="item.product_price_html"></div>
-        <div v-show="!hideItemMeta">
-          <div class="wc-order-item-sku" v-if="item.sku">
-            <strong>
-              {{ skuLabel }}:
-            </strong>
-            {{ item.sku }}
+          <div v-if="isAllowedToRenameCartItems && !itemRenaming" style="display: inline"
+               @click.prevent="cartEnabled ? toggleRenameCartItem() : null">
+            <fa-icon icon="edit"/>
           </div>
-
-          <div class="wc-order-item-variation" v-if="item.variation_id">
-            <strong>
-              {{ variationIDLabel }}:
-            </strong>
-            {{ item.variation_id }}
-          </div>
-          <div v-if="this.item.variable_data" v-for="(values, key) in this.variableAttributes"
-               class="wc-order-item-variable-attribute">
-            <strong>{{ this.variableAttributeLabels[key] }} </strong>
-            <select @change="updateVariableSelectedAttributes(key, $event.target.value)" :data-attribute="key"
-                    :disabled="!cartEnabled">
-              <option value="" :selected="Object.keys(this.variableSelectedAttributes).length === 0">{{ anyLabel }}
-              </option>
-              <option v-for="value in values" :value="value"
-                      :selected="this.variableSelectedAttributes.hasOwnProperty(key) && this.variableSelectedAttributes[key] === value">
-                {{ value }}
-              </option>
-            </select>
-          </div>
-          <div v-else class="wc-order-item-variation" v-for="(variation_attribute, key) in this.variationAttributes">
-            <strong>
-              {{ key }}:
-            </strong>
-            {{ variation_attribute }}
-          </div>
-          <div class="wc-order-item-readonly-custom-meta-fields" v-if="item.readonly_custom_meta_fields_html">
-            <div v-html="item.readonly_custom_meta_fields_html"></div>
-          </div>
-          <div class="wc-order-item-weight" v-if="showCartWeight && item.weight">
-            <strong>{{ weightLabel }}:</strong> {{ item.weight }} <span v-if="isShowWeightUnit">{{ weightUnit }}</span>
-          </div>
-          <product-missing-attribute
-            v-bind="productMissingAttributeLabels"
-            v-for="(variation_attribute, index) in this.missingVariationAttributes"
-            :key="variation_attribute.key"
-            :index="index"
-            :attribute="Object.assign({}, variation_attribute)"
-            :itemKey="item.key"
-          ></product-missing-attribute>
-
-          <product-subscription-fields
-            v-if="item.is_subscribed && subscriptionFields"
-            v-bind="productSubscriptionOptions"
-            :fields="subscriptionFields"
-            @update="updateSubscriptionFields"
-          ></product-subscription-fields>
-
-          <product-custom-meta-fields
-            v-bind="productCustomMetaFieldsLabels"
-            :fields="customMetaFields"
-            :editable-fields="editableCustomMetaFields"
-            :removed-fields:="removedCustomMetaFieldsKeys"
-            @update="updateCustomMetaFields"
-            @update-editable-fields="updateEditableCustomMetaFields"
-          ></product-custom-meta-fields>
-        </div>
-        <div class="item-msg">
-          {{
-            item.in_stock === null || item.in_stock <= 0 || item.in_stock > tmpQty ?
-              ''
-              :
-              productStockMessage.replace('%s', item.in_stock)
-          }}
-        </div>
-        <div class="edit wpo-item-cost-value" style="margin-top: 10px;">
-          {{ productsTableCostColumnTitle }}:
-          <template v-if="originalPrice">
-            <div class="sale_price">
-              <del>
-                {{ originalPrice | formatPrice(precision) }}
-              </del>
-              <ins>
-                {{ formatPrice(cost, precision) }}
-              </ins>
+          <div v-if="isShowProductDescription">
+            <div v-if="this.stripTags(item.description).length <= showProductDescriptionPreviewSize">
+              <span v-html="item.description"></span>
             </div>
-          </template>
-          <template v-else-if="isReadOnly">
-            <div class="readonly_price">
-              {{ itemCostReadonlyPrefix }} <span
-              v-html="wcPrice(item.readonly_price ? item.readonly_price : cost, {decimals: this.precision})"></span>
+            <div v-else>
+              <span v-html="item.description.substring(0, this.showProductDescriptionPreviewSize)"></span>... <a href="#"
+                                                                                                                 @click.prevent="cartEnabled ? showItemDescription() : null">{{
+                readMoreLabel
+              }}</a>
             </div>
-          </template>
-          <template v-else>
-            {{ itemCostInputPrefix }} <input type="text" autocomplete="off" placeholder="0" v-model.lazy="costModel"
-                                             size="4" v-bind:disabled="!cartEnabled" name="wpo-item-cost-value" ref="cost"
-                                             @keydown.tab.prevent="openProductQty">
-          </template>
-          <div class="cost_with_tax" style="padding: 4px" v-if="showCostWithTax">
-            {{ formatPrice(costWithTax, precision) }}
+          </div>
+          <div class="wc-order-item-name" v-if="item.is_subscribed" v-html="item.product_price_html"></div>
+          <div v-show="!hideItemMeta">
+            <div class="wc-order-item-sku" v-if="item.sku">
+              <strong>
+                {{ skuLabel }}:
+              </strong>
+              {{ item.sku }}
+            </div>
+
+            <div class="wc-order-item-variation" v-if="item.variation_id">
+              <strong>
+                {{ variationIDLabel }}:
+              </strong>
+              {{ item.variation_id }}
+            </div>
+            <div v-if="this.item.variable_data" v-for="(values, key) in this.variableAttributes"
+                 class="wc-order-item-variable-attribute">
+              <strong>{{ this.variableAttributeLabels[key] }} </strong>
+              <select @change="updateVariableSelectedAttributes(key, $event.target.value)" :data-attribute="key"
+                      :disabled="!cartEnabled">
+                <option value="" :selected="Object.keys(this.variableSelectedAttributes).length === 0">{{ anyLabel }}
+                </option>
+                <option v-for="value in values" :value="value"
+                        :selected="this.variableSelectedAttributes.hasOwnProperty(key) && this.variableSelectedAttributes[key] === value">
+                  {{ value }}
+                </option>
+              </select>
+            </div>
+            <div v-else class="wc-order-item-variation" v-for="(variation_attribute, key) in this.variationAttributes">
+              <strong>
+                {{ key }}:
+              </strong>
+              {{ variation_attribute }}
+            </div>
+            <div class="wc-order-item-readonly-custom-meta-fields" v-if="item.readonly_custom_meta_fields_html">
+              <div v-html="item.readonly_custom_meta_fields_html"></div>
+            </div>
+            <div class="wc-order-item-weight" v-if="showCartWeight && item.weight">
+              <strong>{{ weightLabel }}:</strong> {{ item.weight }} <span v-if="isShowWeightUnit">{{ weightUnit }}</span>
+            </div>
+            <product-missing-attribute
+              v-bind="productMissingAttributeLabels"
+              v-for="(variation_attribute, index) in this.missingVariationAttributes"
+              :key="variation_attribute.key"
+              :index="index"
+              :attribute="Object.assign({}, variation_attribute)"
+              :itemKey="item.key"
+            ></product-missing-attribute>
+
+            <product-subscription-fields
+              v-if="item.is_subscribed && subscriptionFields"
+              v-bind="productSubscriptionOptions"
+              :fields="subscriptionFields"
+              @update="updateSubscriptionFields"
+            ></product-subscription-fields>
+
+            <product-custom-meta-fields
+              v-bind="productCustomMetaFieldsLabels"
+              :fields="customMetaFields"
+              :editable-fields="editableCustomMetaFields"
+              :removed-fields:="removedCustomMetaFieldsKeys"
+              @update="updateCustomMetaFields"
+              @update-editable-fields="updateEditableCustomMetaFields"
+            ></product-custom-meta-fields>
+          </div>
+          <div class="item-msg">
+            {{
+              item.in_stock === null || item.in_stock <= 0 || item.in_stock > tmpQty ?
+                ''
+                :
+                productStockMessage.replace('%s', item.in_stock)
+            }}
           </div>
         </div>
-        <div class="edit wpo-quantity-value" style="margin-top: 10px;">
-          {{ productsTableQtyColumnTitle }}:
-          <div v-if="soldIndividually || isReadOnlyQty" style="padding: 4px">
-            {{ qty }}
+        <div class="block-rest">
+          <div class="edit wpo-item-cost-value" style="margin-top: 10px;">
+            {{ productsTableCostColumnTitle }}:
+            <template v-if="originalPrice">
+              <div class="sale_price">
+                <del>
+                  {{ originalPrice | formatPrice(precision) }}
+                </del>
+                <ins>
+                  {{ formatPrice(cost, precision) }}
+                </ins>
+              </div>
+            </template>
+            <template v-else-if="isReadOnly">
+              <div class="readonly_price">
+                {{ itemCostReadonlyPrefix }} <span
+                v-html="wcPrice(item.readonly_price ? item.readonly_price : cost, {decimals: this.precision})"></span>
+              </div>
+            </template>
+            <template v-else>
+              {{ itemCostInputPrefix }} <input type="text" autocomplete="off" placeholder="0" v-model.lazy="costModel"
+                                               size="4" v-bind:disabled="!cartEnabled" name="wpo-item-cost-value" ref="cost"
+                                               @keydown.tab.prevent="openProductQty">
+            </template>
+            <div class="cost_with_tax" style="padding: 4px" v-if="showCostWithTax">
+              {{ formatPrice(costWithTax, precision) }}
+            </div>
           </div>
-          <input v-else
-                 ref="qty"
-                 type="number"
-                 :step="item.qty_step"
-                 :min="minQty"
-                 autocomplete="off"
-                 placeholder="0"
-                 v-model.number="tmpQtyModel"
-                 size="6"
-                 class="qty"
-                 name="wpo-quantity-value"
-                 :class="{'fractional-qty': this.allowToInputFractionalQty}"
-                 :disabled="!cartEnabled"
-                 :max="item.in_stock"
-                 @keydown.tab.prevent="openProductSearchSelect"
-                 @keyup.enter="openProductSearchSelect"
-                 @blur="changeQty"
-                 @mousedown="setFocus"
-                 @change="onChangeQtyAndMaybeFormat"
-                 style="max-width: 40px; height: 25px;"
-          />
+          <div class="edit wpo-quantity-value" style="margin-top: 10px;">
+            {{ productsTableQtyColumnTitle }}:
+            <div v-if="soldIndividually || isReadOnlyQty" style="padding: 4px">
+              {{ qty }}
+            </div>
+            <input v-else
+                   ref="qty"
+                   type="number"
+                   :step="item.qty_step"
+                   :min="minQty"
+                   autocomplete="off"
+                   placeholder="0"
+                   v-model.number="tmpQtyModel"
+                   size="6"
+                   class="qty"
+                   name="wpo-quantity-value"
+                   :class="{'fractional-qty': this.allowToInputFractionalQty}"
+                   :disabled="!cartEnabled"
+                   :max="item.in_stock"
+                   @keydown.tab.prevent="openProductSearchSelect"
+                   @keyup.enter="openProductSearchSelect"
+                   @blur="changeQty"
+                   @mousedown="setFocus"
+                   @change="onChangeQtyAndMaybeFormat"
+                   style="max-width: 56px; height: 25px;"
+            />
+          </div>
         </div>
-        <div class="item_discount" v-if="showColumnDiscount">
-          {{ columnDiscountTitle }}:
-          <b-form-radio-group
-            buttons
-            button-variant="outline-primary"
-            v-model="itemDiscountType"
-            name="discount-type"
-            :disabled="!cartEnabled"
-            :options="[{html: this.currencySymbol, value: 'fixed'}, {text: '%', value: 'percent'}]"
-          >
-          </b-form-radio-group>
-          <input type="text" autocomplete="off" placeholder="0" v-model.lazy="itemDiscountValue"
-                 :disabled="!cartEnabled" class="form-control">
+        <div class="block-discount" v-if="showColumnDiscount">
+          <div class="item_discount">
+            {{ columnDiscountTitle }}:
+            <b-form-radio-group
+              buttons
+              button-variant="outline-primary"
+              v-model="itemDiscountType"
+              name="discount-type"
+              :disabled="!cartEnabled"
+              :options="[{html: this.currencySymbol, value: 'fixed'}, {text: '%', value: 'percent'}]"
+            >
+            </b-form-radio-group>
+            <input type="text" autocomplete="off" placeholder="0" v-model.lazy="itemDiscountValue"
+                   :disabled="!cartEnabled" class="form-control" style="max-width: 56px; height: 25px; min-width: 56px;">
+          </div>
         </div>
       </td>
       <td class="item_extra_col" v-if="showProductsTableExtraColumn" v-html="item.extra_col_value"></td>
@@ -392,7 +398,24 @@
 .item_cost .readonly_price, .item_cost .sale_price {
   padding: 4px;
 }
+@media (max-width: 767px) {
+  #woocommerce-order-items td.name {
+    display: flex;
+    flex-direction: column;
+  }
 
+  #woocommerce-order-items td.name .block-main {
+    order: 1;
+  }
+
+  #woocommerce-order-items td.name .block-discount {
+    order: 2;
+  }
+
+  #woocommerce-order-items td.name .block-rest {
+    order: 3;
+  }
+}
 .item__wpo-readonly-child-item table {
   width: 100%;
 }
@@ -773,6 +796,9 @@ export default {
       },
     },
     suitableVariation() {
+      if (!Array.isArray(this.variableVariations)) {
+        return null;
+      }
       return this.variableVariations.find(variation => Object.keys(this.variableSelectedAttributes).every(attrKey => {
         if (variation.hasOwnProperty('attributes')) {
           return Object.keys(variation.attributes).some((variationAttrName) => {
@@ -1095,12 +1121,15 @@ export default {
       return tmp.textContent || tmp.innerText || "";
     },
     setVariationOriginalOptions() {
-      document.querySelectorAll('.name .wc-order-item-variable-attribute select').forEach(function (select) {
+      this.$el.querySelectorAll('.name .wc-order-item-variable-attribute select').forEach(function (select) {
         this.originalOptions[select.dataset.attribute] = select.getHTML();
       }.bind(this));
     },
     updateVariableAttributeOptions() {
-      document.querySelectorAll('.name .wc-order-item-variable-attribute select').forEach(function (select) {
+      if (!Array.isArray(this.variableVariations)) {
+        return;
+      }
+      this.$el.querySelectorAll('.name .wc-order-item-variable-attribute select').forEach(function (select) {
         var currentSelect = select;
         var currentAttributeName = currentSelect.dataset.attribute;
         var currentSelectedValue = currentSelect.value;
@@ -1182,7 +1211,7 @@ export default {
       if (this.suitableVariation) {
         this.cost = String(this.suitableVariation.price);
         this.$store.state.add_order.cart.items.forEach((_item) => {
-          if (_item.variation_id == this.item.variation_id) {
+          if (_item.key === this.item.key) {
             _item.variation_id = this.suitableVariation.variation_id;
           }
         })

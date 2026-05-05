@@ -109,13 +109,18 @@ var mixin = {
                     return v && v.trim();
                 })
                 .forEach(function (v) {
+                    var parts = v.split('###');
+                    var mainPart = parts[0].trim();
+                    var condition = parts[1] ? parts[1].trim() : null;
 
-                    var line = v.split('|');
+                    var line = mainPart.split('|');
 
                     if (line.length) {
                         var value = '';
                         var selected_values = [];
                         var start_with = null;
+                        let visible = true;
+
                         if (typeof line[3] !== 'undefined') {
                             value = line.slice(3).filter(function (v) {
                                 return v && v.trim();
@@ -129,6 +134,10 @@ var mixin = {
                                 let selectValue = "";
                                 let selectLabel = "";
 
+                                if (typeof exploded[0] !== 'undefined' && exploded[0] == "visible") {
+                                    visible = exploded[1] == "false" ? false : true;
+                                    return null;
+                                }
                                 if (typeof exploded[0] !== 'undefined') {
                                     selectValue = exploded[0];
                                     if (typeof exploded[1] !== 'undefined') {
@@ -150,6 +159,10 @@ var mixin = {
 
                                 return vNew;
                             });
+
+                            value = value.filter(function (item) {
+                                return item !== null;
+                            });
                         }
 
                         fieldList.push({
@@ -160,6 +173,8 @@ var mixin = {
                             value: value,
                             selected_values: selected_values,
                             start_with: start_with,
+                            condition: condition ? condition : null,
+                            visible: visible,
                         });
                     }
                 });
@@ -308,10 +323,13 @@ var empty_cart = {
     payment_method: '',
     order_currency: '',
     allow_refund_order: false,
+    allow_edit_order : false,
+    order_is_paid : false,
     wc_price_settings: Object.assign({}, PhoneOrdersData.wc_price_settings),
     wc_tax_settings: Object.assign({}, PhoneOrdersData.wc_tax_settings),
     wc_measurements_settings: Object.assign({}, PhoneOrdersData.wc_measurements_settings),
     gift_card: {},
+    account_funds: {},
     adp: {},
     actions: [],
     dont_apply_pricing_rules: false,
@@ -448,6 +466,11 @@ const mutations = {
         copiedCart.fee_ids = feeIDs;
         state.cart = copiedCart;
     },
+    setCartInvoiceUrl(state, url) {
+        const copiedCart = Object.assign({}, state.cart);
+        copiedCart.invoice_url = url;
+        state.cart = copiedCart;
+    },
     setAdditionalParamsProductSearch(state, params) {
         state.additional_params_product_search = Object.assign({}, params);
     },
@@ -509,6 +532,8 @@ const mutations = {
             order_is_completed: false,
             custom_fields_values: [],
             allow_refund_order: false,
+            allow_edit_order : false,
+            order_is_paid : false,
             actions: [],
             dont_apply_pricing_rules: false,
         });
@@ -543,6 +568,8 @@ const mutations = {
                 payment_method: '',
                 order_currency: '',
                 allow_refund_order: false,
+                allow_edit_order : false,
+                order_is_paid : false,
                 actions: [],
                 dont_apply_pricing_rules: false,
             },
@@ -594,6 +621,8 @@ const mutations = {
             payment_method: '',
             order_currency: '',
             allow_refund_order: false,
+            allow_edit_order : false,
+            order_is_paid : false,
             dont_apply_pricing_rules: false,
         };
 
@@ -653,6 +682,8 @@ const mutations = {
         delete copiedCart.edit_order_number;
         delete copiedCart.drafted_order_id;
         delete copiedCart.allow_refund_order;
+        delete copiedCart.allow_edit_order;
+        delete copiedCart.order_is_paid;
         state.cart = copiedCart;
     },
     setCartOrderIsCompleted(state, is_completed) {
@@ -766,6 +797,16 @@ const mutations = {
         copiedCart.allow_refund_order = allow_refund_order;
         state.cart = copiedCart;
     },
+    setCartAllowEditOrder(state, allow_edit_order) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.allow_edit_order = allow_edit_order;
+        state.cart = copiedCart;
+    },
+    setCartAllowOrderIsPaid(state, order_is_paid) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.order_is_paid = order_is_paid;
+        state.cart = copiedCart;
+    },
     setPriceSettings(state, newPriceSettings) {
         var copiedCart = Object.assign({}, state.cart);
         copiedCart.wc_price_settings = Object.assign({}, newPriceSettings);
@@ -784,6 +825,11 @@ const mutations = {
     setGiftCard(state, giftCard) {
         var copiedCart = Object.assign({}, state.cart);
         copiedCart.gift_card = Object.assign({}, giftCard);
+        state.cart = copiedCart;
+    },
+    setAccountFunds(state, account_funds) {
+        var copiedCart = Object.assign({}, state.cart);
+        copiedCart.account_funds = Object.assign({}, account_funds);
         state.cart = copiedCart;
     },
     addGiftCard(state, giftCard) {

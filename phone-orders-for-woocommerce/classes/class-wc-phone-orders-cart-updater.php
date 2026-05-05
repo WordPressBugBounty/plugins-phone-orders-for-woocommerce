@@ -153,7 +153,16 @@ class WC_Phone_Orders_Cart_Updater
             "wpo_clear_shipping_selection",
             $this->option_handler->get_option('select_optimal_shipping')
         )) {
-            unset($cart_data['shipping']['packages']);
+            $items_for_hash = array_map(function ($a) {
+                    return array( (float)$a['qty'], (int)$a['product_id'], (int)$a['variation_id'] );
+                },
+                $cart_data['items']
+            );
+            $cart_items_hash = md5(json_encode( $items_for_hash ));
+            //this option applied only if cart items changed
+            if( $cart_items_hash != WC()->session->get("wpo_select_optimal_shipping_hash","") )
+                unset($cart_data['shipping']['packages']);
+            WC()->session->set("wpo_select_optimal_shipping_hash", $cart_items_hash);
         }
 
         $initial_shipping_methods = WC()->session->get('chosen_shipping_methods');
@@ -821,14 +830,6 @@ class WC_Phone_Orders_Cart_Updater
                     $item['custom_name'] = $cart_item_key___original_item[$cart_key]['custom_name'];
                 }
             } else {
-                if( !empty($item['adp']['orig']['original_price'])  ) {// overriden by ADP plugin ?
-                    if( $item['data']->is_on_sale() ){
-                        $item['item_cost'] = $item['data']->get_sale_price();
-                    }
-                    else
-                        $item['item_cost'] = $item['adp']['orig']['original_price'];
-                }
-                else
                     $item['item_cost'] = $item['data']->get_price();
                 /*
                 if (wc_prices_include_tax()) {
@@ -1114,6 +1115,10 @@ class WC_Phone_Orders_Cart_Updater
                 'enabled' => apply_filters('wpo_gift_card_enabled', false),
                 'cards'   => apply_filters('wpo_gift_card_cards', array()),
                 'errors'  => apply_filters('wpo_gift_card_errors', array()),
+            ),
+            'account_funds'=> array(
+                'enabled' => apply_filters('wpo_account_funds_enabled', false),
+                'amount'  => apply_filters('wpo_account_funds_amount', $cart_data["customer"]["id"]),
             ),
             'adp'                      => array(
                 'list_of_choose_gifts_option' => $list_of_choose_gifts_option,

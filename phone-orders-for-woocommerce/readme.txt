@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 6.9
-Stable tag: 3.10.3
+Stable tag: 3.10.4
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,11 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.10.4 2026-05-05 =
+* Fixed UI bugs in mobile view
+* Renamed some buttons, to avoid confusion
+* Updated compatibility with [our pricing plugin](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/)
 
 = 3.10.3 2026-03-16 =
 * Manual discounts (applied to items) are included in the "Discount" total line

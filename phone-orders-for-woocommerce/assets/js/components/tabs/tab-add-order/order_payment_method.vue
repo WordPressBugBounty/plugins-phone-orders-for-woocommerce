@@ -128,7 +128,11 @@ export default {
     onChange: function (paymentMethod) {
       this.storedPaymentMethod = this.getKeyValueOfObject(paymentMethod, 'value');
     },
-    checkCart: function () {
+    checkCart: function (where, options = {}) {
+
+      if (options.autoPay) {
+        return true;
+      }
 
       if (!this.showPaymentMethods || this.allowToCreateOrdersWithoutPayment) {
         return true;

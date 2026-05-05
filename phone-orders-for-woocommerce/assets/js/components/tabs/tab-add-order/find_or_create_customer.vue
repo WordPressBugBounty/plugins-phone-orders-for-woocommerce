@@ -759,7 +759,7 @@ export default {
     openOrderHistoryCustomer() {
       this.$root.bus.$emit('order-history-customer-open', this.customer);
     },
-    checkCart: function (where) {
+    checkCart: function (where, options = {}) {
       this.where = where;
       return this.getIsValidCustomerValue(where);
     },

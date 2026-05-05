@@ -41,7 +41,7 @@ class WC_Phone_Orders_Help_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     sprintf(
                     // translators: Message about the purchase of the pro version
                     __('You should buy <a href=%s target=_blank>Pro version</a>.', 'phone-orders-for-woocommerce'),
-                        'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD'
+                        'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?utm_source=plugin&utm_medium=banner&utm_campaign=2026'
                     )
                 ),
                 $this->tab_help_question_response(
@@ -69,7 +69,7 @@ class WC_Phone_Orders_Help_Page extends WC_Phone_Orders_Admin_Abstract_Page
                             '<a href=%1$s target=_blank>Pro version</a> allows you to pay as customer, via checkout page. You can pay directly from admin area too – use <a href=%2$s target=_blank>this free plugin</a>. They support Stripe and Authorize.Net.',
                             'phone-orders-for-woocommerce'
                         ),
-                        'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?currency=USD',
+                        'https://algolplus.com/plugins/downloads/phone-orders-woocommerce-pro/?utm_source=plugin&utm_medium=banner&utm_campaign=2026',
                         'https://wordpress.org/plugins/woo-mp/'
                     )
                 ),
