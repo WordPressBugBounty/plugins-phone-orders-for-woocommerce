@@ -55,6 +55,16 @@
   display: none;
 }
 
+#phone-orders-app input[type="text"],
+#phone-orders-app input[type="number"] {
+  min-height: 28px !important;
+}
+
+#phone-orders-app .new_row input[type="text"],
+#phone-orders-app .new_row input[type="number"] {
+  min-height: 40px !important;
+}
+
 @media (max-width: 767px) {
 
   #phone-orders-app .wp-list-table .column.user_name,

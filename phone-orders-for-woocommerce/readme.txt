@@ -4,8 +4,8 @@ Donate link: https://paypal.me/ipprokaev/0usd
 Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
-Tested up to: 6.9
-Stable tag: 3.10.4
+Tested up to: 7.0
+Stable tag: 3.10.5
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,9 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.10.5 2026-05-25 =
+* Fixed UI bugs for WordPress 7.0
 
 = 3.10.4 2026-05-05 =
 * Fixed UI bugs in mobile view

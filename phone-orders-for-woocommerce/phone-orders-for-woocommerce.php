@@ -5,7 +5,7 @@
  * Description: Create manual/phone orders in WooCommerce quickly
  * Author: AlgolPlus
  * Author URI: http://algolplus.com/
- * Version: 3.10.4
+ * Version: 3.10.5
  * Text Domain: phone-orders-for-woocommerce
  * WC requires at least: 3.3
  * WC tested up to: 10.7
@@ -69,7 +69,7 @@ if (
 }
 
 define('WC_PHONE_ORDERS_BASENAME', plugin_basename(__FILE__));
-define('WC_PHONE_ORDERS_VERSION', '3.10.4');
+define('WC_PHONE_ORDERS_VERSION', '3.10.5');
 define('WC_PHONE_ORDERS_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('WC_PHONE_ORDERS_PLUGIN_URL', plugins_url('/', __FILE__));
 define('WC_PHONE_ORDERS_PLUGIN_PATH_FILE', __FILE__);

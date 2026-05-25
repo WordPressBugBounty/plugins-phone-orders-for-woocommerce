@@ -54,6 +54,10 @@
   margin: 5px;
 }
 
+.time-picker input[type="number"] {
+  min-height: 28px !important;
+}
+
 .postbox.disable-on-order .date-picker input {
   width: 100%;
   text-align: center;
