@@ -3002,24 +3002,14 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 $cost_updated_manually = false;
             } else {
                 if ($order->get_prices_include_tax()) {
-                    /** @phpstan-ignore-next-line */
-                    if ($order->get_meta($this->meta_key_tax_exempt) == "yes") {
-                        /**
-                         * For tax exempt order "$item_data['subtotal_tax']" will be empty
-                         * So we calculate product tax by ourselves
-                         */
-                        $tax_rates = WC_Tax::get_rates(
-                            $_product->get_tax_class(),
-                            (new WC_Customer($order->get_customer_id()))
-                        );
-                        $tax       = array_sum(
-                            WC_Tax::calc_tax($item_data['subtotal'], $tax_rates, ! $order->get_prices_include_tax())
-                        );
-                    } else {
-                        $tax = array_sum($item_data['taxes']['subtotal']);
-                    }
-
-                    $item_cost = ($item_data['subtotal'] + $tax) / $order_item_qty;
+                    // Convert stored net price to catalog price (inclusive of base shop tax).
+                    // set_price() must receive the catalog price; using customer-specific tax here
+                    // causes wrong totals when the shop base rate differs from the customer rate
+                    // (e.g. shop base=AR 10%, customer=RU 100% → wrong total via double-tax stripping).
+                    $net_unit_price = $item_data['subtotal'] / $order_item_qty;
+                    $base_tax_rates = WC_Tax::get_base_tax_rates($_product->get_tax_class('unfiltered'));
+                    $base_taxes     = WC_Tax::calc_tax($net_unit_price, $base_tax_rates, false);
+                    $item_cost      = $net_unit_price + array_sum($base_taxes);
                 } else {
                     $item_cost = $item_data['subtotal'] / $order_item_qty;
                 }

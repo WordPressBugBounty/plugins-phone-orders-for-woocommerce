@@ -1,11 +1,14 @@
 <template>
-  <tr v-show="shown">
+  <tr v-show="shown" :data-tab-key="tabKey">
     <td colspan=2>
       <table class="form-table">
         <tbody>
         <tr>
           <td colspan=2>
             <b>{{ title }}</b>
+            <a style="display: inline-block; margin-left: 15px" :href="docLink" target="_blank" data-search-ignore>
+              {{readDocsTitle}}
+            </a>
           </td>
         </tr>
         <tr>
@@ -321,6 +324,16 @@ export default {
         return 'Automatically update Shipping/Taxes/Totals';
       },
     },
+    readDocsTitle: {
+      default: function () {
+        return 'Read docs';
+      },
+    },
+    docLink: {
+      default: function () {
+        return '';
+      },
+    },
     autoRecalculate: {
       default: function () {
         return false;
@@ -556,7 +569,12 @@ export default {
   },
   computed: {
     shown() {
-      return this.getSettingsCurrentTab() === this.tabKey
+
+      if (this.getSearchMode()) {
+        return this.getMatchedTabs().includes(this.tabKey);
+      }
+
+      return this.getSettingsCurrentTab() === this.tabKey;
     },
     componentsSettings() {
       return this.getSettings();
@@ -647,6 +665,7 @@ export default {
       return {
         key: this.tabKey,
         title: this.title,
+        menu_order: 10,
       };
     },
     showOption(key) {

@@ -71,6 +71,7 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
         $this->tab_data = array(
             'submitButtonTitle'           => __('Save Changes', 'phone-orders-for-woocommerce'),
             'requestSuccessResultMessage' => __('Settings have been updated', 'phone-orders-for-woocommerce'),
+            'searchTitle'                 => __('Search', 'phone-orders-for-woocommerce'),
             'requestErrorResultMessage'   => __('Settings have not been updated', 'phone-orders-for-woocommerce'),
             'tabName'                     => 'settings',
             'isProVersion'                => WC_Phone_Orders_Loader::is_pro_version(),
@@ -84,6 +85,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
             'baseSettings'                => array(
                 'commonSettings'      => array(
                     'title'                   => __("Common", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'            => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                 => 'https://docs.algolplus.com/phone-orders/settings-pro-version/common-2/',
                     'autoRecalculateLabel'    => __(
                         'Automatically update Shipping/Taxes/Totals',
                         'phone-orders-for-woocommerce'
@@ -184,6 +187,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'interfaceSettings'   => array(
                     'title'                           => __("Interface", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'            => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                 => 'https://docs.algolplus.com/phone-orders/settings-pro-version/interface-2/',
                     'logShowRecordsDaysLabel'         => __(
                         'Show records for last X days in log',
                         'phone-orders-for-woocommerce'
@@ -202,6 +207,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'layoutSettings'      => array(
                     'title'                                        => __("Layout", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'            => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                 => 'https://docs.algolplus.com/phone-orders/settings-pro-version/layout-2/',
                     'showOrderDateTimeLabel'                       => __(
                         'Show order date/time',
                         'phone-orders-for-woocommerce'
@@ -238,7 +245,9 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'orderFieldsPosition'       => $this->option_handler->get_option('order_fields_position'),
                 ),
                 'cartItemsSettings'   => array(
-                    'title'                          => __("Cart Items", 'phone-orders-for-woocommerce'),
+                    'title'                          => __("Cart items", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'                   => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                        => 'https://docs.algolplus.com/phone-orders/settings-pro-version/cart-items-2/',
                     'showCartLinkLabel'              => __(
                         'Show button "Copy url to populate cart"',
                         'phone-orders-for-woocommerce'
@@ -261,6 +270,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'woocommerceSettings' => array(
                     'title'                     => __("WooCommerce", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'              => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                   => 'https://docs.algolplus.com/phone-orders/settings-pro-version/woocommerce-2/',
                     'showIconInOrdersListLabel' => __(
                         'Show icon for phone orders in orders list',
                         'phone-orders-for-woocommerce'
@@ -269,6 +280,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'taxSettings'         => array(
                     'title'                       => __("Tax", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'                => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                     => 'https://docs.algolplus.com/phone-orders/settings-pro-version/tax-2/',
                     'showTaxTotalsLabel'          => __('Show detailed taxes', 'phone-orders-for-woocommerce'),
                     'hideTaxLineProductItemLabel' => __("Hide tax line for item", 'phone-orders-for-woocommerce'),
                     'showTaxTotals'               => $this->option_handler->get_option('show_tax_totals'),
@@ -276,6 +289,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'couponsSettings'     => array(
                     'title'                             => __("Coupons", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'                      => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                           => 'https://docs.algolplus.com/phone-orders/settings-pro-version/coupons-2/',
                     'cacheCouponSearchResultHoursLabel' => __('Caching search results', 'phone-orders-for-woocommerce'),
                     'hoursLabel'                        => __("hours", 'phone-orders-for-woocommerce'),
                     'cacheCouponsDisableButtonLabel'    => __("Disable cache", 'phone-orders-for-woocommerce'),
@@ -286,6 +301,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'referencesSettings'  => array(
                     'title'                             => __("References", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'                      => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                           => 'https://docs.algolplus.com/phone-orders/settings-pro-version/references-2/',
                     'cacheReferencesHoursLabel'         => __(
                         'Caching locations/categories/tags',
                         'phone-orders-for-woocommerce'
@@ -299,6 +316,8 @@ class WC_Phone_Orders_Settings_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 ),
                 'shippingSettings'    => array(
                     'title'                      => __("Shipping", 'phone-orders-for-woocommerce'),
+                    'readDocTitle'                      => __("Read docs", 'phone-orders-for-woocommerce'),
+                    'docLink'                           => 'https://docs.algolplus.com/phone-orders/settings-pro-version/shipping-2/',
                     'allowEditShippingCostLabel' => __('Allow to edit shipping cost', 'phone-orders-for-woocommerce'),
 
                     'allowEditShippingCost'       => $this->option_handler->get_option('allow_edit_shipping_cost'),

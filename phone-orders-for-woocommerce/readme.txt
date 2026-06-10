@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 7.0
-Stable tag: 3.10.5
+Stable tag: 3.11.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,11 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.11.0 2026-06-10 =
+* Updated tab "Settings"
+* Fixed bug - currency selector was not updated if currency switched by another plugin in backend
+* Fixed bug - wrong taxes shown after creating order
 
 = 3.10.5 2026-05-25 =
 * Fixed UI bugs for WordPress 7.0

@@ -1,11 +1,14 @@
 <template>
-  <tr v-show="shown">
+  <tr v-show="shown" :data-tab-key="tabKey">
     <td colspan=2>
       <table class="form-table">
         <tbody>
         <tr>
           <td colspan=2>
             <b>{{ title }}</b>
+            <a style="display: inline-block; margin-left: 15px" :href="docLink" target="_blank" data-search-ignore>
+              {{readDocsTitle}}
+            </a>
           </td>
         </tr>
 
@@ -45,6 +48,16 @@ export default {
         return 'woocommerceSettings';
       },
     },
+    readDocsTitle:{
+      default: function () {
+        return 'Read docs';
+      },
+    },
+    docLink:{
+      default: function () {
+        return '';
+      },
+    },
     showIconInOrdersListLabel: {
       default: function () {
         return 'Show icon for phone orders in orders list';
@@ -72,7 +85,12 @@ export default {
   },
   computed: {
     shown() {
-      return this.getSettingsCurrentTab() === this.tabKey
+
+      if (this.getSearchMode()) {
+        return this.getMatchedTabs().includes(this.tabKey);
+      }
+
+      return this.getSettingsCurrentTab() === this.tabKey;
     },
     componentsSettings() {
       return this.getSettings();
@@ -91,6 +109,7 @@ export default {
       return {
         key: this.tabKey,
         title: this.title,
+        menu_order: 40,
       };
     },
     showOption(key) {

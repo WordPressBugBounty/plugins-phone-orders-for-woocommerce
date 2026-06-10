@@ -31,6 +31,22 @@ var mixin = {
         setComponentsSettings(settings) {
             this.$store.commit('settings/setComponentsSettings', settings);
         },
+
+        getSearchMode() {
+            return this.$store.getters['settings/getSearchMode'];
+        },
+
+        setSearchMode(value) {
+            this.$store.commit('settings/setSearchMode', value);
+        },
+
+        getMatchedTabs() {
+            return this.$store.getters['settings/getMatchedTabs'];
+        },
+
+        setMatchedTabs(tabs) {
+            this.$store.commit('settings/setMatchedTabs', tabs);
+        },
     },
 };
 
@@ -39,6 +55,9 @@ const state = {
     currentTab: null,
     settings: {},
     componentsSettings: {},
+
+    searchMode: false,
+    matchedTabs: [],
 };
 
 const getters = {
@@ -51,13 +70,22 @@ const getters = {
         return state.settings;
     },
     getTabs: function (state) {
-        return state.tabs;
+        return [...state.tabs].sort((a, b) => {
+            return (a.menu_order || 9999) - (b.menu_order || 9999);
+        });
     },
     getCurrentTab: function (state) {
         return state.currentTab;
     },
     getComponentsSettings: function (state) {
         return state.componentsSettings;
+    },
+    getSearchMode(state) {
+        return state.searchMode;
+    },
+
+    getMatchedTabs(state) {
+        return state.matchedTabs;
     },
 };
 
@@ -78,6 +106,14 @@ const mutations = {
     },
     setComponentsSettings: function (state, settings) {
         state.componentsSettings = Object.assign(state.componentsSettings, settings)
+    },
+
+    setSearchMode(state, value) {
+        state.searchMode = value;
+    },
+
+    setMatchedTabs(state, tabs) {
+        state.matchedTabs = tabs;
     },
 };
 

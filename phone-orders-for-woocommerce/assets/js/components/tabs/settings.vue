@@ -3,20 +3,28 @@
     <div v-show="isRunRequest" class="tab-loader">
       <loader></loader>
     </div>
-    <div class="tabs">
+    <div class="pow-settings-search-wrapper">
+      <div class="pow-settings-search">
+        <span class="dashicons dashicons-search"></span>
+        <input type="text" :placeholder="searchTitle" v-model="searchQuery" @input="onSearchInput">
+        <span class="dashicons dashicons-dismiss" @click="clearSearch"></span>
+      </div>
+    </div>
+    <div class="form-settings" ref="settingsContainer">
+      <div class="tabs">
             <span v-for="(value, index) in localTabsHeaders">
                 <a v-on:click="showSubTab(value.key)" v-bind:class="[ activatedTabKey === value.key ? 'active' : '' ]">{{ value.title }}</a>
-                <span v-if="index != localTabsHeaders.length - 1"> | </span>
             </span>
+      </div>
+      <table class="form-table">
+        <tbody>
+        <slot name="base-settings"></slot>
+        <need-more-settings v-if="!isProVersion" v-bind="needMoreSettings"></need-more-settings>
+        <slot name="pro-settings"></slot>
+        </tbody>
+      </table>
     </div>
-    <table class="form-table">
-      <tbody>
-      <slot name="base-settings"></slot>
-      <need-more-settings v-if="!isProVersion" v-bind="needMoreSettings"></need-more-settings>
-      <slot name="pro-settings"></slot>
-      <hr/>
-      </tbody>
-    </table>
+    <hr/>
     <p>
       <button type="submit" class="btn btn-primary" @click="saveSettings">
         {{ submitButtonTitle }}
@@ -35,6 +43,39 @@
 
 #phone-orders-app .form-table td {
   padding: 5px 0;
+}
+
+.pow-settings-search-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0px;
+  margin-bottom: -40px;
+}
+
+.tabs {
+  display: grid;
+  margin-right: 10px;
+}
+
+.tabs span {
+  white-space: nowrap
+}
+
+.form-settings {
+  display: flex;
+  align-items: flex-start;
+}
+
+.form-settings .form-table b {
+  font-size: 1.3em;
+}
+
+.form-settings .tabs {
+  margin-top: 0.8rem;
+}
+
+.form-settings .form-table {
+  margin-top: 0 !important;
 }
 
 #phone-orders-app .phone-orders-woocommerce_tab-settings .tabs a {
@@ -61,6 +102,44 @@
 #phone-orders-app .phone-orders-woocommerce_tab-settings .phone-orders-woocommerce__radio > * + * {
   margin-left: 1rem;
 }
+
+.pow-settings-search {
+  position: relative;
+}
+
+.pow-settings-search input {
+  padding: 0 30px;
+}
+
+.pow-settings-search .dashicons-search {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  color: #777;
+}
+
+.pow-settings-search .dashicons-dismiss {
+  position: absolute;
+  top: 7px;
+  right: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #777;
+}
+
+.pow-settings-search .hide {
+  display: none;
+}
+
+.search-hidden {
+  display: none !important;
+}
+
+.search-match {
+  background: yellow;
+  font-weight: bold;
+}
+
 </style>
 
 <script>
@@ -77,6 +156,11 @@ export default {
     submitButtonTitle: {
       default: function () {
         return 'Save Changes';
+      }
+    },
+    searchTitle: {
+      default: function () {
+        return 'Search';
       }
     },
     requestSuccessResultMessage: {
@@ -112,6 +196,8 @@ export default {
     return {
       isRunRequest: false,
       requestStatus: null,
+      searchQuery: '',
+      _searchDebounceTimer: null,
     };
   },
   computed: {
@@ -123,6 +209,150 @@ export default {
     },
   },
   methods: {
+    clearSearch() {
+      this.searchQuery = '';
+
+      this.setSearchMode(false);
+      this.setMatchedTabs([]);
+
+      this.performSearch();
+    },
+    onSearchInput() {
+      clearTimeout(this._searchDebounceTimer);
+      this._searchDebounceTimer = setTimeout(() => this.performSearch(), 250);
+    },
+    performSearch() {
+      const q = (this.searchQuery || '').trim();
+      const container = this.$el;
+
+      if (!container) {
+        return;
+      }
+
+      const escapeRegExp = (s) =>
+        s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+      const clearHighlights = (root) => {
+        root.querySelectorAll('.search-match').forEach(span => {
+          span.outerHTML = span.textContent;
+        });
+      };
+
+      const getSearchableText = (el) => {
+        const clone = el.cloneNode(true);
+        clone.querySelectorAll('[data-search-ignore]').forEach(node => {
+          node.remove();
+        });
+        return clone.textContent || '';
+      };
+
+      container.querySelectorAll('tr').forEach(tr => {
+        tr.classList.remove('search-hidden');
+        clearHighlights(tr);
+      });
+
+      const rows = Array.from(
+        container.querySelectorAll('[data-tab-key]')
+      );
+
+      if (!q) {
+
+        this.setSearchMode(false);
+        this.setMatchedTabs([]);
+
+        if (this.localTabsHeaders.length) {
+          this.showSubTab(this.localTabsHeaders[0].key);
+        }
+
+        return;
+      }
+
+      const testRe = new RegExp(escapeRegExp(q), 'i');
+      const highlightRe = new RegExp(escapeRegExp(q), 'ig');
+
+      const highlightInElement = (el) => {
+        const walker = document.createTreeWalker(
+          el,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+
+        const textNodes = [];
+        let node;
+
+        while ((node = walker.nextNode())) {
+          if (node.parentElement?.closest('[data-search-ignore]')) {
+            continue;
+          }
+
+          if (!node.nodeValue.trim()) {
+            continue;
+          }
+
+          if (testRe.test(node.nodeValue)) {
+            textNodes.push(node);
+          }
+        }
+
+        textNodes.forEach(n => {
+          const wrapper = document.createElement('span');
+
+          wrapper.innerHTML = n.nodeValue.replace(
+            highlightRe,
+            '<span class="search-match">$&</span>'
+          );
+
+          n.parentNode.replaceChild(wrapper, n);
+        });
+      };
+
+      const matchedTabs = new Set();
+
+      rows.forEach(tr => {
+
+        const text = getSearchableText(tr);
+
+        if (testRe.test(text)) {
+
+          highlightInElement(tr);
+
+          if (tr.dataset.tabKey) {
+            matchedTabs.add(tr.dataset.tabKey);
+          }
+
+        } else {
+
+          tr.classList.add('search-hidden');
+        }
+      });
+
+      container.querySelectorAll('tr:not([data-tab-key])').forEach(tr => {
+
+        const isHeader = !!tr.querySelector('b');
+
+        if (isHeader) {
+          return;
+        }
+
+        if (!tr.querySelector('.search-match')) {
+          tr.classList.add('search-hidden');
+        }
+      });
+
+      const tabs = [...matchedTabs];
+
+      if (tabs.length) {
+
+        this.setMatchedTabs(tabs);
+        this.setSearchMode(true);
+
+      } else {
+
+        this.setMatchedTabs([]);
+        this.setSearchMode(false);
+      }
+    },
     getTabsHeaders: function () {
 
       var headers = [];

@@ -1,11 +1,14 @@
 <template>
-  <tr v-show="shown">
+  <tr v-show="shown" :data-tab-key="tabKey">
     <td colspan=2>
       <table class="form-table">
         <tbody>
         <tr>
           <td colspan=2>
             <b>{{ title }}</b>
+            <a style="display: inline-block; margin-left: 15px" :href="docLink" target="_blank" data-search-ignore>
+              {{readDocsTitle}}
+            </a>
           </td>
         </tr>
 
@@ -67,7 +70,7 @@ export default {
   props: {
     title: {
       default: function () {
-        return 'Cart Items';
+        return 'Cart items';
       },
     },
     tabKey: {
@@ -83,6 +86,16 @@ export default {
     showCartLink: {
       default: function () {
         return false;
+      },
+    },
+    readDocsTitle:{
+      default: function () {
+        return 'Read docs';
+      },
+    },
+    docLink:{
+      default: function () {
+        return '';
       },
     },
     showCartLinkNote: {
@@ -140,7 +153,12 @@ export default {
   },
   computed: {
     shown() {
-      return this.getSettingsCurrentTab() === this.tabKey
+
+      if (this.getSearchMode()) {
+        return this.getMatchedTabs().includes(this.tabKey);
+      }
+
+      return this.getSettingsCurrentTab() === this.tabKey;
     },
     componentsSettings() {
       return this.getSettings();
@@ -162,6 +180,7 @@ export default {
       return {
         key: this.tabKey,
         title: this.title,
+        menu_order: 60,
       };
     },
     showOption(key) {

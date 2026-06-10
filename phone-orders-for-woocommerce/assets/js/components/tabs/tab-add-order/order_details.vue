@@ -2990,6 +2990,11 @@ export default {
 
         this.recalculateCallback(response.data.data);
 
+        this.$store.commit('add_order/updateOrderCurrency', {
+          code: response.data.data.wc_price_settings.currency,
+          symbol: response.data.data.wc_price_settings.currency_symbol
+        });
+
         this.$store.commit('add_order/setIsLoading', false);
         this.$store.commit('add_order/setIsLoadingWithoutBackground', false);
         this.$store.commit('add_order/clearActions');

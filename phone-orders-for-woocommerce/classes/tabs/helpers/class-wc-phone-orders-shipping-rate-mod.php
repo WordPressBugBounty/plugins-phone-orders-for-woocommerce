@@ -83,7 +83,7 @@ class WC_Phone_Orders_Shipping_Rate_Mod
                 $chosen_rate->set_cost($cost);
 
                 $taxes = array();
-                if ( ! $this->is_vat_exempt) {
+                if (!$this->is_vat_exempt && method_exists($chosen_rate, 'get_tax_status') && $chosen_rate->get_tax_status() !== 'none') {
                     $taxes = WC_Tax::calc_shipping_tax($cost, WC_Tax::get_shipping_tax_rates());
                 }
                 $chosen_rate->set_taxes($taxes);

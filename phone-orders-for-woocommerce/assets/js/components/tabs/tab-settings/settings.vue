@@ -46,7 +46,7 @@ export default {
         }
       });
 
-      return headers;
+      return headers.sort((a, b) => (a.menu_order || 9999) - (b.menu_order || 9999));
     },
     showOption: function (key) {
       return this.$children.forEach((child) => {

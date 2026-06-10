@@ -421,7 +421,15 @@ class WC_Phone_Orders_Cart_Updater
                                 $found_order_item = false;
                                 foreach ($order->get_items() as $order_item) {
                                     if ($order_item->get_id() == $item['order_item_id']) {
-                                        WC()->cart->cart_contents[$cart_item_key]['data']->set_price($order_item->get_subtotal()/$order_item->get_quantity());
+                                        $net_unit_price = $order_item->get_subtotal() / $order_item->get_quantity();
+                                        if (wc_prices_include_tax()) {
+                                            $base_tax_rates        = WC_Tax::get_base_tax_rates($product->get_tax_class('unfiltered'));
+                                            $base_taxes            = WC_Tax::calc_tax($net_unit_price, $base_tax_rates, false);
+                                            $order_item_unit_price = $net_unit_price + array_sum($base_taxes);
+                                        } else {
+                                            $order_item_unit_price = $net_unit_price;
+                                        }
+                                        WC()->cart->cart_contents[$cart_item_key]['data']->set_price($order_item_unit_price);
                                         $found_order_item = true;
                                         break;
                                     }

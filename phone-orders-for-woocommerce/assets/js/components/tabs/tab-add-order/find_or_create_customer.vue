@@ -749,6 +749,11 @@ export default {
         this.$root.bus.$emit('customer-updated', response.data.data.customer);
         this.$root.bus.$emit('apply-recalculated-cart', response.data.data.cart);
 
+        this.$store.commit('add_order/updateOrderCurrency', {
+          code: response.data.data.cart.wc_price_settings.currency,
+          symbol: response.data.data.cart.wc_price_settings.currency_symbol
+        });
+
         this.isLoading = false;
         this.$store.commit('add_order/setIsLoading', false);
       }, () => {
