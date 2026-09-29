@@ -4,8 +4,8 @@ Donate link: https://paypal.me/ipprokaev/0usd
 Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
-Tested up to: 7.0
-Stable tag: 3.11.0
+Tested up to: 7.1
+Stable tag: 3.11.2
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -107,9 +107,17 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 
 == Changelog ==
 
+= 3.11.2 2026-09-29 =
+* Fixeg bug - free shipping was not selected when it became available
+* Fixeg bug - conflict with plugin "Extended Coupon Features for WooCommerce"
+* Updated libs used to build app
+
+= 3.11.1 2026-06-29 =
+* Internal, not released
+
 = 3.11.0 2026-06-10 =
 * Updated tab "Settings"
-* Fixed bug - currency selector was not updated if currency switched by another plugin in backend
+* Fixed bug - currency selector was not updated if currency switched by another plugins in backend
 * Fixed bug - wrong taxes shown after creating order
 
 = 3.10.5 2026-05-25 =

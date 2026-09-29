@@ -656,6 +656,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'Copy to clipboard',
                     'phone-orders-for-woocommerce'
                 ),
+                'sendCopyLinkEmailLabel'                      => __('Send email', 'phone-orders-for-woocommerce'),
                 'columnDiscountTitle'                         => __('Discount', 'phone-orders-for-woocommerce'),
                 'barcodeModeAlertMessage'                     => __(
                     'Barcode mode enabled! Product search works only after pressing the Enter key',
@@ -696,7 +697,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                     'Don\'t apply pricing rules',
                     'phone-orders-for-woocommerce'
                 ),
-                'pricingRulesEnabled'                         => defined('WC_ADP_PLUGIN_FILE'),
+                'pricingRulesEnabled'                         => defined('WC_ADP_PLUGIN_FILE') || WC_Phone_Flycart_Pricing_Compatibility::isActive(),
                 'productHistoryButtonLabel'                   => __('Products history', 'phone-orders-for-woocommerce'),
                 'productHistoryButtonDescription'             => __(
                     'Select customer to see purchased products',
@@ -945,6 +946,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         }
 
         add_filter('adp_rules_suppression', '__return_true');//suppress our pricing
+        add_filter('advanced_woo_discount_rules_do_apply_price_discount', '__return_false');
 
         $result = array(
             'items' => $this->get_formatted_product_items_by_ids($ids),
@@ -2011,6 +2013,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         }
 
         add_filter('adp_rules_suppression', '__return_true');//suppress our pricing
+        add_filter('advanced_woo_discount_rules_do_apply_price_discount', '__return_false');
 
         $products = $this->search_products_and_variations($term, $exclude, $additional_query_args);
 
@@ -2658,6 +2661,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
             wp_send_json(null);
         }
 
+        unset( $_REQUEST['gift_hash'], $_POST['gift_hash'], $_GET['gift_hash'] );
         $result = $this->update_cart($data['cart']);
         if ($result instanceof WC_Data_Exception) {
             return $this->wpo_send_json_error($result->getMessage());
@@ -3002,14 +3006,21 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
                 $cost_updated_manually = false;
             } else {
                 if ($order->get_prices_include_tax()) {
-                    // Convert stored net price to catalog price (inclusive of base shop tax).
-                    // set_price() must receive the catalog price; using customer-specific tax here
-                    // causes wrong totals when the shop base rate differs from the customer rate
-                    // (e.g. shop base=AR 10%, customer=RU 100% → wrong total via double-tax stripping).
-                    $net_unit_price = $item_data['subtotal'] / $order_item_qty;
-                    $base_tax_rates = WC_Tax::get_base_tax_rates($_product->get_tax_class('unfiltered'));
-                    $base_taxes     = WC_Tax::calc_tax($net_unit_price, $base_tax_rates, false);
-                    $item_cost      = $net_unit_price + array_sum($base_taxes);
+                    if (apply_filters('woocommerce_adjust_non_base_location_prices', true)) {
+                        // Convert stored net price to catalog price (inclusive of base shop tax).
+                        // set_price() must receive the catalog price; using customer-specific tax here
+                        // causes wrong totals when the shop base rate differs from the customer rate
+                        // (e.g. shop base=AR 10%, customer=RU 100% → wrong total via double-tax stripping).
+                        $net_unit_price = $item_data['subtotal'] / $order_item_qty;
+                        $base_tax_rates = WC_Tax::get_base_tax_rates($_product->get_tax_class('unfiltered'));
+                        $base_taxes     = WC_Tax::calc_tax($net_unit_price, $base_tax_rates, false);
+                        $item_cost      = $net_unit_price + array_sum($base_taxes);
+                    }else {
+                        $item_cost = wc_format_decimal(
+                            ($item_data['subtotal'] + $item_data['subtotal_tax']) / $order_item_qty,
+                            wc_get_price_decimals()
+                        );
+                    }
                 } else {
                     $item_cost = $item_data['subtotal'] / $order_item_qty;
                 }

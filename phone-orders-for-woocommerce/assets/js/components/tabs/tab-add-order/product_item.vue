@@ -1,6 +1,7 @@
 <template>
   <tr class="item new_row">
     <template v-if="isChild">
+      <td class="wc-order-move-line-item"></td>
       <td class="thumb text-center"></td>
       <td class="name item__wpo-readonly-child-item">
         <table>
@@ -79,6 +80,8 @@
           </tbody>
         </table>
       </td>
+      <td class="item_extra_col" v-if="showProductsTableExtraColumn"></td>
+      <td class="item_discount" v-if="showColumnDiscount"></td>
       <td class="item_cost">
         <div class="edit wpo-item-cost-value" :class="{'hide': item.wpo_hide_item_price}">
           <div class="readonly_price">
@@ -1171,7 +1174,7 @@ export default {
         }.bind(this));
 
         if (foundAnyVariation) {
-          if (currentSelect.querySelectorAll('option[value="' + currentSelectedValue + '"]').length === 0) {
+          if (currentSelect.querySelector(`option[value="${CSS.escape(currentSelectedValue)}"]`).length === 0) {
             currentSelect.value = '';
           } else {
             currentSelect.value = currentSelectedValue;
@@ -1189,7 +1192,7 @@ export default {
         });
 
         // Restore previously selected value if it's still valid, or reset to default
-        if (currentSelect.querySelectorAll('option[value="' + currentSelectedValue + '"]').length === 0) {
+        if (currentSelect.querySelector(`option[value="${CSS.escape(currentSelectedValue)}"]`).length === 0) {
           currentSelect.value = '';
         } else {
           currentSelect.value = currentSelectedValue;

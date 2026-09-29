@@ -107,6 +107,9 @@ class WC_Phone_Orders_Cart_Updater
 
     public function process($cart_data, $force_not_selected_shipping = false)
     {
+        $dont_apply_rules = (!empty($cart_data['dont_apply_pricing_rules']) && $cart_data['dont_apply_pricing_rules'] === true) || $this->option_handler->get_option('dont_apply_pricing_rules');
+        new WC_Phone_Flycart_Pricing_Compatibility($dont_apply_rules);
+
         $cart_data = apply_filters("wpo_process_cart_data_prepare", $cart_data);
 
         if ( ! defined('WOOCOMMERCE_CART')) {
@@ -124,6 +127,8 @@ class WC_Phone_Orders_Cart_Updater
             'discount' => null,
             'shipping' => null,
         ));
+
+        $previously_applied_coupons = WC()->session->get('wpo_applied_coupons', array());
 
         $old_user_id = false;
         // customer
@@ -149,33 +154,34 @@ class WC_Phone_Orders_Cart_Updater
 
         WC()->cart->empty_cart();
 
+        $cart_items_hash      = md5(json_encode(array_map(function ($item) {
+            return array((float)$item['qty'], (int)$item['product_id'], (int)$item['variation_id']);
+        }, $cart_data['items'])));
+        $prev_cart_items_hash = WC()->session->get('wpo_cart_items_hash', '');
+        WC()->session->set('wpo_cart_items_hash', $cart_items_hash);
+
         if (apply_filters(
             "wpo_clear_shipping_selection",
             $this->option_handler->get_option('select_optimal_shipping')
         )) {
-            $items_for_hash = array_map(function ($a) {
-                    return array( (float)$a['qty'], (int)$a['product_id'], (int)$a['variation_id'] );
-                },
-                $cart_data['items']
-            );
-            $cart_items_hash = md5(json_encode( $items_for_hash ));
-            //this option applied only if cart items changed
-            if( $cart_items_hash != WC()->session->get("wpo_select_optimal_shipping_hash","") )
+            if ($cart_items_hash !== $prev_cart_items_hash) {
                 unset($cart_data['shipping']['packages']);
-            WC()->session->set("wpo_select_optimal_shipping_hash", $cart_items_hash);
+            }
         }
 
         $initial_shipping_methods = WC()->session->get('chosen_shipping_methods');
+
         WC()->shipping()->reset_shipping();
         wc_clear_notices(); // suppress front-end messages
         // Suppress total recalculation until finished.
         remove_action('woocommerce_add_to_cart', array(WC()->cart, 'calculate_totals'), 20);
 
         $dont_apply_rules = false;
-        if ( ! empty($cart_data['dont_apply_pricing_rules']) || $this->option_handler->get_option(
+        if ( !empty($cart_data['dont_apply_pricing_rules']) || $this->option_handler->get_option(
                 'dont_apply_pricing_rules'
             )) {
             add_filter('adp_rules_suppression', '__return_true');
+            add_filter('advanced_woo_discount_rules_do_apply_price_discount', '__return_false');
             $dont_apply_rules = true;
         }
 
@@ -334,6 +340,7 @@ class WC_Phone_Orders_Cart_Updater
             $cart_item_meta['cost_updated_manually']           = isset($item['cost_updated_manually']) ? $item['cost_updated_manually'] : false;
             $cart_item_meta['allow_po_discount']               = isset($item['allow_po_discount']) ? $item['allow_po_discount'] : true;
             $cart_item_meta['wpo_item_cost']                   = isset($item['item_cost']) ? $item['item_cost'] : null;
+            $cart_item_meta['wpo_custom_name']                 = isset($item['custom_name']) ? $item['custom_name'] : '';
             $cart_item_meta['custom_meta_fields']              = $item['custom_meta_fields'];
             $cart_item_meta['removed_custom_meta_fields_keys'] = isset($item['removed_custom_meta_fields_keys']) ? $item['removed_custom_meta_fields_keys'] : array();
 
@@ -661,6 +668,13 @@ class WC_Phone_Orders_Cart_Updater
                 WC()->session->set('chosen_shipping_methods', $chosen_shipping_methods);
             }
         }
+
+        $new_coupon_codes = array_map(function ($item) {
+            $code = isset($item['code']) ? $item['code'] : (isset($item['title']) ? $item['title'] : "");
+
+            return wc_format_coupon_code($code);
+        }, $cart_data['coupons']);
+
         $coupon_errors = wc_get_notices('error');
 
         // "Manual discount" is another coupon
@@ -718,7 +732,14 @@ class WC_Phone_Orders_Cart_Updater
             );
 
             WC()->cart->add_discount($manual_cart_discount_code);
+            $new_coupon_codes[] = wc_format_coupon_code($manual_cart_discount_code);
         }
+
+        foreach (array_diff($previously_applied_coupons, $new_coupon_codes) as $removed_coupon_code) {
+            WC()->cart->remove_coupon($removed_coupon_code);
+        }
+
+        WC()->session->set('wpo_applied_coupons', $new_coupon_codes);
 
         $shipping_proc = new WC_Phone_Orders_Cart_Shipping_Processor($this->option_handler);
         $shipping_proc::enable_preventing_to_select_method_for_certain_packages();
@@ -738,6 +759,15 @@ class WC_Phone_Orders_Cart_Updater
         $shipping_proc::purge_packages_from_session();
 
         $chosen_shipping_methods = WC()->cart->calculate_shipping();
+
+        $cart_items_changed = '' !== $prev_cart_items_hash && $cart_items_hash !== $prev_cart_items_hash;
+
+        $reselected_chosen_shipping_methods = $this->maybe_auto_select_free_shipping($cart_items_changed, $chosen_shipping_methods);
+        if ($reselected_chosen_shipping_methods !== $chosen_shipping_methods) {
+            WC()->session->set('chosen_shipping_methods', $reselected_chosen_shipping_methods);
+            $chosen_shipping_methods = WC()->cart->calculate_shipping();
+        }
+
         WC()->cart->calculate_totals();
 
         $manual_discount_value          = 0;
@@ -1596,6 +1626,47 @@ class WC_Phone_Orders_Cart_Updater
         }
 
         return false;
+    }
+
+    /**
+     * @param bool $cart_items_changed
+     * @param array $chosen_shipping_methods
+     *
+     * @return array
+     */
+    protected function maybe_auto_select_free_shipping($cart_items_changed, $chosen_shipping_methods)
+    {
+        $free_shipping_rate_ids = array();
+        foreach (WC()->shipping()->get_packages() as $package_key => $package) {
+            $free_shipping_rate_ids[$package_key] = null;
+            foreach (array_keys($package['rates']) as $rate_id) {
+                if (0 === strpos($rate_id, 'free_shipping')) {
+                    $free_shipping_rate_ids[$package_key] = $rate_id;
+                    break;
+                }
+            }
+        }
+
+        $was_free_shipping_available = WC()->session->get('wpo_free_shipping_availability', array());
+
+        foreach ($free_shipping_rate_ids as $package_key => $free_shipping_rate_id) {
+            if ($cart_items_changed && null !== $free_shipping_rate_id) {
+                $was_available         = ! empty($was_free_shipping_available[$package_key]);
+                $current_chosen_method = isset($chosen_shipping_methods[$package_key]) ? $chosen_shipping_methods[$package_key] : null;
+
+                if ( ! $was_available && $current_chosen_method !== $free_shipping_rate_id) {
+                    $chosen_shipping_methods[$package_key] = $free_shipping_rate_id;
+                }
+            }
+        }
+
+        $is_free_shipping_available_now = array();
+        foreach ($free_shipping_rate_ids as $package_key => $rate_id) {
+            $is_free_shipping_available_now[$package_key] = null !== $rate_id;
+        }
+        WC()->session->set('wpo_free_shipping_availability', $is_free_shipping_available_now);
+
+        return $chosen_shipping_methods;
     }
 
     /**

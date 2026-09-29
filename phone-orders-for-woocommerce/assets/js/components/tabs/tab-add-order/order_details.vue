@@ -50,6 +50,7 @@
                 :hide-selected="false"
                 :searchable="true"
                 open-direction="bottom"
+                @open="fixSearchHeight"
                 @select="isAllowConfigureProduct ? (useConfigureProductActionAsDefault ? configureProduct() : null) : addProductItemsToCart([{product: $event, qty: 1}])"
                 :disabled="!cartEnabled"
                 :options-limit="+productSelectOptionsLimit"
@@ -578,11 +579,18 @@
                                             >
 						<b-input-group>
 						    <b-form-input size="sm" v-model="copyLinkUrl" :readonly="true" ref="copyLinkInput"></b-form-input>
-						    <b-input-group-append>
-							<b-button size="sm" variant="light" @click="copyLink" :title="copyLinkTitle">
-							    <fa-icon :icon="['far', 'copy']"/>
-							</b-button>
-						    </b-input-group-append>
+              <b-input-group-append>
+                <b-button size="sm" variant="light" @click="copyLink" :title="copyLinkTitle">
+                  <fa-icon :icon="['far', 'copy']"/>
+                </b-button>
+                <b-button size="sm" variant="light" id="send-copy-link-email-button"
+                  v-if="showSendCopyLinkEmailButton"
+                  :disabled="isSendingCopyLinkEmail"
+                  @click="sendCopyLinkEmail">
+                  <fa-icon :icon="['far', 'envelope']"/>
+                  {{ sendCopyLinkEmailLabel }}
+                </b-button>
+              </b-input-group-append>
 						</b-input-group>
                                            </b-alert>
                                         </span>
@@ -719,6 +727,11 @@
 #woocommerce-order-items .option__desc {
   flex-grow: 1;
   padding-left: 10px;
+}
+
+#woocommerce-order-items .option__desc .option__title {
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 #woocommerce-order-items .display-find-results-as-grid .option__desc {
@@ -1143,11 +1156,11 @@ import draggable from 'vuedraggable';
 import _ from 'lodash';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {faCopy} from '@fortawesome/free-regular-svg-icons';
+import {faCopy, faEnvelope} from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon as FaIcon} from '@fortawesome/vue-fontawesome';
 import levenshtein from 'js-levenshtein';
 
-library.add(faCopy)
+library.add(faCopy, faEnvelope)
 
 export default {
   created: function () {
@@ -1254,8 +1267,9 @@ export default {
       this.errorMessage = message;
     });
 
-    this.$root.bus.$on('show-copy-link', (copy_url) => {
+    this.$root.bus.$on('show-copy-link', (copy_url, options) => {
       this.copyLinkUrl = copy_url;
+      this.copyLinkSendEmailMethod = options && options.sendEmailMethod ? options.sendEmailMethod : null;
       setTimeout(() => {
         this.copyLinkUrl = null;
       }, 5000)
@@ -1642,6 +1656,11 @@ export default {
         return 'Copy to clipboard';
       }
     },
+    sendCopyLinkEmailLabel: {
+      default: function () {
+        return 'Send email';
+      }
+    },
     columnDiscountTitle: {
       default: function () {
         return 'Discount';
@@ -1765,6 +1784,8 @@ export default {
       searchProductList: [],
 
       copyLinkUrl: null,
+      copyLinkSendEmailMethod: null,
+      isSendingCopyLinkEmail: false,
       disableLoadDefaultFindProducts: true,
 
       isValidCartErrorMessage: this.fillAllFieldsLabel,
@@ -1995,6 +2016,9 @@ export default {
     showEditOrderFromViewButton() {
       return !!this.$store.state.add_order.cart.view_order_id;
     },
+    showSendCopyLinkEmailButton() {
+      return !!this.copyLinkSendEmailMethod && !!this.customer.billing_email;
+    },
     showOrderActions() {
       return this.showCreateOrderButton
         || !!this.$store.state.add_order.cart.edit_order_id
@@ -2191,6 +2215,18 @@ export default {
     },
   },
   methods: {
+    fixSearchHeight() {
+      this.$nextTick(() => {
+        const ms = this.$refs.productSelectSearch;
+
+        if (!ms) {
+          return;
+        }
+        if (ms.optimizedHeight < 200) {
+          ms.optimizedHeight = Math.max(ms.optimizedHeight, 200);
+        }
+      });
+    },
     stringsDistance(s1, s2) {
       var m = 0;
       var i;
@@ -3390,6 +3426,33 @@ export default {
           this.$refs.copyLinkInput.$el.select();
         }
       })
+    },
+    sendCopyLinkEmail() {
+      if (!this.copyLinkSendEmailMethod || this.isSendingCopyLinkEmail) {
+        return;
+      }
+      this.isSendingCopyLinkEmail = true;
+      this.$store.commit('add_order/setIsLoading', true);
+
+      this.axios.post(this.url, this.qs.stringify({
+        action: 'phone-orders-for-woocommerce',
+        method: this.copyLinkSendEmailMethod,
+        url: this.copyLinkUrl,
+        tab: this.tabName,
+        nonce: this.nonce,
+      })).then((response) => {
+
+        if (!!!response.data.success) {
+          this.errorMessage = response.data.data;
+          this.showAlert();
+          return;
+        }
+
+        this.buttonsMessage = response.data.data.message;
+      }).finally(() => {
+        this.isSendingCopyLinkEmail = false;
+        this.$store.commit('add_order/setIsLoading', false);
+      });
     },
     onEnter(e) {
       if (!this.findProductsList.length) {

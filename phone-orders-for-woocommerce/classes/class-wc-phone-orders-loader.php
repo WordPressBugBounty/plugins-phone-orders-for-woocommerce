@@ -38,6 +38,7 @@ class WC_Phone_Orders_Loader
 
         include_once WC_PHONE_ORDERS_PLUGIN_PATH . 'classes/repositories/class-wc-phone-repository-orders.php';
         include_once WC_PHONE_ORDERS_PLUGIN_PATH . 'classes/compatibility/class-wc-phone-woocs-compatibility.php';
+        include_once WC_PHONE_ORDERS_PLUGIN_PATH . 'classes/compatibility/class-wc-flycart-pricing-plugin-compatibility.php';
 
         add_action('woocommerce_init', function () {
             include_once WC_PHONE_ORDERS_PLUGIN_PATH . 'classes/class-wc-cart-partial-totals.php';
