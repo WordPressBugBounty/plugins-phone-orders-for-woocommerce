@@ -553,6 +553,7 @@
       </div>
       <div class="order-actions" v-show="showOrderActions">
         <table class="wc-order__actions">
+          <tbody>
           <tr>
             <td>
                                     <span class="description">
@@ -567,8 +568,8 @@
                                                      fade
                                                      dismissible
                                                      variant="danger"
-                                                     @dismissed="dismissCountDown"
-                                                     @dismiss-count-down="countDownChanged"
+                                                     @close="dismissCountDown"
+                                                     @close-countdown="countDownChanged"
                                             >
                                                 {{ errorMessage }}
                                            </b-alert>
@@ -579,7 +580,7 @@
                                             >
 						<b-input-group>
 						    <b-form-input size="sm" v-model="copyLinkUrl" :readonly="true" ref="copyLinkInput"></b-form-input>
-              <b-input-group-append>
+              <template #append>
                 <b-button size="sm" variant="light" @click="copyLink" :title="copyLinkTitle">
                   <fa-icon :icon="['far', 'copy']"/>
                 </b-button>
@@ -590,7 +591,7 @@
                   <fa-icon :icon="['far', 'envelope']"/>
                   {{ sendCopyLinkEmailLabel }}
                 </b-button>
-              </b-input-group-append>
+              </template>
 						</b-input-group>
                                            </b-alert>
                                         </span>
@@ -646,6 +647,7 @@
             </td>
 
           </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -1964,10 +1966,9 @@ export default {
 
       let rates = !!this.selectedPackage && !!this.selectedPackage.rates ? this.selectedPackage.rates : [];
 
-      rates.forEach(function (item, index, rates) {
-        rates[index] = Object.assign({}, item);
+      return rates.map(function (item) {
+        return Object.assign({}, item);
       });
-      return rates;
     },
     additionalProductSearchParams: {
       get() {

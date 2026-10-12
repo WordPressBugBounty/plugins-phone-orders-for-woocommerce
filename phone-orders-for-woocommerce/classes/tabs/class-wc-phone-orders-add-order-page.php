@@ -1643,7 +1643,7 @@ class WC_Phone_Orders_Add_Order_Page extends WC_Phone_Orders_Admin_Abstract_Page
         }
 
         $created_date_time = ! empty($data['created_date_time']) ? (int)$data['created_date_time'] : null;
-        if (is_integer($created_date_time)) {
+        if (is_int($created_date_time)) {
             $order->set_date_created($data['created_date_time']);
             $order->save();
         }

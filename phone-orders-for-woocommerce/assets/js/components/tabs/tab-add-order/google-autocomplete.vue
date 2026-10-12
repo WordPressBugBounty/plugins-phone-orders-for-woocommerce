@@ -1,10 +1,10 @@
 <template>
   <b-row>
-    <b-col cols="12" class="google-autocomplete-component">
+    <b-col cols="12" class="google-autocomplete-component mt-3">
       <div class="autocomplete-block alert alert-primary"  v-show="isValidAPIKey">
         <div ref="autocomplete_address" style="display:none;"></div>
       </div>
-      <b-alert show variant="warning" class="alert-autocomplete" v-show="!isValidAPIKey">
+      <b-alert show variant="warning" class="alert-autocomplete mb-0" v-show="!isValidAPIKey">
         {{ invalidMessage }}
         <fa-icon icon="exclamation-triangle" class="alert-icon"/>
       </b-alert>

@@ -5,7 +5,7 @@
              :title="shippingMethodLabel"
              @shown="shown"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <div id="shipping_method">
@@ -104,6 +104,7 @@
 <script>
 
 export default {
+  modalId: 'shippingModal',
   created() {
     this.$root.bus.$on('edit-shipping-package', (hash) => {
       this.packageHash = hash;
@@ -207,11 +208,9 @@ export default {
 
       let rates = !!this.selectedPackage && !!this.selectedPackage.rates ? this.selectedPackage.rates : [];
 
-      rates.forEach(function (item, index, rates) {
-        rates[index] = Object.assign({}, item);
+      return rates.map(function (item) {
+        return Object.assign({}, item);
       });
-
-      return rates;
     },
     packageContents: function () {
       return !!this.selectedPackage && !!this.selectedPackage.contents ? this.selectedPackage.contents : [];

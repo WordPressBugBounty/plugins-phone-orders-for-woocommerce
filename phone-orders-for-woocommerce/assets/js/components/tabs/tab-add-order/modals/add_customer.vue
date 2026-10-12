@@ -7,7 +7,7 @@
              @hidden="hideModal"
              size="lg"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <!--required fields!!!-->
@@ -245,7 +245,7 @@
 
       <template v-slot:footer>
         <div style="display: flex; flex-direction: column; width: 100%">
-          <b-alert :show="!!error" variant="danger" class="error-alert">{{ this.error }}</b-alert>
+          <b-alert :show="!!error" variant="danger" class="error-alert mb-3">{{ this.error }}</b-alert>
           <div style="margin-left: auto">
             <b-button @click="cancel()">{{ cancelLabel }}</b-button>
             <b-button @click="createCustomer()" variant="primary">{{ saveCustomerLabel }}</b-button>
@@ -273,6 +273,7 @@ import GoogleAutocomplete from '../google-autocomplete.vue';
 import CustomAutocomplete from '../custom-autocomplete.vue';
 
 export default {
+  modalId: 'addCustomer',
   props: {
     fieldsToShow: {
       type: Object,

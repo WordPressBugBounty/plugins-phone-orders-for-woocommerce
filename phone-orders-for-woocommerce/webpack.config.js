@@ -66,6 +66,7 @@ module.exports = (env, argv) => {
             new DefinePlugin({
                 __VUE_OPTIONS_API__: true,
                 __VUE_PROD_DEVTOOLS__: isDevelopment,
+                __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
             })
         ],
         optimization: {
@@ -83,6 +84,10 @@ module.exports = (env, argv) => {
                 }),
                 new OptimizeCssAssetsPlugin({})
             ],
+        },
+        performance: {
+            maxAssetSize: 4 * 1024 * 1024,
+            maxEntrypointSize: 4 * 1024 * 1024,
         },
     }
 };

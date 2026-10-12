@@ -57,11 +57,8 @@
   margin-right: 10px;
 }
 
-.tabs span {
-  white-space: nowrap
-}
-
 .form-settings {
+  margin-left: 1em;
   display: flex;
   align-items: flex-start;
 }

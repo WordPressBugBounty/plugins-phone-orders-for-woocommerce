@@ -6,7 +6,7 @@
              size="sm"
              @shown="shown"
              :no-close-on-backdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-form inline>
@@ -61,6 +61,7 @@
 import Multiselect from 'vue-multiselect';
 
 export default {
+  modalId: 'addCoupon',
   created: function () {
     this.$root.bus.$on('app-loaded', () => {
       this.showAllCouponsInAutocomplete && this.loadCouponsList();

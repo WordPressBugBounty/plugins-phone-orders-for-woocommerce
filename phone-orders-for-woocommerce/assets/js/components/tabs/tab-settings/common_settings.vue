@@ -172,6 +172,7 @@
           </td>
           <td>
             <table style="width: 100%">
+              <tbody>
               <tr>
                 <td>
                   {{ addressValidationUSPSKeyLabel }}
@@ -217,6 +218,7 @@
 <!--                <td colspan="100%">-->
 <!--                </td>-->
               </tr>
+              </tbody>
             </table>
           </td>
         </tr>
@@ -239,6 +241,7 @@
 
 #phone-orders-app .btn.btn-check-api-key {
   padding: 3px 12px;
+  margin-bottom: 0.2em;
 }
 
 .btn-check-api-key .v-spinner {

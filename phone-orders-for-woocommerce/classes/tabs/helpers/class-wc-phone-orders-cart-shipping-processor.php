@@ -267,8 +267,7 @@ class WC_Phone_Orders_Cart_Shipping_Processor
             }
         }
 
-        $label = isset($cart_data_package['chosen_rate']['label']) ? $cart_data_package['chosen_rate']['label'] : null;
-        $shipping_rate_mod->set_label($label);
+        
 
         $custom_title = isset($cart_data_package['custom_title']) ? $cart_data_package['custom_title'] : array();
         if (isset($custom_title['title'], $custom_title['enabled'])) {

@@ -7,7 +7,7 @@
              @hidden="hideModal"
              size="lg"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-container>
@@ -240,6 +240,7 @@ import GoogleAutocomplete from '../google-autocomplete.vue';
 import CustomAutocomplete from '../custom-autocomplete.vue';
 
 export default {
+  modalId: 'editAddress',
   props: {
     cancelLabel: {
       default: function () {

@@ -16,7 +16,7 @@
               class="error-alert"
               dismissible
               fade
-              @dismissed="clear"
+              @close="clear"
             >
               <ul>
                 <li v-for="item in deletedItems">
@@ -113,6 +113,26 @@
   cursor: not-allowed;
 }
 
+#phone-orders-app .modal {
+  z-index: 160000 !important;
+}
+
+#phone-orders-app .card-header {
+  margin-bottom: 0.5rem !important;
+  background-color: #F7F7F7;
+  border-bottom: 1px solid #ccc !important;
+}
+
+#phone-orders-app .card-header .card-header-tabs {
+  margin-top: 0.5rem !important;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.card-header-tabs .nav-link.active {
+  background-color: white !important;
+}
+
 .phone-orders-woocommerce__tab {
   position: relative;
 }
@@ -128,6 +148,16 @@
 
 .phone-orders-woocommerce_tab-settings .tab-loader {
   margin: 10px -5px;
+}
+
+#phone-orders-app .tab-content {
+  padding-top: 1em;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#phone-orders-app .card-header-tabs .nav-link {
+  border-bottom: none;
 }
 
 .phone-orders-woocommerce__tab .tab-loader .v-spinner {

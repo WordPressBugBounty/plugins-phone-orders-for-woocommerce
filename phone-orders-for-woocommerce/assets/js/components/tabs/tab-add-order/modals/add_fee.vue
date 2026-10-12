@@ -6,7 +6,7 @@
              @shown="shown"
              size="lg"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-form inline @submit.stop.prevent="submit">
@@ -27,11 +27,12 @@
         <div class="mb-sm-2">
           <b-form-radio-group buttons
                               button-variant="outline-primary"
-                              class="mb-2 mr-sm-2 mb-sm-0"
+                              class="mb-2 mr-sm-2 mb-sm-0 me-1"
                               v-model="elFeeType"
                               name="fee-type"
-                              ref="group"
-                              :options="[{html: this.currencySymbol, value: 'fixed'}, {text: '%', value: 'percent'}]">S
+                              ref="group">
+            <b-form-radio value="fixed"><span v-html="currencySymbol"></span></b-form-radio>
+            <b-form-radio value="percent">%</b-form-radio>
           </b-form-radio-group>
           <input
             type="number"
@@ -60,6 +61,7 @@
 <script>
 
 export default {
+  modalId: 'addFee',
   props: {
     cancelLabel: {
       default: function () {

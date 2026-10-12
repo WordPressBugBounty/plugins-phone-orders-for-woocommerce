@@ -5,8 +5,8 @@
              :title="title"
              size="sm"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
-             :hide-footer="true"
+             :teleport-disabled="true"
+             :no-footer="true"
              v-model="showModal"
     >
       <div v-html="description"></div>
@@ -17,6 +17,7 @@
 <script>
 
 export default {
+  modalId: 'productDescription',
   created: function () {
     this.$root.bus.$on('show-product-description', (data) => {
       this.title = data.title;

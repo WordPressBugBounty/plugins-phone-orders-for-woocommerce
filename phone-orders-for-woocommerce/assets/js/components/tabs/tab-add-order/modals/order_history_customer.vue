@@ -3,11 +3,11 @@
     <b-modal id="orderHistoryCustomer"
              ref="modal"
              :title="orderHistoryCustomerLabelValue"
-             :hide-footer="true"
+             :no-footer="true"
              size="xl"
              @show="show"
              @hidden="hidden"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <loader v-show="isLoading"></loader>
@@ -73,6 +73,7 @@
 var loader = require('vue-spinner/dist/vue-spinner.min').ClipLoader;
 
 export default {
+  modalId: 'orderHistoryCustomer',
   props: {
     orderHistoryCustomerLabel: {
       default: function () {

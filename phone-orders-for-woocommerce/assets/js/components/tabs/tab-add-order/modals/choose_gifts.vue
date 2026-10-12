@@ -6,7 +6,7 @@
              size="xl"
              @hidden="hidden"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <div class="wpo-gifts-list">
@@ -134,6 +134,7 @@
 var loader = require('vue-spinner/dist/vue-spinner.min').ClipLoader;
 
 export default {
+  modalId: 'chooseGifts',
   props: {
     chooseGiftsLabel: {
       default: function () {

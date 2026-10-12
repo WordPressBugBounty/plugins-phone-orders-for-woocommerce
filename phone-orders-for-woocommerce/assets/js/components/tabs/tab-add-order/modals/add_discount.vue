@@ -5,7 +5,7 @@
              :title="addDiscountLabel"
              @shown="shown"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-form ref="discountForm" inline @submit.stop.prevent="apply">
@@ -14,12 +14,12 @@
         </div>
         <b-form-radio-group buttons
                             button-variant="outline-primary"
-                            class="mb-2 mr-sm-2 mb-sm-0"
+                            class="mb-2 mr-sm-2 mb-sm-0 me-1"
                             v-model="elDiscountType"
                             name="discount-type"
-                            ref="group"
-                            :options="[{html: this.currencySymbol, value: 'fixed_cart'}, {text: '%', value: 'percent'}]">
-          S
+                            ref="group">
+          <b-form-radio value="fixed_cart"><span v-html="currencySymbol"></span></b-form-radio>
+          <b-form-radio value="percent">%</b-form-radio>
         </b-form-radio-group>
 
         <input
@@ -68,6 +68,7 @@
 <script>
 
 export default {
+  modalId: 'addDiscountModal',
   props: {
     cancelLabel: {
       default: function () {

@@ -124,7 +124,7 @@
 import Multiselect from 'vue-multiselect';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import {BCol, BRow} from "bootstrap-vue-3";
+import {BCol, BRow} from "bootstrap-vue-next";
 
 export default {
   props: {

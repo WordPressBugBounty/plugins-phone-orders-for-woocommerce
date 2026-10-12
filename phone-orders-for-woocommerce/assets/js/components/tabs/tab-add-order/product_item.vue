@@ -283,14 +283,15 @@
         <div class="block-discount" v-if="showColumnDiscount">
           <div class="item_discount">
             {{ columnDiscountTitle }}:
-            <b-form-radio-group
-              buttons
-              button-variant="outline-primary"
-              v-model="itemDiscountType"
-              name="discount-type"
-              :disabled="!cartEnabled"
-              :options="[{html: this.currencySymbol, value: 'fixed'}, {text: '%', value: 'percent'}]"
-            >
+            <b-form-radio-group buttons
+                                button-variant="outline-primary"
+                                class="mb-2 mr-sm-2 mb-sm-0 me-1"
+                                v-model="itemDiscountType"
+                                name="discount-type"
+                                :disabled="!cartEnabled"
+                                ref="group">
+              <b-form-radio value="fixed"><span v-html="currencySymbol"></span></b-form-radio>
+              <b-form-radio value="percent"><span>%</span></b-form-radio>
             </b-form-radio-group>
             <input type="text" autocomplete="off" placeholder="0" v-model.lazy="itemDiscountValue"
                    :disabled="!cartEnabled" class="form-control" style="max-width: 56px; height: 25px; min-width: 56px;">
@@ -301,14 +302,15 @@
       <td class="item_discount" v-if="showColumnDiscount">
         <template v-if="!isGiftItem">
           <div>
-            <b-form-radio-group
-              buttons
-              button-variant="outline-primary"
-              v-model="itemDiscountType"
-              name="discount-type"
-              :disabled="!cartEnabled || !allowDiscount"
-              :options="[{html: this.currencySymbol, value: 'fixed'}, {text: '%', value: 'percent'}]"
-            >
+            <b-form-radio-group buttons
+                                button-variant="outline-primary"
+                                class="mb-2 mr-sm-2 mb-sm-0 me-1"
+                                v-model="itemDiscountType"
+                                name="discount-type"
+                                :disabled="!cartEnabled || !allowDiscount"
+                                ref="group">
+              <b-form-radio value="fixed"><span v-html="currencySymbol"></span></b-form-radio>
+              <b-form-radio value="percent"><span>%</span></b-form-radio>
             </b-form-radio-group>
             <input type="text" autocomplete="off" placeholder="0" v-model.lazy="itemDiscountValue"
                    :disabled="!cartEnabled || !allowDiscount" class="form-control">

@@ -39,16 +39,19 @@ const app = createApp({
         var setActiveTab = () => {
             var hash = this.getWindowLocationHash();
 
-            if (!this.$refs.tabs || !this.$refs.tabs.tabs) {
+            if (!hash) {
                 return;
             }
 
-            this.$refs.tabs.tabs.forEach((tab, index) => {
-                if (tab.tab.props.href === hash) {
-                    this.$refs.tabs.tabIndex = index;
-                    this.$root.bus.$emit('open-tab', hash)
-                }
-            });
+            var tabRef = this.$refs[hash.replace('#', '')];
+            var tab = Array.isArray(tabRef) ? tabRef[0] : tabRef;
+
+            if (!tab || typeof tab.activate !== 'function') {
+                return;
+            }
+
+            tab.activate();
+            this.$root.bus.$emit('open-tab', hash);
         }
 
         window.addEventListener('hashchange', () => {
@@ -222,16 +225,22 @@ window.Vue = oldVue
 
 //app.use( BootstrapVue );
 
-import BootstrapVue3 from 'bootstrap-vue-3'
+import {createBootstrap, Components as BvnComponents, Directives as BvnDirectives} from 'bootstrap-vue-next'
 
 // Optional, since every component import their Bootstrap functionality
 // the following line is not necessary
 // import 'bootstrap'
 
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
-app.use(BootstrapVue3)
+app.use(createBootstrap())
+Object.entries(BvnComponents).forEach(([name, component]) => {
+    app.component(name, component)
+})
+Object.entries(BvnDirectives).forEach(([name, directive]) => {
+    app.directive(name.slice(1).replace(/\B([A-Z])/g, '-$1').toLowerCase(), directive)
+})
 
 import VueClipboard from 'vue3-clipboard'
 
@@ -253,6 +262,26 @@ import {add} from "lodash/math";
 
 // Create a global mixin to expose strings, global config, and single backend resource.
 app.mixin({
+    created: function () {
+        var modalId = this.$options.modalId;
+
+        if (!modalId || !this.$root || !this.$root.bus) {
+            return;
+        }
+
+        this._openModalListener = function (requestedId) {
+            if (requestedId === modalId) {
+                this.showModal = true;
+            }
+        }.bind(this);
+
+        this.$root.bus.$on('show-modal', this._openModalListener);
+    },
+    unmounted: function () {
+        if (this._openModalListener && this.$root && this.$root.bus) {
+            this.$root.bus.$off('show-modal', this._openModalListener);
+        }
+    },
     computed: {
         nonce: function () {
             return PhoneOrdersData.nonce;
@@ -299,8 +328,7 @@ app.mixin({
             return object && typeof object === 'object' ? object[key] : object;
         },
         openModal(modalID) {
-            console.log(this, this.$bvModal)
-            this.$root.$emit('bv::show::modal', modalID);
+            this.$root.bus.$emit('show-modal', modalID);
         },
         saveSettingsByEvent: function () {
             this.$root.bus.$emit('save-settings');

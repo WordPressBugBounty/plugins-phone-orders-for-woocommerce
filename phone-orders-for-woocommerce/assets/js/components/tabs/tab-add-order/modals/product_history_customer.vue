@@ -6,9 +6,9 @@
              size="lg"
              @show="show"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
-             :hide-header-close="true"
+             :no-header-close="true"
     >
       <div class="wpo-search-wrapper">
         <b-form-input size="sm" :placeholder="searchPlaceholder" v-model="querySearch"></b-form-input>
@@ -250,6 +250,7 @@
 var loader = require('vue-spinner/dist/vue-spinner.min').ClipLoader;
 
 export default {
+  modalId: 'productHistoryCustomer',
   props: {
     productHistoryTitle: {
       default: function () {

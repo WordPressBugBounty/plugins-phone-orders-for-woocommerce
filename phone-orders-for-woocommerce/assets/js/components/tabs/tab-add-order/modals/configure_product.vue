@@ -3,11 +3,11 @@
     <b-modal id="configureProduct"
              ref="modal"
              :title="product ? configureProductLabel : addProductsFromShopLabel"
-             :hide-footer="true"
+             :no-footer="true"
              size="xl"
              @hidden="hidden"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-alert show variant="success">
@@ -22,6 +22,7 @@
 <script>
 
 export default {
+  modalId: 'configureProduct',
   props: {
     configureProductLabel: {
       default: function () {

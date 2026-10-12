@@ -6,7 +6,7 @@
              size="lg"
              @shown="shown"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-form @submit.stop.prevent="submit">
@@ -133,6 +133,7 @@
 import Multiselect from 'vue-multiselect';
 
 export default {
+  modalId: 'addCustomItemModal',
   props: {
     cancelLabel: {
       default: function () {

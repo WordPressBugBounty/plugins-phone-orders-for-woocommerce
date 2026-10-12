@@ -6,7 +6,7 @@
              @shown="shown"
              size="lg"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
 
@@ -68,6 +68,7 @@
 import ProFeatures from '../pro_features.vue';
 
 export default {
+  modalId: 'loadSessions',
   props: {
     loadSessionsTableHeaders: {
       default: function () {

@@ -6,7 +6,7 @@
              size="sm"
              @shown="shown"
              :noCloseOnBackdrop="modalDontCloseOnBackdropClick"
-             :static="true"
+             :teleport-disabled="true"
              v-model="showModal"
     >
       <b-form inline>
@@ -34,6 +34,7 @@
 <script>
 
 export default {
+  modalId: 'addGiftCard',
   props: {
     cancelLabel: {
       default: function () {
