@@ -5,7 +5,7 @@ Tags: woocommerce, phone orders, manual orders, call center
 Requires PHP: 5.4.0
 Requires at least: 4.8
 Tested up to: 7.1
-Stable tag: 3.12.0
+Stable tag: 3.12.1
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,6 +106,9 @@ Please, visit >WooCommerce>Settings>Shipping>Shipping Options and turn off "Hide
 8. Interface settings
 
 == Changelog ==
+
+= 3.12.1 2026-10-14 =
+* Updated compatibility with [our pricing plugin](https://wordpress.org/plugins/advanced-dynamic-pricing-for-woocommerce/) to prevent a vulnerability related to cart item metadata
 
 = 3.12.0 2026-10-12 =
 * Migrated to Vue 3.5

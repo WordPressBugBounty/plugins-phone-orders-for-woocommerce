@@ -358,6 +358,15 @@ class WC_Phone_Orders_Cart_Updater
 
             $cart_item_meta['wpo_item_cost'] = isset($item['item_cost']) ? $item['item_cost'] : null;
 
+            unset($cart_item_meta['wpo_item_cost_sig']);
+            if (!empty($cart_item_meta['cost_updated_manually']) && $cart_item_meta['wpo_item_cost'] !== null) {
+                $cart_item_meta['wpo_item_cost_sig'] = WC_Phone_Orders_Loader::sign_item_cost(
+                    $item['product_id'],
+                    isset($item['variation_id']) ? $item['variation_id'] : 0,
+                    $cart_item_meta['wpo_item_cost']
+                );
+            }
+
             $order_item_id = isset($item['order_item_id']) ? $item['order_item_id'] : false;
             if ($order_item_id && ! in_array($order_item_id, $used_order_item_ids)) {
                 $cart_item_meta['order_item_id'] = isset($item['order_item_id']) ? $item['order_item_id'] : false;

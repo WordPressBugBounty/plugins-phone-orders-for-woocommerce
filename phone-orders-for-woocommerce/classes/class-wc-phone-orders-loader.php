@@ -20,6 +20,7 @@ class WC_Phone_Orders_Loader
     public static $meta_key_order_item_discount = '_wpo_item_discount';
 
     public static $cap_manage_phone_orders = "manage_woocommerce_phone_orders";
+    const PRICE_SIGNING_KEY_OPTION = 'adp_wpo_price_signing_key';
 
     public function __construct()
     {
@@ -126,6 +127,25 @@ class WC_Phone_Orders_Loader
 
         //required for shipping cache
         add_filter("woocommerce_cart_shipping_packages", array($this, "skip_our_fields_in_package_hash"));
+    }
+
+
+    public static function get_price_signing_key()
+    {
+        $key = get_option(self::PRICE_SIGNING_KEY_OPTION);
+        if (!is_string($key) || strlen($key) < 32) {
+            $key = wp_generate_password(64, true, true);
+            if (!add_option(self::PRICE_SIGNING_KEY_OPTION, $key, '', 'no')) {
+                $key = get_option(self::PRICE_SIGNING_KEY_OPTION);
+            }
+        }
+        return $key;
+    }
+
+    public static function sign_item_cost($product_id, $variation_id, $cost)
+    {
+        $payload = (int)$product_id . ':' . (int)$variation_id . ':' . wc_format_decimal((string)$cost, wc_get_price_decimals());
+        return hash_hmac('sha256', $payload, self::get_price_signing_key());
     }
 
     private function update_wpo_version()
@@ -507,7 +527,8 @@ class WC_Phone_Orders_Loader
             "allow_po_discount",
             "wpo_item_cost",
             "removed_custom_meta_fields_keys",
-            "adp"
+            "adp",
+            "wpo_item_cost_sig",
         ];
         foreach ($packages as $idx => $package) {
             foreach ($package['contents'] as $item_key => $item) {

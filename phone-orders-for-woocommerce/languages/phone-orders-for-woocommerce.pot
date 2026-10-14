@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 08:28+0000\n"
+"POT-Creation-Date: 2026-10-14 08:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -268,7 +268,7 @@ msgstr ""
 msgid "Choose period"
 msgstr ""
 
-#: classes/class-wc-phone-orders-cart-updater.php:843
+#: classes/class-wc-phone-orders-cart-updater.php:852
 msgid "Choose your gift"
 msgstr ""
 
@@ -355,8 +355,8 @@ msgstr ""
 msgid "Create new order"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:78
-#: classes/class-wc-phone-orders-loader.php:474
+#: classes/class-wc-phone-orders-loader.php:79
+#: classes/class-wc-phone-orders-loader.php:494
 msgid "Create Order"
 msgstr ""
 
@@ -433,7 +433,7 @@ msgid ""
 "Display autocomplete results only for selected countries (Google Map API)"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:478
+#: classes/class-wc-phone-orders-loader.php:498
 msgid "Docs"
 msgstr ""
 
@@ -531,7 +531,7 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:388
+#: classes/class-wc-phone-orders-loader.php:408
 msgid "five star"
 msgstr ""
 
@@ -642,7 +642,7 @@ msgid ""
 msgstr ""
 
 #. 1: WooCommerce 2:: five stars
-#: classes/class-wc-phone-orders-loader.php:380
+#: classes/class-wc-phone-orders-loader.php:400
 #, php-format
 msgid ""
 "If you like %1$s please leave us a %2$s rating. Thank you so much in advance!"
@@ -822,8 +822,8 @@ msgstr ""
 msgid "No shipping methods available"
 msgstr ""
 
-#: classes/class-wc-phone-orders-cart-updater.php:1817
-#: classes/class-wc-phone-orders-cart-updater.php:1854
+#: classes/class-wc-phone-orders-cart-updater.php:1826
+#: classes/class-wc-phone-orders-cart-updater.php:1863
 #: classes/tabs/abstract-wc-phone-orders-tab.php:676
 #: classes/tabs/abstract-wc-phone-orders-tab.php:697
 msgid "No value"
@@ -932,7 +932,7 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:495
+#: classes/class-wc-phone-orders-loader.php:515
 msgid "Phone order"
 msgstr ""
 
@@ -942,12 +942,12 @@ msgid "Phone Orders"
 msgstr ""
 
 #. Name of the plugin
-#: classes/class-wc-phone-orders-loader.php:386
+#: classes/class-wc-phone-orders-loader.php:406
 msgid "Phone Orders for WooCommerce"
 msgstr ""
 
 #. A message that phone orders for WooCommerce are available on this page
-#: classes/class-wc-phone-orders-loader.php:265
+#: classes/class-wc-phone-orders-loader.php:285
 #, php-format
 msgid ""
 "Phone Orders For WooCommerce is available <a href=\"%s\">on this page</a>."
@@ -1299,7 +1299,7 @@ msgstr ""
 msgid "Subtotal"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:482
+#: classes/class-wc-phone-orders-loader.php:502
 msgid "Support"
 msgstr ""
 
@@ -1319,7 +1319,7 @@ msgstr ""
 msgid "Taxes"
 msgstr ""
 
-#: classes/class-wc-phone-orders-loader.php:391
+#: classes/class-wc-phone-orders-loader.php:411
 msgid "Thanks :)"
 msgstr ""
 
@@ -1465,7 +1465,7 @@ msgid "WooCommerce"
 msgstr ""
 
 #. Ability to add a certain number of free products to the cart
-#: classes/class-wc-phone-orders-cart-updater.php:840
+#: classes/class-wc-phone-orders-cart-updater.php:849
 msgid "You can add %d products for free to the cart."
 msgstr ""
 
